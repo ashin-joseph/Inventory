@@ -27,18 +27,23 @@ def order(request):
             try:
                 vendor_instance = vendorTable.objects.get(vendor_id=vendor_id)
                 purchase_number = purchaseorderTable(pot_order_number=order_number, pot_vendor=vendor_instance)
-                purchase_number.save() # save vendor and order
+                purchase_number.save()  # save vendor and order
 
-                for name, quantity, price, tax, total in zip(item_names, item_quantity, item_prices, item_taxes, item_total):
+                for name, quantity, price, tax, total in zip(item_names, item_quantity, item_prices, item_taxes,
+                                                             item_total):
                     item_instance = itemTable.objects.get(item_name=name)
-                    order_item = orderitemTable(oit_purchase_order=purchase_number, oit_item=item_instance, oit_quantity=quantity, oit_price=price, oit_tax_percentage=tax, oit_totalprice=total)
+                    order_item = orderitemTable(oit_purchase_order=purchase_number, oit_item=item_instance,
+                                                oit_quantity=quantity, oit_price=price, oit_tax_percentage=tax,
+                                                oit_totalprice=total)
                     order_item.save()  # save items
 
-                return redirect(order_display, order_id=purchase_number.id)  # Redirect to order_display with the new order ID
+                return redirect(order_display,
+                                order_id=purchase_number.id)  # Redirect to order_display with the new order ID
             except vendorTable.DoesNotExist:
                 return redirect(index)
 
-    return render(request, "purchase/Order.html", {'vendor_data': vendor_data, 'vendor_data2': vendor_data2, 'item_data': item_data})
+    return render(request, "purchase/Order.html",
+                  {'vendor_data': vendor_data, 'vendor_data2': vendor_data2, 'item_data': item_data})
 
 
 def order_display(request, order_id):
@@ -74,4 +79,3 @@ def order_display(request, order_id):
 #         'order_item_data':order_item_data
 #     }
 #     return render(request,"purchase/order_dis.html",context)
-

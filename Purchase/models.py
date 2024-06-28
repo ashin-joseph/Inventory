@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import CASCADE
+
 
 
 class vendorTable(models.Model):
@@ -33,18 +33,24 @@ class itemTable(models.Model):
     def __str__(self):
         return self.item_name
 
+    def save(self, *args, **kwargs):
+        from Stock.models import stockTable
+        super(itemTable, self).save(*args, **kwargs)
+        stockTable.objects.get_or_create(st_item=self)
+
+
 class purchaseorderTable(models.Model):
     pot_order_number= models.CharField(max_length=20, unique=True)
     pot_date = models.DateField(auto_now_add=True)
-    pot_vendor = models.ForeignKey(vendorTable, on_delete=CASCADE)
+    pot_vendor = models.ForeignKey(vendorTable, on_delete=models.CASCADE)
     pot_items = models.ManyToManyField(itemTable, through='orderitemTable')
 
     def __str__(self):
         return (self.pot_order_number)
 
 class orderitemTable(models.Model):
-    oit_purchase_order=models.ForeignKey(purchaseorderTable,on_delete=CASCADE)
-    oit_item= models.ForeignKey(itemTable, on_delete=CASCADE)
+    oit_purchase_order=models.ForeignKey(purchaseorderTable,on_delete=models.CASCADE)
+    oit_item= models.ForeignKey(itemTable, on_delete=models.CASCADE)
     oit_quantity = models.PositiveIntegerField(null=True, blank=True)
     oit_price= models.DecimalField(max_digits=10,decimal_places=2,null=True, blank=True)
     oit_tax_percentage=models.DecimalField(max_digits=10, decimal_places=2,null=True, blank=True)
@@ -53,3 +59,14 @@ class orderitemTable(models.Model):
     def __str__(self):
         return (self.oit_purchase_order)
 
+
+    def save(self, *args, **kwargs):
+        super(orderitemTable, self).save(*args, **kwargs)
+        self.update_stock_quantity()
+
+    def update_stock_quantity(self):
+        from Stock.models import stockTable
+        total_quantity = orderitemTable.objects.filter(oit_item=self.oit_item).aggregate(total=models.Sum('oit_quantity'))['total']
+        stock_item, created = stockTable.objects.get_or_create(st_item=self.oit_item)
+        stock_item.st_quantity = total_quantity
+        stock_item.save()

@@ -1,6 +1,7 @@
 from django.urls import path
+from Stock import views
 
 
 urlpatterns = [
-    path(),
+    path("stock_list/", views.stock_list, name="stock_list"),
 ]
