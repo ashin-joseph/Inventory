@@ -9,8 +9,6 @@ def order(request):
     vendor_data = vendorTable.objects.all()
     item_data = itemTable.objects.all()
 
-    vendor_data2 = None
-
     if request.method == "POST":
         vendor_id = request.POST.get("vendor_id")
         item_names = request.POST.getlist('item_name[]')
@@ -29,8 +27,7 @@ def order(request):
                 purchase_number = purchaseorderTable(pot_order_number=order_number, pot_vendor=vendor_instance)
                 purchase_number.save()  # save vendor and order
 
-                for name, quantity, price, tax, total in zip(item_names, item_quantity, item_prices, item_taxes,
-                                                             item_total):
+                for name, quantity, price, tax, total in zip(item_names, item_quantity, item_prices, item_taxes, item_total):
                     item_instance = itemTable.objects.get(item_name=name)
                     order_item = orderitemTable(oit_purchase_order=purchase_number, oit_item=item_instance,
                                                 oit_quantity=quantity, oit_price=price, oit_tax_percentage=tax,
@@ -43,7 +40,7 @@ def order(request):
                 return redirect(index)
 
     return render(request, "purchase/Order.html",
-                  {'vendor_data': vendor_data, 'vendor_data2': vendor_data2, 'item_data': item_data})
+                  {'vendor_data': vendor_data, 'item_data': item_data})
 
 
 def order_display(request, order_id):
@@ -63,7 +60,6 @@ def order_display(request, order_id):
     context = {
         'order': order,
         'items': items,
-        'total_p': total_p,
         'overall': overall,
     }
     return render(request, 'purchase/order_display.html', context)

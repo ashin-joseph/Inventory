@@ -19,6 +19,7 @@ from django.urls import path, include
 import User.urls
 import Purchase.urls
 import Stock.urls
+import Sales.urls
 
 
 urlpatterns = [
@@ -26,5 +27,6 @@ urlpatterns = [
     path('', include(User.urls)),
     path('Purchase/', include(Purchase.urls)),
     path('Stock/', include(Stock.urls)),
+    path('Sales/', include(Sales.urls)),
 
 ]

@@ -35,8 +35,15 @@ class itemTable(models.Model):
 
     def save(self, *args, **kwargs):
         from Stock.models import stockTable
+        from Sales.models import priceTable
         super(itemTable, self).save(*args, **kwargs)
         stockTable.objects.get_or_create(st_item=self)
+        priceTable.objects.get_or_create(pt_item=self)
+
+    # def save(self, *args, **kwargs):
+    #     from Sales.models import stockTable
+    #     super(itemTable, self).save(*args, **kwargs)
+    #     stockTable.objects.get_or_create(st_item=self)
 
 
 class purchaseorderTable(models.Model):
@@ -57,7 +64,7 @@ class orderitemTable(models.Model):
     oit_totalprice = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
-        return (self.oit_purchase_order)
+        return f"{self.oit_purchase_order.pot_order_number} + {self.oit_item.item_name}"
 
 
     def save(self, *args, **kwargs):

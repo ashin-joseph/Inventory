@@ -14,8 +14,8 @@
 <form method="post" action="{% url 'order' %}">
     {% csrf_token %}
     <input name="vendor" type="text" id="shopSearch" placeholder="Search for a shop" required>
-    <input name="vendor_id" type="hidden" id="vendorID" value="{{ vendor_data2.id }}" readonly>
-    <div id="shopDetails" style="margin-top:20px">
+    <input name="vendor_id" type="hidden" id="vendorID" value="{{ vendor_data.id }}" readonly>
+    <div id="shopDetails" class="d-flex justify-content-end container mt-4">
     <!-- Shop details will be displayed here -->
     </div><br>
 
@@ -52,7 +52,7 @@
     $(document).ready(function() {
         var shopData = [
             {% for i in vendor_data %}
-                { "id": "{{ i.vendor_id }}", "name": "{{ i.vendor_shop_name }}", "address": "{{ i.vendor_location }}" }{% if not forloop.last %},{% endif %}
+                { "id": "{{ i.vendor_id }}", "name": "{{ i.vendor_shop_name }}", "person": "{{ i.vendor_name }}", "address": "{{ i.vendor_location }}", "number": "{{i.vendor_phone}}" }{% if not forloop.last %},{% endif %}
             {% endfor %}
         ];
 
@@ -61,7 +61,7 @@
             select: function(event, ui) {
                 var selectedShop = shopData.find(shop => shop.name === ui.item.value);
                 if (selectedShop) {
-                    $('#shopDetails').html('<div><strong>Shop Name:</strong> ' + selectedShop.name + '<br><strong>Address:</strong> ' + selectedShop.address + '</div>');
+                    $('#shopDetails').html('<div><strong>Shop Name:</strong> ' + selectedShop.name + '<br><strong>Contact Person:</strong> ' + selectedShop.person + '<br><strong>Address:</strong> ' + selectedShop.address + '<br><strong>Contact Number:</strong> ' + selectedShop.number + '</div>');
                     $('#vendorID').val(selectedShop.id);
                 }
             }
