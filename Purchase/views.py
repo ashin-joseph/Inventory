@@ -51,8 +51,7 @@ def order_display(request, order_id):
     overall = 0
     for i in items:
         price = i.oit_price * i.oit_quantity
-        per_tax = i.oit_tax_percentage
-        tax = (per_tax / 100) * price
+        tax = (i.oit_tax_percentage / 100) * price
         total = price + tax
         total_p.append(total)
         overall += total

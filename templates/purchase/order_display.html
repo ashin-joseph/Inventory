@@ -13,12 +13,12 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="order-header text-center">
-                    <h2>Order Details</h2>
+                    <h2>Purchase Order</h2>
                 </div>
                 <div class="order-body">
                     <div class="print-only text-center">
                         <p> <h2>ABC company</h2></p>
-                         <h4>Order Details</h4>
+                         <h4>Purchase Order</h4>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -38,25 +38,25 @@
                                 <th>Item</th>
                                 <th>Quantity</th>
                                 <th>Price</th>
-                                <th>Tax</th>
-                                <th>Amount</th>
+                                <th>Tax %</th>
+                                <th>Amount %</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for i in items %}
                                 <tr>
                                     <td>{{ i.oit_item }}</td>
-                                    <td>{{i.oit_quantity}}</td>
-                                    <td>{{i.oit_price}}</td>
-                                    <td>{{i.oit_tax_percentage}}</td>
-                                    <td>{{i.oit_totalprice}}</td>
+                                    <td><i>No. </i> {{i.oit_quantity}}</td>
+                                    <td><i>Rs. </i> {{i.oit_price}}</td>
+                                    <td>{{i.oit_tax_percentage}} <i> %</i></td>
+                                    <td><i>Rs. </i> {{i.oit_totalprice}}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                     <div class="row">
                         <div class="col-md-12 text-md-right">
-                            <p><strong>Total:</strong> {{ overall }}</p>
+                            <p><strong>Total:</strong><i>Rs. </i> {{ overall }}</p>
                         </div>
                     </div>
                     <div class="print-only">
@@ -64,7 +64,7 @@
                         <p><strong>Bill Note:</strong>Please deliver the product before 4 pm with regards ABC Shop</p><p class="text-center"><i>Thank you!</i></p>
                     </div>
                     <div class="text-center print-button">
-                        <button onclick="window.print()" class="btn btn-primary">Print Order Details</button>
+                        <button onclick="window.print()" class="btn btn-primary">Print</button>
                     </div>
                 </div>
             </div>
