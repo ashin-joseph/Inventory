@@ -11,22 +11,33 @@
 <div class="container">
     <h1 class="mt-4">Stock List</h1>
     <table class="table table-striped">
-        <thead>
+        <thead style="text-align:center">
             <tr>
-                <th scope="col">Item</th>
-                <th scope="col">Total Quantity</th>
+                <th scope="col">Product</th>
+                <th scope="col">Unit</th>
+                <th scope="col">Purchase Stock</th>
+                <th scope="col">Sold Stock</th>
+                <th scope="col">Available Stock</th>
             </tr>
         </thead>
         <tbody>
             {% for i in st %}
                 <tr>
                     <td>{{ i.st_item.item_name }}</td>
-                    <td>{{ i.st_quantity }}</td>
+                    <td>{{ i.st_item.item_unit }}</td>
+                    <td>{{ i.st_purchasesStock }} </td>
+                    <td>{{ i.st_soldStock }} </td>
+                    <td>{{ i.st_remainingStock }}</td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+<style>
+    td {
+        text-align: center;
+    }
+</style>
 </body>
 </html>
 {% endblock %}

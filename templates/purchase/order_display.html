@@ -39,29 +39,29 @@
                                 <th>Quantity</th>
                                 <th>Price</th>
                                 <th>Tax %</th>
-                                <th>Amount %</th>
+                                <th>Amount</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for i in items %}
                                 <tr>
                                     <td>{{ i.oit_item }}</td>
-                                    <td><i>No. </i> {{i.oit_quantity}}</td>
-                                    <td><i>Rs. </i> {{i.oit_price}}</td>
-                                    <td>{{i.oit_tax_percentage}} <i> %</i></td>
-                                    <td><i>Rs. </i> {{i.oit_totalprice}}</td>
+                                    <td><i>No.</i>{{i.oit_quantity}}</td>
+                                    <td><i>Rs.</i>{{i.oit_price}}</td>
+                                    <td>{{i.oit_tax_percentage}}<i>%</i></td>
+                                    <td><i>Rs.</i>{{i.oit_totalprice}}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                     <div class="row">
                         <div class="col-md-12 text-md-right">
-                            <p><strong>Total:</strong><i>Rs. </i> {{ overall }}</p>
+                            <p><strong>Total: </strong><i>Rs.</i>{{ overall }}</p>
                         </div>
                     </div>
                     <div class="print-only">
-                        <p><strong>GISTIN Number:</strong> {{ order.pot_vendor.vendor_GST }}</p>
-                        <p><strong>Bill Note:</strong>Please deliver the product before 4 pm with regards ABC Shop</p><p class="text-center"><i>Thank you!</i></p>
+                        <p><strong>GISTIN Number: </strong> {{ order.pot_vendor.vendor_GST }}</p>
+                        <p><strong>Bill Note: </strong>Please deliver the product before 4 pm with regards ABC Shop</p><p class="text-center"><i>Thank you!</i></p>
                     </div>
                     <div class="text-center print-button">
                         <button onclick="window.print()" class="btn btn-primary">Print</button>

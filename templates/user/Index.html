@@ -10,17 +10,17 @@
 <body>
     <div class="d-flex">
         <div class="flex-grow-1">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <nav class="navbar p-1 navbar-expand-lg navbar-light bg-info">
                 <a class="navbar-brand" href="#">Inventory System</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="bg-info collapse navbar-collapse my-0" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'index' %}">Dashboard</a>
+                            <a class="nav-link bg-info" href="{% url 'index' %}">Dashboard</a>
                         </li>
-                        <li class="nav-item dropdown">
+                        <li class="bg-info nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarPurchaseDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Purchase</a>
                             <div class="dropdown-menu" aria-labelledby="navbarPurchaseDropdown">
                                 <a class="dropdown-item" href="{% url 'order' %}">Place Order</a>
@@ -92,7 +92,6 @@
             overflow-x: hidden; /* Disable horizontal scrolling */
         }
         .content {
-            margin-left: 160px;
             flex-grow: 1;
             padding: 10px;
         }
@@ -103,7 +102,7 @@
         .navbar-collapse {
             margin-bottom: 20px;
             padding: 10px;
-            background-color: #bec1c2;
+
         }
         .profile-info {
             display: flex;

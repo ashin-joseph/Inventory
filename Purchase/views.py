@@ -47,13 +47,11 @@ def order_display(request, order_id):
     order = get_object_or_404(purchaseorderTable, id=order_id)
     items = orderitemTable.objects.filter(oit_purchase_order=order)
 
-    total_p = []
     overall = 0
     for i in items:
         price = i.oit_price * i.oit_quantity
-        tax = (i.oit_tax_percentage / 100) * price
+        tax = int((i.oit_tax_percentage / 100)) * price
         total = price + tax
-        total_p.append(total)
         overall += total
 
     context = {

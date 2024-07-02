@@ -31,3 +31,14 @@ class salesorderItemTable(models.Model):
 
     def __str__(self):
         return self.soit_bill_number.sot_bill_number
+
+    def save(self, *args, **kwargs):
+        super(salesorderItemTable, self).save(*args, **kwargs)
+        self.update_sales_stock_qty()
+
+    def update_sales_stock_qty(self):
+        from Stock.models import stockTable
+        total_sales_quantity=salesorderItemTable.objects.filter(soit_item=self.soit_item).aggregate(total=models.Sum('soit_quantity'))['total']
+        sales_stock_item, created = stockTable.objects.get_or_create(st_item=self.soit_item)
+        sales_stock_item.st_soldStock = total_sales_quantity
+        sales_stock_item.save()

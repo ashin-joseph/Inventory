@@ -46,18 +46,18 @@
                             {% for j in so_item %}
                                 <tr>
                                     <td>{{ j.soit_item.item_name }}</td>
-                                    <td><i>No. </i> {{ j.soit_quantity }}</td>
-                                    <td><i>Rs. </i> {{ j.soit_price.pt_sellingPrice }}</td>
-                                    <td>{{ j.soit_price.pt_tax }} <i> %</i></td>
-                                    <td>{{ j.soit_price.pt_offer }} <i> %</i></td>
-                                    <td><i>Rs. </i>{{ j.soit_total }}</td>
+                                    <td><i>No.</i>{{ j.soit_quantity }}</td>
+                                    <td><i>Rs.</i>{{ j.soit_price.pt_sellingPrice }}</td>
+                                    <td>{{ j.soit_price.pt_tax }}<i>%</i></td>
+                                    <td>{{ j.soit_price.pt_offer }}<i>%</i></td>
+                                    <td><i>Rs.</i>{{ j.soit_total }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                     <div class="row">
                         <div class="col-md-12 text-md-right">
-                            <p><strong>Total:</strong> <i>Rs. </i> {{ overall }}</p>
+                            <p><strong>Total: </strong> <i>Rs.</i>{{ overall }}</p>
                         </div>
                     </div>
                     <div class="print-only">

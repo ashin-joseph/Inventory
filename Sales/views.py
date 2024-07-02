@@ -34,8 +34,7 @@ def save_sales_order(request):
                 for ite, qty, pri, tot in zip(item_names, item_quantity, item_prices, item_total):
                     item_instant = itemTable.objects.get(item_name=ite)
                     price_instant = priceTable.objects.get(pt_item=item_instant, pt_sellingPrice=pri)
-                    soi_obj = salesorderItemTable(soit_bill_number=so_obj, soit_item=item_instant, soit_quantity=qty,
-                                                  soit_price=price_instant, soit_total=tot)
+                    soi_obj = salesorderItemTable(soit_bill_number=so_obj, soit_item=item_instant, soit_quantity=qty, soit_price=price_instant, soit_total=tot)
                     soi_obj.save()
                 return redirect(sales_order_display, orderId=so_obj.id)
             except priceTable.DoesNotExist:
@@ -48,13 +47,11 @@ def sales_order_display(request, orderId):
     so_item = salesorderItemTable.objects.filter(soit_bill_number=s_order)
 
     overall = 0
-    total = []
     for j in so_item:
         price = j.soit_price.pt_sellingPrice * j.soit_quantity
-        tax = (j.soit_price.pt_tax / 100) * price
-        offer = (j.soit_price.pt_offer / 100) * price
+        tax = int((j.soit_price.pt_tax / 100)) * price
+        offer = int((j.soit_price.pt_offer / 100)) * price
         total_s = price + tax - offer
-        total.append(total_s)
         overall += total_s
 
     context = {
