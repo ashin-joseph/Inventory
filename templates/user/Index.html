@@ -25,7 +25,7 @@
                             <div class="dropdown-menu" aria-labelledby="navbarPurchaseDropdown">
                                 <a class="dropdown-item" href="{% url 'order' %}">Place Order</a>
                                 <a class="dropdown-item" href="#">Draft Order</a>
-                                <a class="dropdown-item" href="#">Generate Bill</a>
+                                <a class="dropdown-item" href="#">Pagination</a>
                             </div>
                         </li>
 <!--                        <li class="nav-item dropdown">-->
@@ -49,14 +49,14 @@
                             <div class="dropdown-menu" aria-labelledby="navbarSalesDropdown">
                                 <a class="dropdown-item" href="{% url 'sales_order' %}">Place Order</a>
                                 <a class="dropdown-item" href="#">Draft Order</a>
-                                <a class="dropdown-item" href="#">Generate Bill</a>
+                                <a class="dropdown-item" href="#">Pagination</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarStockDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Stock</a>
                             <div class="dropdown-menu" aria-labelledby="navbarStockDropdown">
                                 <a class="dropdown-item" href="{% url 'stock_list' %}">Stock List</a>
-                                <a class="dropdown-item" href="#">Updated Stock</a>
+                                <a class="dropdown-item" href="#">Stock History</a>
                                 <a class="dropdown-item" href="#">--</a>
                             </div>
                         </li>
@@ -74,17 +74,31 @@
                 </div>
             </nav>
             <div class="content">
-            {% block content %}
-            <!-- Main content goes here -->
-            <h1>Welcome to the Dashboard</h1>
-            <p>This is the main content area.</p>
-            <div class="chart bg-light">
-                <img src="https://via.placeholder.com/800x400?text=Static+Graph" alt="Static Graph" class="img-fluid">
+                <div class="container">
+                    <!-- Content here -->
+                </div>
+                {% block content %}
+                <!-- Main content goes here -->
+                <h1>Welcome to the Dashboard</h1>
+                <p>Main content area.</p>
+                <!-- New Containers with Text -->
+<!--                <div class="d-flex justify-content-between mt-4">-->
+<!--                    <div class="container text-center bg-info p-3 mr-2 custom-container">-->
+<!--                        <a href="" class="btn bg-info"><h2></h2></a>-->
+<!--                        <p>This is the first container with some text.</p>-->
+<!--                    </div>-->
+<!--                     </div> -->
+                <a href="{% url 'vendor_pg' %}"><button type="button" class="btn btn-info">Add Vendor</button></a>
+                <a href="{% url 'item_pg' %}"><button type="button" class="btn btn-info">Add Item</button></a>
+                <a href="{% url 'price_pg' %}"><button type="button" class="btn btn-info">Set price</button></a>
+                <br><br>
+                <div class="chart bg-light">
+                    <img src="https://via.placeholder.com/800x400?text=Static+Graph" alt="Static Graph" class="img-fluid">
+                </div>
+                {% endblock %}
             </div>
-            {% endblock %}
-            </div>
-    </div>
         </div>
+    </div>
 
     <!-- Custom CSS -->
     <style>
@@ -102,7 +116,6 @@
         .navbar-collapse {
             margin-bottom: 20px;
             padding: 10px;
-
         }
         .profile-info {
             display: flex;
@@ -118,6 +131,10 @@
         .chart {
             width: 100%;
             height: 400px;
+        }
+        .custom-container {
+            width: 20%;
+            border-radius: 8px;
         }
     </style>
 

@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 import User.urls
+import Core.urls
 import Purchase.urls
 import Stock.urls
 import Sales.urls
@@ -25,6 +26,7 @@ import Sales.urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(User.urls)),
+    path('Core', include(Core.urls)),
     path('Purchase/', include(Purchase.urls)),
     path('Stock/', include(Stock.urls)),
     path('Sales/', include(Sales.urls)),

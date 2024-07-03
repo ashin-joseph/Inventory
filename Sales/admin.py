@@ -1,6 +1,5 @@
 from django.contrib import admin
-from Sales.models import priceTable, salesorderTable, salesorderItemTable
+from Sales.models import salesorderTable, salesorderItemTable
 
-admin.site.register(priceTable)
 admin.site.register(salesorderTable)
 admin.site.register(salesorderItemTable)

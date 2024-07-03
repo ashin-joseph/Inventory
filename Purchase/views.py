@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from Purchase.models import vendorTable, itemTable, purchaseorderTable, orderitemTable
+from Core.models import vendorTable, itemTable
+from Purchase.models import purchaseorderTable, orderitemTable
 import datetime
 import random
 from User.views import index

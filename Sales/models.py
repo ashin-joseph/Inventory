@@ -1,16 +1,5 @@
 from django.db import models
-from Purchase.models import itemTable
-
-
-class priceTable(models.Model):
-    pt_item= models.OneToOneField(itemTable, on_delete=models.CASCADE)
-    pt_sellingPrice= models.DecimalField(max_digits=10, decimal_places=2,null=True, blank=True, default=0)
-    pt_tax= models.PositiveIntegerField(null=True, blank=True, default=10)
-    pt_offer=models.PositiveIntegerField(null=True, blank=True, default=10)
-    pt_timestamp= models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.pt_item.item_name
+from Core.models import itemTable,priceTable
 
 
 class salesorderTable(models.Model):
@@ -26,7 +15,7 @@ class salesorderItemTable(models.Model):
     soit_bill_number=models.ForeignKey(salesorderTable, on_delete=models.DO_NOTHING)
     soit_item=models.ForeignKey(itemTable, on_delete=models.DO_NOTHING)
     soit_quantity= models.PositiveIntegerField(null=True, blank=True)
-    soit_price= models.ForeignKey(priceTable, on_delete=models.CASCADE)
+    soit_price= models.ForeignKey(priceTable, on_delete=models.DO_NOTHING)
     soit_total= models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
     def __str__(self):

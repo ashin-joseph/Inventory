@@ -1,11 +1,11 @@
 from django.db import models
-from Purchase.models import itemTable, orderitemTable
+from Purchase.models import orderitemTable
 from Sales.models import salesorderItemTable
-from Sales.models import priceTable
+from Core.models import itemTable, priceTable
 
 
 class stockTable(models.Model):
-    st_item = models.OneToOneField(itemTable, on_delete=models.CASCADE)
+    st_item = models.OneToOneField(itemTable, on_delete=models.DO_NOTHING)
     st_purchasesStock = models.PositiveIntegerField(default=0)
     st_soldStock = models.PositiveIntegerField(default=0)
     st_remainingStock = models.PositiveIntegerField(default=0)
@@ -18,15 +18,15 @@ class stockTable(models.Model):
         # Calculate the purchased stock from the purchase orders
         purchase_orders = orderitemTable.objects.filter(oit_item=self.st_item)
         total_purchased_stock = 0
-        for order in purchase_orders:
-            total_purchased_stock += order.oit_quantity
+        for i in purchase_orders:
+            total_purchased_stock += i.oit_quantity
         self.st_purchasesStock = total_purchased_stock
 
         # Calculate the sold stock from the sales orders
         sales_orders = salesorderItemTable.objects.filter(soit_item=self.st_item)
         total_sold_stock = 0
-        for order in sales_orders:
-            total_sold_stock += order.soit_quantity
+        for j in sales_orders:
+            total_sold_stock += j.soit_quantity
         self.st_soldStock = total_sold_stock
 
         # Calculate the remaining stock

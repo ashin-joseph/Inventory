@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from Purchase.models import itemTable
+from Core.models import itemTable, priceTable
 import datetime
 import random
-from Sales.models import priceTable, salesorderTable, salesorderItemTable
+from Sales.models import salesorderTable, salesorderItemTable
 from User.views import index
 
 

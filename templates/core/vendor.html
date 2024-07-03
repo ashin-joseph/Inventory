@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+{% extends 'user/Index.html' %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Item</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Form to add item -->
+            <div class="form-container col-md-4">
+                <h2>Add Vendor</h2>
+                <form id="itemForm" method="" action="">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="itemName">Shop Name</label>
+                        <input name="shopename" type="text" class="form-control" id="itemName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="itemName">Vendor Name</label>
+                        <input name="vendorname" type="text" class="form-control"  required>
+                    </div>
+                    <div class="form-group">
+                        <label for="itemName">Location</label>
+                        <input name="location" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="itemName">Pin</label>
+                        <input name="pin" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="itemName">Email</label>
+                        <input name="email" type="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="itemName">Phone number</label>
+                        <input name="mobilnum" type="tel" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="itemName">GST</label>
+                        <input name="gst" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="itemName">Note</label>
+                        <textarea name="note" class="form-control" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+
+            <!-- Table to display saved items -->
+            <div class="table-container col-md-8">
+                <h2>Vendor List</h2>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Shop Name</th>
+                            <th>Location</th>
+                            <th>Name</th>
+                            <th>Contact No.</th>
+                            <th>GST No.</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemsTableBody">
+                    {% for i in vendor_data %}
+                    <tr>
+                        <td>{{i.vendor_shop_name}}</td>
+                        <td>{{i.vendor_location}}</td>
+                        <td>{{i.vendor_name}}</td>
+                        <td>{{i.vendor_phone}}</td>
+                        <td>{{i.vendor_GST}}</td>
+                        <td><a><button type="button" class="btn btn-warning">Update</button></a>
+                            <a><button type="button" class="btn btn-danger">Delete</button></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                        <!-- Rows will be added dynamically here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<style>
+        body {
+            margin: 20px;
+        }
+        .form-container {
+            width: 40%;
+        }
+        .table-container {
+            width: 55%;
+        }
+    </style>
+</body>
+</html>
+{% endblock %}
