@@ -35,8 +35,8 @@ def order(request):
                                                 oit_totalprice=total)
                     order_item.save()  # save items
 
-                return redirect(order_display,
-                                order_id=purchase_number.id)  # Redirect to order_display with the new order ID
+                return redirect(order_display,order_id=purchase_number.id)
+                # Redirect to order_display with the new order ID
             except vendorTable.DoesNotExist:
                 return redirect(index)
 

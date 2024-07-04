@@ -1,131 +1,42 @@
 <!DOCTYPE html>
-{% extends 'user/Index.html' %}
-{% block content %}
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Shop Search</title>
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Item CRUD</title>
 </head>
 <body>
-<form method="post" action="{% url 'order' %}">
-    {% csrf_token %}
-    <input name="vendor" type="text" id="shopSearch" placeholder="Search for a shop" required>
-    <input name="vendor_id" type="hidden" id="vendorID" value="{{ vendor_data2.id }}" readonly> <!-- Ensure this input has a name attribute -->
-    <div id="shopDetails">
-    <!-- Shop details will be displayed here -->
-    </div>
+    <h1>Item CRUD Operations</h1>
 
-    <h4 class="mt-3">Create Order</h4>
-    <hr> <!-- Added horizontal line here -->
+    <!-- Create Item -->
+    <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="create">
+        <label for="name">Name:</label>
+        <input type="text" name="name" required>
+        <label for="description">Description:</label>
+        <textarea name="description" required></textarea>
+        <button type="submit">Create Item</button>
+    </form>
 
-    <div class="container mt-4">
-        <div id="item-list">
-            <!-- Input fields for selected items will be dynamically added here -->
-        </div>
-        <div class="d-flex justify-content-end mb-3">
-            <button class="btn btn-success mr-2" type="submit" id="orderButton">Order</button>
-            <a href=""><button class="btn btn-secondary" type="button">Save</button></a>
-        </div>
-        <div class="mt-4">
-            <div class="row mb-3">
-                <div class="col">
-                    <input type="text" class="form-control small-input" id="input1" placeholder="Add item">
-                </div>
-            </div>
-            <div class="d-flex justify-content-end">
-                <button class="btn btn-primary" type="button" onclick="addItem()">Add</button>
-            </div>
-        </div>
-    </div>
-</form>
+    <!-- Update and Delete Items -->
+    {% for item in items %}
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="update">
+            <input type="hidden" name="id" value="{{ item.id }}">
+            <label for="name">Name:</label>
+            <input type="text" name="name" value="{{ item.item_name }}" required>
+            <label for="description">Description:</label>
+            <textarea name="description" required>{{ item.item_category }}</textarea>
+            <button type="submit">Update Item</button>
+        </form>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-<script>
-    $(document).ready(function() {
-        var shopData = [
-            {% for i in vendor_data %}
-                { "id": "{{ i.id }}", "name": "{{ i.vendor_shop }}", "address": "{{ i.vendor_address1 }}" }{% if not forloop.last %},{% endif %}
-            {% endfor %}
-        ];
-
-        $("#shopSearch").autocomplete({
-            source: shopData.map(shop => shop.name),
-            select: function(event, ui) {
-                var selectedShop = shopData.find(shop => shop.name === ui.item.value);
-                if (selectedShop) {
-                    $('#shopDetails').html('<div><strong>Shop Name:</strong> ' + selectedShop.name + '<br><strong>Address:</strong> ' + selectedShop.address + '</div>');
-                    $('#vendorID').val(selectedShop.id);
-                }
-            }
-        });
-    });
-
-    function addItem() {
-        const input1 = document.getElementById('input1').value;
-        const newItem = document.createElement('div');
-        newItem.classList.add('form-group');
-        newItem.innerHTML = `
-            <div class="row">
-                <div class="col">
-                    <label for="">Item</label>
-                    <input type="text" name="item_name[]" class="form-control small-input" value="${input1}" readonly>
-                </div>
-                <div class="col">
-                    <label for="">Quantity</label>
-                    <input type="number" name="item_quantity[]" class="form-control small-input" placeholder="Quantity">
-                </div>
-                <div class="col">
-                    <label for="">Unit</label>
-                    <select name="item_unit[]" class="form-control small-input">
-                        <option value="">-----</option>
-                        <option value="Kg">Kg</option>
-                        <option value="pc">pc</option>
-                        <option value="Liter">Liter</option>
-                    </select>
-                </div>
-                <div class="col">
-                    <label for="">Price</label>
-                    <input type="number" step="0.01" name="item_price[]" class="form-control small-input" placeholder="Price">
-                </div>
-                <div class="col">
-                    <label for="">Tax</label>
-                    <input type="number" step="0.01" name="item_tax[]" class="form-control small-input taxcal" placeholder="Tax %">
-                </div>
-            </div>`;
-        const itemList = document.getElementById('item-list');
-        itemList.appendChild(newItem);
-        document.getElementById('input1').value = '';
-    }
-
-    $(document).ready(function() {
-        var itemData = [
-            {% for i in item_data %}
-                { "id": "{{ i.id }}", "name": "{{ i.item_name }}"}{% if not forloop.last %},{% endif %}
-            {% endfor %}
-        ];
-
-        $("#input1").autocomplete({
-            source: itemData.map(item => item.name),
-            select: function(event, ui) {
-                var selectedItem = itemData.find(item => item.name === ui.item.value);
-            }
-        });
-    });
-</script>
-
-<style>
-    .small-input {
-        width: 150px;
-    }
-    .form-group {
-        margin-bottom: 10px;
-    }
-</style>
+        <form method="POST" style="display:inline;">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="delete">
+            <input type="hidden" name="id" value="{{ item.id }}">
+            <button type="submit">Delete Item</button>
+        </form>
+        <hr>
+    {% endfor %}
 </body>
 </html>
-{% endblock %}

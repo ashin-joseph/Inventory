@@ -6,15 +6,15 @@ from Core.models import vendorTable,itemTable
 class purchaseorderTable(models.Model):
     pot_order_number= models.CharField(max_length=20, unique=True)
     pot_date = models.DateField(auto_now_add=True)
-    pot_vendor = models.ForeignKey(vendorTable, on_delete=models.DO_NOTHING)
+    pot_vendor = models.ForeignKey(vendorTable, on_delete=models.CASCADE)
     pot_items = models.ManyToManyField(itemTable, through='orderitemTable')
 
     def __str__(self):
         return (self.pot_order_number)
 
 class orderitemTable(models.Model):
-    oit_purchase_order=models.ForeignKey(purchaseorderTable,on_delete=models.DO_NOTHING)
-    oit_item= models.ForeignKey(itemTable, on_delete=models.DO_NOTHING)
+    oit_purchase_order=models.ForeignKey(purchaseorderTable,on_delete=models.CASCADE)
+    oit_item= models.ForeignKey(itemTable, on_delete=models.CASCADE)
     oit_quantity = models.PositiveIntegerField(null=True, blank=True)
     oit_price= models.DecimalField(max_digits=10,decimal_places=2,null=True, blank=True)
     oit_tax_percentage=models.PositiveIntegerField(null=True, blank=True)

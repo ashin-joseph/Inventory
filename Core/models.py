@@ -9,7 +9,7 @@ class vendorTable(models.Model):
     vendor_email= models.EmailField(max_length=100,null=True, blank=True)
     vendor_name= models.CharField(max_length=50,null=True, blank=True)
     vendor_phone= models.CharField(max_length=10,null=True, blank=True)
-    vendor_GST=models.CharField(max_length=100,null=True, blank=True)
+    vendor_GST=models.CharField(max_length=100,null=True, blank=True, unique=True)
     vendor_note = models.TextField()
 
     def __str__(self):
@@ -25,7 +25,7 @@ class itemTable(models.Model):
         ('Vegetables','Veg'),
         ('Fruits','Fru'),
     ]
-    item_name = models.CharField(max_length=50,null=True, blank=True)
+    item_name = models.CharField(max_length=50,null=True, blank=True, unique=True)
     item_category = models.CharField(max_length=50, choices=CATEGORY_CHOICE)
     item_unit = models.CharField(max_length=15, choices=UNIT_CHOICES)
 
@@ -45,7 +45,7 @@ class itemTable(models.Model):
 
 
 class priceTable(models.Model):
-    pt_item= models.OneToOneField(itemTable, on_delete=models.DO_NOTHING)
+    pt_item= models.OneToOneField(itemTable, on_delete=models.CASCADE)
     pt_sellingPrice= models.DecimalField(max_digits=10, decimal_places=2,null=True, blank=True, default=0)
     pt_tax= models.PositiveIntegerField(null=True, blank=True, default=1)
     pt_offer=models.PositiveIntegerField(null=True, blank=True, default=1)

@@ -12,10 +12,10 @@ class salesorderTable(models.Model):
 
 
 class salesorderItemTable(models.Model):
-    soit_bill_number=models.ForeignKey(salesorderTable, on_delete=models.DO_NOTHING)
-    soit_item=models.ForeignKey(itemTable, on_delete=models.DO_NOTHING)
+    soit_bill_number=models.ForeignKey(salesorderTable, on_delete=models.CASCADE)
+    soit_item=models.ForeignKey(itemTable, on_delete=models.CASCADE)
     soit_quantity= models.PositiveIntegerField(null=True, blank=True)
-    soit_price= models.ForeignKey(priceTable, on_delete=models.DO_NOTHING)
+    soit_price= models.ForeignKey(priceTable, on_delete=models.CASCADE)
     soit_total= models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
     def __str__(self):

@@ -5,55 +5,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Item</title>
+    <title>Add Vendor</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container-fluid">
         <div class="row">
-            <!-- Form to add item -->
+            <!-- Form to add vendor -->
             <div class="form-container col-md-4">
-                <h2>Add Vendor</h2>
-                <form id="itemForm" method="" action="">
+                <h2 id="formTitle">Add Vendor</h2>
+                <form id="itemForm" method="post" action="{% url 'vendor_pg' %}">
                     {% csrf_token %}
+                    <input name="vendorid" type="hidden" id="vendorid">
                     <div class="form-group">
-                        <label for="itemName">Shop Name</label>
-                        <input name="shopename" type="text" class="form-control" id="itemName" required>
+                        <label>Shop Name</label>
+                        <input name="shopname" id="shopname" type="text" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="itemName">Vendor Name</label>
-                        <input name="vendorname" type="text" class="form-control"  required>
+                        <label>Vendor Name</label>
+                        <input name="vendorname" id="vendorname" type="text" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="itemName">Location</label>
-                        <input name="location" type="text" class="form-control" required>
+                        <label>Location</label>
+                        <input name="location" id="location" type="text" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="itemName">Pin</label>
-                        <input name="pin" type="text" class="form-control" required>
+                        <label>Pin</label>
+                        <input name="pin" id="pin" type="text" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="itemName">Email</label>
-                        <input name="email" type="email" class="form-control" required>
+                        <label>Email</label>
+                        <input name="email" id="email" type="email" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="itemName">Phone number</label>
-                        <input name="mobilnum" type="tel" class="form-control" required>
+                        <label>Phone number</label>
+                        <input name="phonenumber" id="phonenumber" type="tel" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="itemName">GST</label>
-                        <input name="gst" type="text" class="form-control" required>
+                        <label>GST</label>
+                        <input name="gst" id="gst" type="text" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="itemName">Note</label>
-                        <textarea name="note" class="form-control" required></textarea>
+                        <label>Note</label>
+                        <textarea name="note" id="note" class="form-control" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
 
-            <!-- Table to display saved items -->
+            <!-- Table to display saved vendors -->
             <div class="table-container col-md-8">
                 <h2>Vendor List</h2>
                 <table class="table table-bordered table-striped">
@@ -70,17 +71,25 @@
                     <tbody id="itemsTableBody">
                     {% for i in vendor_data %}
                     <tr>
-                        <td>{{i.vendor_shop_name}}</td>
-                        <td>{{i.vendor_location}}</td>
-                        <td>{{i.vendor_name}}</td>
-                        <td>{{i.vendor_phone}}</td>
-                        <td>{{i.vendor_GST}}</td>
-                        <td><a><button type="button" class="btn btn-warning">Update</button></a>
-                            <a><button type="button" class="btn btn-danger">Delete</button></a>
+                        <td>{{ i.vendor_shop_name }}</td>
+                        <td>{{ i.vendor_location }}</td>
+                        <td>{{ i.vendor_name }}</td>
+                        <td>{{ i.vendor_phone }}</td>
+                        <td>{{ i.vendor_GST }}</td>
+                        <td>
+                            <button type="button" class="btn btn-warning" onclick="editVendor('{{ i.vendor_id }}', '{{ i.vendor_shop_name }}', '{{ i.vendor_name }}', '{{ i.vendor_location }}', '{{ i.vendor_pin }}', '{{ i.vendor_email }}', '{{ i.vendor_phone }}', '{{ i.vendor_GST }}', '{{ i.vendor_note }}')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+                                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001"/>
+                                </svg>
+                            </button>
+                            <a href="{% url 'deleteVendor' Did=i.vendor_id %}"><button type="button" class="btn btn-danger">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                                </svg>
+                            </button></a>
                         </td>
                     </tr>
                     {% endfor %}
-                        <!-- Rows will be added dynamically here -->
                     </tbody>
                 </table>
             </div>
@@ -92,7 +101,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<style>
+    <script>
+        function editVendor(id, shopname, vendorname, location, pin, email, phonenumber, gst, note) {
+            document.getElementById('vendorid').value = id;
+            document.getElementById('shopname').value = shopname;
+            document.getElementById('vendorname').value = vendorname;
+            document.getElementById('location').value = location;
+            document.getElementById('pin').value = pin;
+            document.getElementById('email').value = email;
+            document.getElementById('phonenumber').value = phonenumber;
+            document.getElementById('gst').value = gst;
+            document.getElementById('note').value = note;
+            document.getElementById('formTitle').innerText = 'Update Vendor';
+        }
+    </script>
+
+    <style>
         body {
             margin: 20px;
         }

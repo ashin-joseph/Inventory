@@ -5,7 +5,7 @@ from Core.models import itemTable, priceTable
 
 
 class stockTable(models.Model):
-    st_item = models.OneToOneField(itemTable, on_delete=models.DO_NOTHING)
+    st_item = models.OneToOneField(itemTable, on_delete=models.CASCADE)
     st_purchasesStock = models.PositiveIntegerField(default=0)
     st_soldStock = models.PositiveIntegerField(default=0)
     st_remainingStock = models.PositiveIntegerField(default=0)
