@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect,get_object_or_404
+from django.shortcuts import render, redirect
 from Core.models import itemTable, vendorTable, priceTable
 from User.views import index
 
@@ -38,7 +38,7 @@ def vendor_pg(request):
         gst= request.POST.get('gst')
         note= request.POST.get('note')
         if vendorid:
-            vendor=get_object_or_404(vendorTable,vendor_id=vendorid)
+            vendor=vendorTable.objects.get(vendor_id=vendorid)
             vendor.vendor_shop_name=shopname
             vendor.vendor_location=location
             vendor.vendor_pin=pin
@@ -51,7 +51,7 @@ def vendor_pg(request):
         else:
             vendorTable.objects.create(vendor_shop_name=shopname,vendor_location=location,vendor_pin=pin,vendor_email=email,
                                    vendor_name=vendorname,vendor_phone=phonenumber,vendor_GST=gst,vendor_note=note)
-        return redirect(vendor_pg)
+        return redirect(index)
     vendor_data= vendorTable.objects.all()
     return render(request,"core/vendor.html",{'vendor_data':vendor_data})
 
@@ -64,7 +64,7 @@ def price_pg(request):
         tax=request.POST.get('tax')
         offer=request.POST.get('offer')
         priceTable.objects.all().update(pt_tax=tax,pt_offer=offer)
-        return redirect(price_pg)
+        return redirect(index)
     price_data= priceTable.objects.all()
     return render(request,"core/price.html",{'price_data':price_data})
 
@@ -78,5 +78,5 @@ def updatePrice(request):
         if item_ids:
             for ii, sp, ta, of in zip(item_ids, selling_prices, taxes, offers):
                 priceTable.objects.filter(id=ii).update(pt_sellingPrice=sp, pt_tax=ta, pt_offer=of)
-        return redirect(price_pg)
-    return redirect(price_pg)
+        return redirect(index)
+    return redirect(index)

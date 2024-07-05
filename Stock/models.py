@@ -2,12 +2,14 @@ from django.db import models
 from Purchase.models import orderitemTable
 from Sales.models import salesorderItemTable
 from Core.models import itemTable, priceTable
+from Damage.models import damageTable
 
 
 class stockTable(models.Model):
     st_item = models.OneToOneField(itemTable, on_delete=models.CASCADE)
     st_purchasesStock = models.PositiveIntegerField(default=0)
     st_soldStock = models.PositiveIntegerField(default=0)
+    st_damageStock = models.PositiveIntegerField(default=0)
     st_remainingStock = models.PositiveIntegerField(default=0)
 
 
@@ -29,8 +31,15 @@ class stockTable(models.Model):
             total_sold_stock += j.soit_quantity
         self.st_soldStock = total_sold_stock
 
+        # Calculate the damage stock
+        damage_orders =damageTable.objects.filter(dpt_item=self.st_item)
+        total_damage_stock = 0
+        for l in damage_orders:
+            total_damage_stock += l.dpt_damage_qty
+        self.st_damageStock = total_damage_stock
+
         # Calculate the remaining stock
-        self.st_remainingStock = max(self.st_purchasesStock - self.st_soldStock, 0)
+        self.st_remainingStock = max(self.st_purchasesStock - self.st_soldStock - self.st_damageStock, 0)
 
         super().save(*args, **kwargs)
 

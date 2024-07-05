@@ -37,9 +37,9 @@
 <!--                            </div>-->
 <!--                        </li>-->
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDamageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Damage Product</a>
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDamageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Damage</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDamageDropdown">
-                                <a class="dropdown-item" href="#">Report Damage</a>
+                                <a class="dropdown-item" href="{% url 'damage' %}">Report Damage</a>
                                 <a class="dropdown-item" href="#">View Damage</a>
                                 <a class="dropdown-item" href="#">--</a>
                             </div>
@@ -79,8 +79,9 @@
                 </div>
                 {% block content %}
                 <!-- Main content goes here -->
-                <h1>Welcome to the Dashboard</h1>
-                <p>Main content area.</p>
+                <h1>ABC Company Inventory Management Dashboard</h1>
+                <hr> <hr>
+                <p></p>
                 <!-- New Containers with Text -->
 <!--                <div class="d-flex justify-content-between mt-4">-->
 <!--                    <div class="container text-center bg-info p-3 mr-2 custom-container">-->
@@ -93,6 +94,7 @@
                 <a href="{% url 'price_pg' %}"><button type="button" class="btn btn-info">Set price</button></a>
                 <br><br>
                 <div class="chart bg-light">
+                    <p>Static Report</p>
                     <img src="https://via.placeholder.com/800x400?text=Static+Graph" alt="Static Graph" class="img-fluid">
                 </div>
                 {% endblock %}
