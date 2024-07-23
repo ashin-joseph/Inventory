@@ -45,7 +45,7 @@
                         <tbody id="itemsTableBody">
                         {% for i in price_data %}
                         <tr>
-                            <td style="text-align: center;"><input name="id" type="hidden" value="{{i.id}}">
+                            <td style="text-align: center;"><input name="id[]" type="hidden" value="{{i.id}}">
                             <input name="itemname[]" type="text" class="form-control" value="{{i.pt_item.item_name}}" readonly></td>
                             <td style="text-align: center;"><input name="sellingprice[]" type="text" class="form-control" value="{{i.pt_sellingPrice}}"></td>
                             <td style="text-align: center;"><input name="tax[]" type="text" class="form-control" value="{{i.pt_tax}}"></td>

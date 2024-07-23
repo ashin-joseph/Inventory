@@ -24,18 +24,10 @@
                             <a class="nav-link dropdown-toggle" href="#" id="navbarPurchaseDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Purchase</a>
                             <div class="dropdown-menu" aria-labelledby="navbarPurchaseDropdown">
                                 <a class="dropdown-item" href="{% url 'order' %}">Place Order</a>
-                                <a class="dropdown-item" href="#">Draft Order</a>
+                                <a class="dropdown-item" href="{% url 'purchasereturn' %}">Return Purchase</a>
                                 <a class="dropdown-item" href="#">Pagination</a>
                             </div>
                         </li>
-<!--                        <li class="nav-item dropdown">-->
-<!--                            <a class="nav-link dropdown-toggle" href="#" id="navbarTransferDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Transfer</a>-->
-<!--                            <div class="dropdown-menu" aria-labelledby="navbarTransferDropdown">-->
-<!--                                <a class="dropdown-item" href="#">List</a>-->
-<!--                                <a class="dropdown-item" href="#">&#45;&#45;</a>-->
-<!--                                <a class="dropdown-item" href="#">&#45;&#45;</a>-->
-<!--                            </div>-->
-<!--                        </li>-->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDamageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Damage</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDamageDropdown">
@@ -80,7 +72,7 @@
                 {% block content %}
                 <!-- Main content goes here -->
                 <h1>ABC Company Inventory Management Dashboard</h1>
-                <hr> <hr>
+                <hr> <br>
                 <p></p>
                 <!-- New Containers with Text -->
 <!--                <div class="d-flex justify-content-between mt-4">-->

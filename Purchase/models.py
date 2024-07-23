@@ -44,3 +44,36 @@ class orderitemTable(models.Model):
         item_price, created = priceTable.objects.get_or_create(pt_item=self.oit_item)
         item_price.pt_sellingPrice = price + price_tax + price_margin
         item_price.save()
+
+class returnPurchaseTable(models.Model):
+    rpt_billNum = models.CharField(max_length=20, unique=True)
+    rpt_poNum=models.ForeignKey(purchaseorderTable, on_delete=models.CASCADE)
+    rpt_date = models.DateTimeField(auto_now_add=True)
+    rpt_item = models.ManyToManyField(itemTable, through='returnItemTable')
+
+    def __str__(self):
+        return self.rpt_billNum
+
+
+class returnItemTable(models.Model):
+    rit_billNum = models.ForeignKey(returnPurchaseTable, on_delete=models.CASCADE)
+    rit_item = models.ForeignKey(itemTable, on_delete=models.CASCADE)
+    rit_reason = models.CharField(max_length=100, null=True, blank=True)
+    rit_qty = models.PositiveIntegerField(null=True, blank=True)
+    rit_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    rit_tax = models.PositiveIntegerField(null=True, blank=True)
+    rit_refundAmount = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return self.rit_billNum.rpt_billNum
+
+    def save(self, *args, **kwargs):
+        super(returnItemTable, self).save(*args, **kwargs)
+        self.update_return_purchase_stock_qty()
+
+    def update_return_purchase_stock_qty(self):
+        from Stock.models import stockTable
+        total_quantity = returnItemTable.objects.filter(rit_item=self.rit_item).aggregate(total=models.Sum('rit_qty'))['total']
+        stock_item, created = stockTable.objects.get_or_create(st_item=self.rit_item)
+        stock_item.st_purchasesReturnStock = total_quantity
+        stock_item.save()

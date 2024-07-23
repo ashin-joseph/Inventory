@@ -70,7 +70,7 @@ def price_pg(request):
 
 def updatePrice(request):
     if request.method == "POST":
-        item_ids = request.POST.getlist('id')
+        item_ids = request.POST.getlist('id[]')
         selling_prices = request.POST.getlist('sellingprice[]')
         taxes = request.POST.getlist('tax[]')
         offers = request.POST.getlist('offer[]')

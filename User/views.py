@@ -23,3 +23,9 @@ def logout_user_inv(request):
 @login_required
 def index(request):
     return render(request, "user/Index.html")
+
+def trial_success(request):
+    return render(request,"user/trial_success.html")
+
+def trial_failed(request):
+    return render(request,"user/trial_failed.html")

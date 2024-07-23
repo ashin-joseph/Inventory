@@ -1,5 +1,5 @@
 from django.db import models
-from Purchase.models import orderitemTable
+from Purchase.models import orderitemTable,returnItemTable
 from Sales.models import salesorderItemTable
 from Core.models import itemTable, priceTable
 from Damage.models import damageTable
@@ -8,7 +8,9 @@ from Damage.models import damageTable
 class stockTable(models.Model):
     st_item = models.OneToOneField(itemTable, on_delete=models.CASCADE)
     st_purchasesStock = models.PositiveIntegerField(default=0)
+    st_purchasesReturnStock = models.PositiveIntegerField(default=0)
     st_soldStock = models.PositiveIntegerField(default=0)
+    st_salesReturnStock = models.PositiveIntegerField(default=0)
     st_damageStock = models.PositiveIntegerField(default=0)
     st_remainingStock = models.PositiveIntegerField(default=0)
 
@@ -17,14 +19,21 @@ class stockTable(models.Model):
         return f"{self.st_item.item_name}"
 
     def save(self, *args, **kwargs):
-        # Calculate the purchased stock from the purchase orders
+        # Calculate purchase orders
         purchase_orders = orderitemTable.objects.filter(oit_item=self.st_item)
         total_purchased_stock = 0
         for i in purchase_orders:
             total_purchased_stock += i.oit_quantity
         self.st_purchasesStock = total_purchased_stock
 
-        # Calculate the sold stock from the sales orders
+        # Calculate the purchase return stock
+        purchase_return = returnItemTable.objects.filter(rit_item=self.st_item)
+        total_return_purchase=0
+        for rp in purchase_return:
+            total_return_purchase += rp.rit_qty
+        self.st_purchasesReturnStock = total_return_purchase
+
+        # Calculate sales orders
         sales_orders = salesorderItemTable.objects.filter(soit_item=self.st_item)
         total_sold_stock = 0
         for j in sales_orders:
@@ -39,7 +48,6 @@ class stockTable(models.Model):
         self.st_damageStock = total_damage_stock
 
         # Calculate the remaining stock
-        self.st_remainingStock = max(self.st_purchasesStock - self.st_soldStock - self.st_damageStock, 0)
-
+        self.st_remainingStock = max(self.st_purchasesStock - self.st_purchasesReturnStock - self.st_soldStock - self.st_damageStock, 0)
         super().save(*args, **kwargs)
 
