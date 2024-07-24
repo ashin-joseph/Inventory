@@ -10,29 +10,25 @@
 </head>
 <body>
 <br><br>
-<h4 class="mt-3">Purchase Order Number</h4>
+<h4 class="mt-3">Sales Order Number</h4>
 
-    <input name="purchaseOrderNum" type="text" id="orderSearch" placeholder="Search for Order Number" value="{% if purchaseOrder %}{{ purchaseOrder.pot_order_number }}{% endif %}" required>
+    <input name="salesOrderNum" type="text" id="orderSearch" placeholder="Search for Order Number" value="{% if salesOrder %}{{ salesOrder.sot_bill_number }}{% endif %}" required>
     <div id="orderDetails" class="d-flex justify-content-end container mt-4">
-        {% if purchaseOrder %}
+        {% if salesOrder %}
             <div>
-                <strong>Purchase Order Number:</strong> {{ purchaseOrder.pot_order_number }}<br>
-                <strong>Date of purchase:</strong> {{ purchaseOrder.pot_date }}<br>
-                <strong>Vendor shop:</strong> {{ purchaseOrder.pot_vendor.vendor_shop_name }}<br>
-                <strong>Contact Person:</strong> {{ purchaseOrder.pot_vendor.vendor_name }}<br>
-                <strong>Address:</strong> {{ purchaseOrder.pot_vendor.vendor_location }}<br>
-                <strong>Phone Number:</strong> {{ purchaseOrder.pot_vendor.vendor_phone }}
+                <strong>Sales Order Number:</strong> {{ salesOrder.sot_bill_number }}<br>
+                <strong>Date of purchase:</strong> {{ salesOrder.sot_date }}<br>
             </div>
         {% endif %}
     </div><br>
 
 <!--    <h4 class="mt-3">Purchase Items</h4>-->
     <hr> <!-- Added horizontal line here -->
-    <form method="post" action="{% url 'purchasereturn' %}">
+    <form method="post" action="{% url 'salesreturn' %}">
     {% csrf_token %}
-        <input name="purchaseOrderNum_id" type="hidden" id="purchaseOrderNum_id" value="{% if purchaseOrder %}{{ purchaseOrder.id }}{% endif %}" readonly>
+        <input name="salesOrderNum_id" type="hidden" id="salesOrderNum_id" value="{% if salesOrder %}{{ salesOrder.id }}{% endif %}" readonly>
     <div id="itemsDetails" class="container mt-4">
-        {% if purchaseItems %}
+        {% if salesItems %}
         <table>
             <thead>
                 <tr>
@@ -41,19 +37,21 @@
                     <th>Quantity</th>
                     <th>Price</th>
                     <th>Tax</th>
+                    <th>Offer</th>
                     <th>Refund</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                {% for item in purchaseItems %}
+                {% for i in salesItems %}
                 <tr>
-                    <td><input type="text" name="item_name[]" value="{{ item.oit_item }}" class="form-control small-input" readonly>
-                    <input type="hidden" name="item_id[]" value="{{ item.id }}"></td>
+                    <td><input type="text" name="item_name[]" value="{{ i.soit_item }}" class="form-control" readonly>
+                    <input type="hidden" name="item_id[]" value="{{ i.id }}"></td>
                     <td><input type="text"  name="item_reason[]" class="form-control  " placeholder="Reason for return" ></td>
-                    <td><input type="number" name="item_quantity[]" value="{{ item.oit_quantity }}" class="form-control small-input qty-input" placeholder="Quantity" min="1" max="{{ item.oit_quantity }}" required></td>
-                    <td><input type="number" step="0.01" name="item_price[]" value="{{ item.oit_price }}" class="form-control small-input price-input" placeholder="Price" min="1" readonly></td>
-                    <td><input type="number" step="0.01" name="item_tax[]" value="{{ item.oit_tax_percentage }}" class="form-control small-input tax-input" placeholder="Tax %" min="0" readonly></td>
+                    <td><input type="number" name="item_quantity[]" value="{{ i.soit_quantity }}" class="form-control small-input qty-input" placeholder="Quantity" min="1" max="{{ i.soit_quantity }}" required></td>
+                    <td><input type="number" step="0.01" name="item_price[]" value="{{ i.soit_price.pt_sellingPrice }}" class="form-control small-input price-input" placeholder="Price" min="1" readonly></td>
+                    <td><input type="number" step="0.01" name="item_tax[]" value="{{ i.soit_price.pt_tax }}" class="form-control small-input tax-input" placeholder="Tax %" min="0" readonly></td>
+                    <td><input type="number" step="0.01" name="item_offer[]" value="{{ i.soit_price.pt_offer }}" class="form-control small-input tax-input" placeholder="Offer %" min="0" readonly></td>
                     <td><input type="number" step="0.01" name="item_amount[]" class="form-control small-input total-input" placeholder="Total" readonly></td>
                     <td><button class="btn btn-danger delete-item-btn" type="button">Delete</button></td>
                 </tr>
@@ -62,7 +60,7 @@
         </table>
         {% endif %}
         <br>
-        <p class="mt-3"><i>Customize your return purchase and hit 'Return'.</i></p><br>
+        <p class="mt-3"><i>Customize your return sales and hit 'Return'.</i></p><br>
         <div class="d-flex justify-content-end mb-3">
              <button class="btn btn-success mr-2" type="submit" id="orderButton">Return</button>
         </div>
@@ -76,19 +74,19 @@
 <script>
     $(document).ready(function() {
         var orderData = [
-            {% for i in purchaseOrder_data %}
-                {"id": "{{ i.id }}", "purchasenumber": "{{ i.pot_order_number }}", "date": "{{ i.pot_date }}", "vendorShop": "{{ i.pot_vendor.vendor_shop_name }}", "vendorperson": "{{ i.pot_vendor.vendor_name }}", "vendoraddress": "{{ i.pot_vendor.vendor_location }}", "vendornumber": "{{ i.pot_vendor.vendor_phone }}" }{% if not forloop.last %},{% endif %}
+            {% for i in salesOrder_data %}
+                {"id": "{{ i.id }}", "salesnumber": "{{ i.sot_bill_number }}", "date": "{{ i.sot_date }}" }{% if not forloop.last %},{% endif %}
             {% endfor %}
         ];
 
         $("#orderSearch").autocomplete({
-            source: orderData.map(order => order.purchasenumber),
+            source: orderData.map(order => order.salesnumber),
             select: function(event, ui) {
-                var selectedOrder = orderData.find(order => order.purchasenumber === ui.item.value);
+                var selectedOrder = orderData.find(order => order.salesnumber === ui.item.value);
                 if (selectedOrder) {
                     // Set the value of the input field to the selected purchase order number
-                    $('#orderSearch').val(selectedOrder.purchasenumber);
-                    $('#purchaseOrderNum_id').val(selectedOrder.id);
+                    $('#orderSearch').val(selectedOrder.salesnumber);
+                    $('#salesOrderNum_id').val(selectedOrder.id);
 
                     // Trigger form submission to filter and display order items
                     $('form').submit();
@@ -120,7 +118,7 @@
 
 <style>
     .small-input {
-        width: 150px;
+        width: 90px;
     }
     .form-group {
         margin-bottom: 10px;

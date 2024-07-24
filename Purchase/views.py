@@ -90,7 +90,7 @@ def purchasereturn(request):
         if purchaseOdrNum_id and item_names:
             date_Rstr = datetime.datetime.now().strftime("%Y%m%d")
             random_number = random.randint(100, 999)
-            Return_order_number = f"{date_Rstr}RO{random_number}"
+            Return_order_number = f"{date_Rstr}PRO{random_number}"
             try:
                 purchase_instance = purchaseorderTable.objects.get(id=purchaseOdrNum_id)
                 purchase_return_number = returnPurchaseTable(rpt_billNum=Return_order_number, rpt_poNum=purchase_instance)
@@ -100,63 +100,52 @@ def purchasereturn(request):
                     return_items = returnItemTable(rit_billNum=purchase_return_number, rit_item=item_instance_return, rit_reason=ir,
                                                rit_qty=iq, rit_price=ip, rit_tax=it, rit_refundAmount=ia)
                     return_items.save()
-                return redirect(index)
+                return redirect(purchaseReturn_display, return_id=purchase_return_number.id)
             except purchaseorderTable.DoesNotExist:
                 return redirect(trial_failed)
     return render(request,"purchase/purchase_return.html", context)
 
-def purchaseReturn_save(request):
-    if request.method == "POST":
-        purchaseOdrNum_id = request.POST.get('purchaseOrderNum_id')  # Get single value
-        item_names = request.POST.getlist('item_name[]')
-        item_reason = request.POST.getlist('item_reason[]')
-        item_quantity = request.POST.getlist('item_quantity[]')
-        item_price = request.POST.getlist('item_price[]')
-        item_tax = request.POST.getlist('item_tax[]')
-        item_amount = request.POST.getlist('item_amount[]')
-        if purchaseOdrNum_id and item_names:
-            date_Rstr = datetime.datetime.now().strftime("%Y%m%d")
-            random_number = random.randint(100, 999)
-            Return_order_number = f"{date_Rstr}RO{random_number}"
-            try:
-                purchase_instance = purchaseorderTable.objects.get(id=purchaseOdrNum_id)
-                purchase_return_number = returnPurchaseTable(rpt_billNum=Return_order_number, rpt_poNum=purchase_instance)
-                purchase_return_number.save()
-                for ii, ir, iq, ip, it, ia in zip(item_names, item_reason, item_quantity, item_price, item_tax, item_amount):
-                    item_instance_return = itemTable.objects.get(item_name=ii)
-                    return_items = returnItemTable(rit_billNum=purchase_return_number, rit_item=item_instance_return, rit_reason=ir,
-                                               rit_qty=iq, rit_price=ip, rit_tax=it, rit_refundAmount=ia)
-                    return_items.save()
-                return redirect(trial_failed)
-            except purchaseorderTable.DoesNotExist:
-                return redirect(trial_failed)
-    return redirect(purchasereturn)
-
-
-
-
-
+def purchaseReturn_display(request, return_id):
+    return_order= get_object_or_404(returnPurchaseTable, id=return_id)
+    return_items= returnItemTable.objects.filter(rit_billNum=return_order)
+    overall=0
+    for i in return_items:
+        price = i.rit_price * i.rit_qty
+        tax = int((i.rit_tax/100))*price
+        total= price+tax
+        overall += total
+    context={
+        'return_order':return_order,
+        'return_items':return_items,
+        'overall':overall,
+    }
+    return render(request,"purchase/purchaseReturn_display.html", context)
 
 
 # def purchaseReturn_save(request):
-#     if request.method=="POST":
-#         purchaseOdrNum_id=request.POST.get('purchaseOrderNum_id')
-#         item_name= request.POST.getlist('item_name[]')
-#         item_reason= request.POST.getlist('item_reason[]')
-#         item_quantity= request.POST.getlist('item_quantity[]')
-#         item_price= request.POST.getlist('item_price[]')
-#         item_tax= request.POST.getlist('item_tax[]')
-#         item_amount= request.POST.getlist('item_amount[]')
-#         try:
-#             return_order_instance = purchaseorderTable.objects.get(id=purchaseOdrNum_id)
-#             return_order= returnPurchaseTable(rpt_poNum=return_order_instance)
-#             return_order.save()
-#             for ii, ir, iq, ip, it, ia in zip( item_name, item_reason, item_quantity, item_price, item_tax, item_amount):
-#                 item_instance_return = itemTable.objects.get(item_name=ii)
-#                 return_items= returnItemTable(rit_poNum=return_order,rit_item=item_instance_return, rit_reason=ir, rit_qty=iq, rit_price=ip, rit_tax=it, rit_refundAmount=ia)
-#                 return_items.save()
-#             return redirect(trial)
-#         except purchaseorderTable.DoesNotExist:
-#             return redirect(trial)
-#     return redirect(index)
+#     if request.method == "POST":
+#         purchaseOdrNum_id = request.POST.get('purchaseOrderNum_id')  # Get single value
+#         item_names = request.POST.getlist('item_name[]')
+#         item_reason = request.POST.getlist('item_reason[]')
+#         item_quantity = request.POST.getlist('item_quantity[]')
+#         item_price = request.POST.getlist('item_price[]')
+#         item_tax = request.POST.getlist('item_tax[]')
+#         item_amount = request.POST.getlist('item_amount[]')
+#         if purchaseOdrNum_id and item_names:
+#             date_Rstr = datetime.datetime.now().strftime("%Y%m%d")
+#             random_number = random.randint(100, 999)
+#             Return_order_number = f"{date_Rstr}RO{random_number}"
+#             try:
+#                 purchase_instance = purchaseorderTable.objects.get(id=purchaseOdrNum_id)
+#                 purchase_return_number = returnPurchaseTable(rpt_billNum=Return_order_number, rpt_poNum=purchase_instance)
+#                 purchase_return_number.save()
+#                 for ii, ir, iq, ip, it, ia in zip(item_names, item_reason, item_quantity, item_price, item_tax, item_amount):
+#                     item_instance_return = itemTable.objects.get(item_name=ii)
+#                     return_items = returnItemTable(rit_billNum=purchase_return_number, rit_item=item_instance_return, rit_reason=ir,
+#                                                rit_qty=iq, rit_price=ip, rit_tax=it, rit_refundAmount=ia)
+#                     return_items.save()
+#                 return redirect(trial_failed)
+#             except purchaseorderTable.DoesNotExist:
+#                 return redirect(trial_failed)
+#     return redirect(purchasereturn)
 

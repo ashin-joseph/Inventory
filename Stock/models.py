@@ -1,6 +1,6 @@
 from django.db import models
 from Purchase.models import orderitemTable,returnItemTable
-from Sales.models import salesorderItemTable
+from Sales.models import salesorderItemTable,returnsalesItemTable
 from Core.models import itemTable, priceTable
 from Damage.models import damageTable
 
@@ -47,7 +47,14 @@ class stockTable(models.Model):
             total_damage_stock += l.dpt_damage_qty
         self.st_damageStock = total_damage_stock
 
+        # Calculate the sales return stock
+        sales_return = returnsalesItemTable.objects.filter(rsit_item=self.st_item)
+        total_return_sales = 0
+        for rp in sales_return:
+            total_return_sales += rp.rsit_qty
+        self.st_salesReturnStock = total_return_sales
+
         # Calculate the remaining stock
-        self.st_remainingStock = max(self.st_purchasesStock - self.st_purchasesReturnStock - self.st_soldStock - self.st_damageStock, 0)
+        self.st_remainingStock = max(self.st_purchasesStock + self.st_salesReturnStock - self.st_purchasesReturnStock - self.st_soldStock - self.st_damageStock, 0)
         super().save(*args, **kwargs)
 
