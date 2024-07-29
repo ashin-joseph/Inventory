@@ -59,6 +59,7 @@ $(document).ready(function() {
         {% endfor %}
     ];
 
+
     $("#input1").autocomplete({
         source: itemData.map(item => item.name),
         select: function(event, ui) {
@@ -132,6 +133,16 @@ $(document).ready(function() {
     }
 });
 </script>
+
+{% if messages %}
+    <script>
+        $(document).ready(function() {
+            {% for message in messages %}
+                alert("{{ message }}");
+            {% endfor %}
+        });
+    </script>
+{% endif %}
 
 <style>
 .small-input {

@@ -88,6 +88,16 @@
         }
     </script>
 
+    {% if messages %}
+    <script>
+        $(document).ready(function() {
+            {% for message in messages %}
+                alert("{{ message }}");
+            {% endfor %}
+        });
+    </script>
+    {% endif %}
+
     <style>
         body {
 

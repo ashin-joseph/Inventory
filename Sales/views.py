@@ -4,14 +4,18 @@ import datetime
 import random
 from Sales.models import salesorderTable, salesorderItemTable, returnSalesTable, returnsalesItemTable
 from User.views import index,trial_failed, trial_success
+from Stock.models import stockTable
+from  django.contrib import messages
 
 
 def sales_order(request):
     item_data = itemTable.objects.all()
     price_data = priceTable.objects.select_related('pt_item').all()
+    stock_data = stockTable.objects.select_related('st_remainingStock').all()
     context = {
         'item_data': item_data,
         'price_data': price_data,
+        'stock_data' : stock_data,
     }
     return render(request, "sales/sales_oder.html", context)
 
@@ -24,6 +28,17 @@ def save_sales_order(request):
         item_total = request.POST.getlist('item_total[]')
 
         if item_names:
+            low_stock_items = []
+            for ite, qty in zip(item_names, item_quantity):
+                item_instance = itemTable.objects.get(item_name=ite)
+                stock_instance = stockTable.objects.get(st_item=item_instance)
+                if int(qty) > stock_instance.st_remainingStock:
+                    low_stock_items.append(item_instance.item_name)
+
+            if low_stock_items:
+                messages.error(request, f"Low stock for items: {', '.join(low_stock_items)}")
+                return redirect(sales_order)
+
             date_str = datetime.datetime.now().strftime("%Y%m%d")
             random_str = random.randint(99, 9999)
             order_num = f"{date_str}SO{random_str}"
