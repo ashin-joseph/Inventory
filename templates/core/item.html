@@ -92,6 +92,29 @@
         }
     </script>
 
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+{% if messages %}
+{% for i in messages %}
+{% if i.tags == 'warning' %}
+            <script>
+              swal('{{i}}', '', 'warning');
+            </script>
+        {% elif i.tags == 'error' %}
+            <script>
+              swal('{{i}}', '', 'error');
+            </script>
+        {% elif i.tags == 'info' %}
+            <script>
+              swal('{{i}}', '', 'info');
+            </script>
+        {% else %}
+            <script>
+              swal('{{i}}', '', 'success');
+            </script>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
 
 <style>
         body {

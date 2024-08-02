@@ -50,7 +50,7 @@
                 <tr>
                     <td><input type="text" name="item_name[]" value="{{ item.oit_item }}" class="form-control small-input" readonly>
                     <input type="hidden" name="item_id[]" value="{{ item.id }}"></td>
-                    <td><input type="text"  name="item_reason[]" class="form-control  " placeholder="Reason for return" ></td>
+                    <td><input type="text"  name="item_reason[]" class="form-control " placeholder="Reason for return" required></td>
                     <td><input type="number" name="item_quantity[]" value="{{ item.oit_quantity }}" class="form-control small-input qty-input" placeholder="Quantity" min="1" max="{{ item.oit_quantity }}" required></td>
                     <td><input type="number" step="0.01" name="item_price[]" value="{{ item.oit_price }}" class="form-control small-input price-input" placeholder="Price" min="1" readonly></td>
                     <td><input type="number" step="0.01" name="item_tax[]" value="{{ item.oit_tax_percentage }}" class="form-control small-input tax-input" placeholder="Tax %" min="0" readonly></td>

@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from Core.models import itemTable, vendorTable, priceTable
 from User.views import index
+from django.contrib import messages
+from User.decorators import admin_required, staff_required
 
-
+@admin_required
 def item_pg(request):
     if request.method=="POST":
         item_id = request.POST.get('itemid')
@@ -16,16 +18,19 @@ def item_pg(request):
             item.item_category = item_category
             item.item_unit = item_unit
             item.save()
+            messages.warning(request, "Item Updated successfully")
         else:
             itemTable.objects.create(item_name=item_name,item_category=item_category,item_unit=item_unit)
-        return redirect(index)
+            messages.success(request, "Item Added Successfully")
+        return redirect(item_pg)
     item_data = itemTable.objects.all()
     return render(request,"core/item.html",{'item_data':item_data})
-
+@admin_required
 def deleteItem(request, Did):
     itemTable.objects.filter(id=Did).delete()
+    messages.error(request, "Item Deleted Successfully")
     return redirect(item_pg)
-
+@admin_required
 def vendor_pg(request):
     if request.method=="POST":
         vendorid= request.POST.get('vendorid')
@@ -48,26 +53,30 @@ def vendor_pg(request):
             vendor.vendor_GST=gst
             vendor.vendor_note=note
             vendor.save()
+            messages.warning(request, "Vendor Updated successfully")
         else:
             vendorTable.objects.create(vendor_shop_name=shopname,vendor_location=location,vendor_pin=pin,vendor_email=email,
                                    vendor_name=vendorname,vendor_phone=phonenumber,vendor_GST=gst,vendor_note=note)
-        return redirect(index)
+            messages.success(request, "Vendor Added Successfully")
+        return redirect(vendor_pg)
     vendor_data= vendorTable.objects.all()
     return render(request,"core/vendor.html",{'vendor_data':vendor_data})
-
+@admin_required
 def deleteVendor(request,Did):
     vendorTable.objects.filter(vendor_id=Did).delete()
+    messages.error(request, "Vendor Deleted Successfully")
     return redirect(vendor_pg)
-
+@admin_required
 def price_pg(request):
     if request.method=="POST":
         tax=request.POST.get('tax')
         offer=request.POST.get('offer')
         priceTable.objects.all().update(pt_tax=tax,pt_offer=offer)
-        return redirect(index)
+        messages.info(request, "Tax/Offer Updated Successfully")
+        return redirect(price_pg)
     price_data= priceTable.objects.all()
     return render(request,"core/price.html",{'price_data':price_data})
-
+@admin_required
 def updatePrice(request):
     if request.method == "POST":
         item_ids = request.POST.getlist('id[]')
@@ -78,5 +87,6 @@ def updatePrice(request):
         if item_ids:
             for ii, sp, ta, of in zip(item_ids, selling_prices, taxes, offers):
                 priceTable.objects.filter(id=ii).update(pt_sellingPrice=sp, pt_tax=ta, pt_offer=of)
-        return redirect(index)
+                messages.info(request, "Updated Price/Tax/Offer Successfully")
+        return redirect(price_pg)
     return redirect(index)

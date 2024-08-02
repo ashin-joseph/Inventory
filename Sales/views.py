@@ -6,8 +6,9 @@ from Sales.models import salesorderTable, salesorderItemTable, returnSalesTable,
 from User.views import index,trial_failed, trial_success
 from Stock.models import stockTable
 from  django.contrib import messages
+from User.decorators import admin_required, staff_required, admin_staff_required
 
-
+@admin_staff_required
 def sales_order(request):
     item_data = itemTable.objects.all()
     price_data = priceTable.objects.select_related('pt_item').all()
@@ -19,7 +20,7 @@ def sales_order(request):
     }
     return render(request, "sales/sales_oder.html", context)
 
-
+@admin_staff_required
 def save_sales_order(request):
     if request.method == "POST":
         item_names = request.POST.getlist('item_name[]')
@@ -56,7 +57,7 @@ def save_sales_order(request):
                 return redirect(index)
     return redirect(sales_order)
 
-
+@admin_staff_required
 def sales_order_display(request, orderId):
     s_order = get_object_or_404(salesorderTable, id=orderId)
     so_item = salesorderItemTable.objects.filter(soit_bill_number=s_order)
@@ -76,7 +77,7 @@ def sales_order_display(request, orderId):
     }
     return render(request, "sales/sales_order_display.html", context)
 
-
+@admin_staff_required
 def salesreturn(request):
     salesOrder_data= salesorderTable.objects.all()
     salesOrder=None
@@ -121,7 +122,7 @@ def salesreturn(request):
     return render(request,"sales/sales_return.html", context)
 
 
-
+@admin_staff_required
 def salesReturn_display(request, return_id):
     return_order= get_object_or_404(returnSalesTable, id=return_id)
     return_items= returnsalesItemTable.objects.filter(rsit_billNum=return_order)

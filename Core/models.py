@@ -47,8 +47,8 @@ class itemTable(models.Model):
 class priceTable(models.Model):
     pt_item= models.OneToOneField(itemTable, on_delete=models.CASCADE)
     pt_sellingPrice= models.DecimalField(max_digits=10, decimal_places=2,null=True, blank=True, default=0)
-    pt_tax= models.PositiveIntegerField(null=True, blank=True, default=1)
-    pt_offer=models.PositiveIntegerField(null=True, blank=True, default=1)
+    pt_tax= models.PositiveIntegerField(null=True, blank=True, default=0)
+    pt_offer=models.PositiveIntegerField(null=True, blank=True, default=0)
     pt_timestamp= models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

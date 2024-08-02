@@ -55,11 +55,9 @@
                     </ul>
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">User</a>
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user.username }}</a>
                             <div class="dropdown-menu" aria-labelledby="navbarUserDropdown">
-                                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
-                                <a class="dropdown-item" href="#">Profile</a>
-                                <a class="dropdown-item" href="{% url 'admin:index' %}">Admin</a>
+                                <a class="dropdown-item " href="{% url 'logout' %}">Logout</a>
                             </div>
                         </li>
                     </ul>
@@ -72,6 +70,8 @@
                 {% block content %}
                 <!-- Main content goes here -->
                 <h1>ABC Company Inventory Management Dashboard</h1>
+                <h3>Welcome, {{ user.username }}</h3>
+
                 <hr> <br>
                 <p></p>
                 <!-- New Containers with Text -->
@@ -81,12 +81,21 @@
 <!--                        <p>This is the first container with some text.</p>-->
 <!--                    </div>-->
 <!--                     </div> -->
+                <a href="{% url 'myadmin:index' %}"><button type="button" class="btn btn-info">Admin</button></a>
                 <a href="{% url 'vendor_pg' %}"><button type="button" class="btn btn-info">Add Vendor</button></a>
                 <a href="{% url 'item_pg' %}"><button type="button" class="btn btn-info">Add Item</button></a>
                 <a href="{% url 'price_pg' %}"><button type="button" class="btn btn-info">Set price</button></a>
                 <br><br>
                 <div class="chart bg-light">
-                    <p>Static Report</p>
+                    <p>Stock Report</p>
+                    <img src="https://via.placeholder.com/800x400?text=Static+Graph" alt="Static Graph" class="img-fluid">
+                </div><br><br>
+                <div class="chart bg-light">
+                    <p>Purchase Report</p>
+                    <img src="https://via.placeholder.com/800x400?text=Static+Graph" alt="Static Graph" class="img-fluid">
+                </div><br><br>
+                <div class="chart bg-light">
+                    <p>Sales Report</p>
                     <img src="https://via.placeholder.com/800x400?text=Static+Graph" alt="Static Graph" class="img-fluid">
                 </div>
                 {% endblock %}

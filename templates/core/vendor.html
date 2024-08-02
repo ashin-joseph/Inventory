@@ -15,7 +15,7 @@
             <!-- Form to add vendor -->
             <div class="form-container col-md-4">
                 <h2 id="formTitle">Add Vendor</h2>
-                <form id="itemForm" method="post" action="{% url 'vendor_pg' %}">
+                <form id="itemForm" method="post" action="{% url 'vendor_pg' %}" onsubmit="return validation()">
                     {% csrf_token %}
                     <input name="vendorid" type="hidden" id="vendorid">
                     <div class="form-group">
@@ -40,7 +40,7 @@
                     </div>
                     <div class="form-group">
                         <label>Phone number</label>
-                        <input name="phonenumber" id="phonenumber" type="tel" class="form-control" required>
+                        <input name="phonenumber" id="phonenumber" type="tel" onsubmit="return validation()" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label>GST</label>
@@ -115,6 +115,49 @@
             document.getElementById('formTitle').innerText = 'Update Vendor';
         }
     </script>
+
+    <script>
+   function validation(){
+    var gst=document.getElementById("gst").value;
+    var phonenumber=document.getElementById("phonenumber").value;
+
+    if (phonenumber.length<10){
+        alert("mobile number must be 10 character")
+        return false;
+    }
+    else if (gst.length<15){
+        alert("GST must be atleast 15 character")
+        return false;
+    }
+    else {
+        return true;
+        }
+   }
+</script>
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+{% if messages %}
+{% for i in messages %}
+{% if i.tags == 'warning' %}
+            <script>
+              swal('{{i}}', '', 'warning');
+            </script>
+        {% elif i.tags == 'error' %}
+            <script>
+              swal('{{i}}', '', 'error');
+            </script>
+        {% elif i.tags == 'info' %}
+            <script>
+              swal('{{i}}', '', 'info');
+            </script>
+        {% else %}
+            <script>
+              swal('{{i}}', '', 'success');
+            </script>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
 
     <style>
         body {

@@ -22,9 +22,11 @@ import Purchase.urls
 import Stock.urls
 import Sales.urls
 import Damage.urls
+from User.admin import admin_site
 
 
 urlpatterns = [
+    path('myadmin/', admin_site.urls),
     path('admin/', admin.site.urls),
     path('', include(User.urls)),
     path('Core/', include(Core.urls)),

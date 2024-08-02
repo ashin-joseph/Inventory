@@ -5,8 +5,12 @@ from Purchase.models import purchaseorderTable, orderitemTable,returnPurchaseTab
 import datetime
 import random
 from User.views import index, trial_success, trial_failed
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from User.decorators import admin_required, staff_required, admin_staff_required
 
 
+@admin_staff_required
 def order(request):
     vendor_data = vendorTable.objects.all()
     item_data = itemTable.objects.all()
@@ -44,7 +48,7 @@ def order(request):
     return render(request, "purchase/Order.html",
                   {'vendor_data': vendor_data, 'item_data': item_data})
 
-
+@admin_staff_required
 def order_display(request, order_id):
     order = get_object_or_404(purchaseorderTable, id=order_id)
     items = orderitemTable.objects.filter(oit_purchase_order=order)
@@ -62,7 +66,7 @@ def order_display(request, order_id):
         'overall': overall,
     }
     return render(request, 'purchase/order_display.html', context)
-
+@admin_staff_required
 def purchasereturn(request):
     purchaseOrder_data= purchaseorderTable.objects.all()
     purchaseOrder=None
@@ -104,7 +108,7 @@ def purchasereturn(request):
             except purchaseorderTable.DoesNotExist:
                 return redirect(trial_failed)
     return render(request,"purchase/purchase_return.html", context)
-
+@admin_staff_required
 def purchaseReturn_display(request, return_id):
     return_order= get_object_or_404(returnPurchaseTable, id=return_id)
     return_items= returnItemTable.objects.filter(rit_billNum=return_order)
