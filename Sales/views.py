@@ -10,6 +10,7 @@ from User.decorators import admin_required, staff_required, admin_staff_required
 
 @admin_staff_required
 def sales_order(request):
+    base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     item_data = itemTable.objects.all()
     price_data = priceTable.objects.select_related('pt_item').all()
     stock_data = stockTable.objects.select_related('st_remainingStock').all()
@@ -17,6 +18,7 @@ def sales_order(request):
         'item_data': item_data,
         'price_data': price_data,
         'stock_data' : stock_data,
+        'base_template' : base_template,
     }
     return render(request, "sales/sales_oder.html", context)
 
@@ -54,11 +56,12 @@ def save_sales_order(request):
                     soi_obj.save()
                 return redirect(sales_order_display, orderId=so_obj.id)
             except priceTable.DoesNotExist:
-                return redirect(index)
+                return redirect(sales_order)
     return redirect(sales_order)
 
 @admin_staff_required
 def sales_order_display(request, orderId):
+    base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     s_order = get_object_or_404(salesorderTable, id=orderId)
     so_item = salesorderItemTable.objects.filter(soit_bill_number=s_order)
 
@@ -73,12 +76,14 @@ def sales_order_display(request, orderId):
     context = {
         's_order': s_order,
         'so_item': so_item,
-        'overall': overall
+        'overall': overall,
+        'base_template' : base_template,
     }
     return render(request, "sales/sales_order_display.html", context)
 
 @admin_staff_required
 def salesreturn(request):
+    base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     salesOrder_data= salesorderTable.objects.all()
     salesOrder=None
     salesItems=None
@@ -92,6 +97,7 @@ def salesreturn(request):
         'salesOrder_data': salesOrder_data,
         'salesOrder': salesOrder,
         'salesItems': salesItems,
+        'base_template' : base_template,
     }
 
     if request.method == "POST":
@@ -124,6 +130,7 @@ def salesreturn(request):
 
 @admin_staff_required
 def salesReturn_display(request, return_id):
+    base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     return_order= get_object_or_404(returnSalesTable, id=return_id)
     return_items= returnsalesItemTable.objects.filter(rsit_billNum=return_order)
     overall=0
@@ -136,5 +143,6 @@ def salesReturn_display(request, return_id):
         'return_order':return_order,
         'return_items':return_items,
         'overall':overall,
+        'base_template' : base_template,
     }
     return render(request,"sales/salesReturn_display.html", context)

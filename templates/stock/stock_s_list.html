@@ -15,25 +15,15 @@
             <tr>
                 <th scope="col">Product</th>
                 <th scope="col">Unit</th>
-                <th scope="col">Purchase Stock</th>
-                <th scope="col">Return Purchase</th>
-                <th scope="col">Damage Stock</th>
-                <th scope="col">Sold Stock</th>
-                <th scope="col">Return Sales</th>
                 <th scope="col">Available Stock</th>
             </tr>
         </thead>
         <tbody>
             {% for i in st %}
                 <tr>
-                    <td class="{% if i.st_remainingStock < 10 %}low-stock{% endif %}">{{ i.st_item.item_name }}</td>
+                    <td>{{ i.st_item.item_name }}</td>
                     <td>{{ i.st_item.item_unit }}</td>
-                    <td>{{ i.st_purchasesStock }} </td>
-                    <td>{{ i.st_purchasesReturnStock }} </td>
-                    <td>{{ i.st_damageStock }} </td>
-                    <td>{{ i.st_soldStock }} </td>
-                    <td>{{ i.st_salesReturnStock }} </td>
-                    <td>{{ i.st_remainingStock }}</td>
+                    <td class="{% if i.st_remainingStock < 10 %}low-stock{% endif %}">{{ i.st_remainingStock }}</td>
                 </tr>
             {% endfor %}
         </tbody>

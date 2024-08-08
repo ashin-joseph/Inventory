@@ -10,8 +10,9 @@ from django.contrib.auth.decorators import login_required
 from User.decorators import admin_required, staff_required, admin_staff_required
 
 
-@admin_staff_required
+@admin_required
 def order(request):
+    base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     vendor_data = vendorTable.objects.all()
     item_data = itemTable.objects.all()
 
@@ -46,10 +47,11 @@ def order(request):
                 return redirect(index)
 
     return render(request, "purchase/Order.html",
-                  {'vendor_data': vendor_data, 'item_data': item_data})
+                  {'vendor_data': vendor_data, 'item_data': item_data, 'base_template': base_template})
 
-@admin_staff_required
+@admin_required
 def order_display(request, order_id):
+    base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     order = get_object_or_404(purchaseorderTable, id=order_id)
     items = orderitemTable.objects.filter(oit_purchase_order=order)
 
@@ -64,10 +66,12 @@ def order_display(request, order_id):
         'order': order,
         'items': items,
         'overall': overall,
+        'base_template':base_template,
     }
     return render(request, 'purchase/order_display.html', context)
-@admin_staff_required
+@admin_required
 def purchasereturn(request):
+    base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     purchaseOrder_data= purchaseorderTable.objects.all()
     purchaseOrder=None
     purchaseItems=None
@@ -81,6 +85,7 @@ def purchasereturn(request):
         'purchaseOrder_data': purchaseOrder_data,
         'purchaseOrder': purchaseOrder,
         'purchaseItems': purchaseItems,
+        'base_template' : base_template,
     }
 
     if request.method == "POST":
@@ -108,8 +113,9 @@ def purchasereturn(request):
             except purchaseorderTable.DoesNotExist:
                 return redirect(trial_failed)
     return render(request,"purchase/purchase_return.html", context)
-@admin_staff_required
+@admin_required
 def purchaseReturn_display(request, return_id):
+    base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     return_order= get_object_or_404(returnPurchaseTable, id=return_id)
     return_items= returnItemTable.objects.filter(rit_billNum=return_order)
     overall=0
@@ -122,6 +128,7 @@ def purchaseReturn_display(request, return_id):
         'return_order':return_order,
         'return_items':return_items,
         'overall':overall,
+        'base_template' : base_template,
     }
     return render(request,"purchase/purchaseReturn_display.html", context)
 

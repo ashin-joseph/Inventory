@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <header>
+            <h1>Admin Dashboard</h1>
+            <div class="user-info">
+                <p>William John<br><span>Admin</span></p>
+                <img src="user-icon.png" alt="User">
+            </div>
+        </header>
+        <div class="main-content">
+            <div class="stats-cards">
+                <div class="card">
+                    <p>Teachers</p>
+                    <h2>343</h2>
+                    <span class="stat-decrease">-12.4%</span>
+                </div>
+                <div class="card">
+                    <p>Students</p>
+                    <h2>345</h2>
+                    <span class="stat-increase">+2.8%</span>
+                </div>
+                <div class="card">
+                    <p>Employee</p>
+                    <h2>161</h2>
+                </div>
+                <div class="card">
+                    <p>Earnings</p>
+                    <h2>$158,107</h2>
+                </div>
+            </div>
+            <div class="charts">
+                <canvas id="paymentsChart"></canvas>
+                <div class="pie-chart">
+                    <h3>Students</h3>
+                    <canvas id="studentsChart"></canvas>
+                    <div class="legend">
+                        <div><span class="male"></span> Male Students</div>
+                        <div><span class="female"></span> Female Students</div>
+                    </div>
+                </div>
+            </div>
+            <div class="notice-board">
+                <h3>Notice Board</h3>
+                <table>
+                    <tr>
+                        <th>Date</th>
+                        <th>About</th>
+                        <th>View</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <td>12 Feb, 2024</td>
+                        <td>Test exam</td>
+                        <td>3k</td>
+                        <td>View</td>
+                    </tr>
+                    <!-- Additional rows as needed -->
+                </table>
+            </div>
+            <div class="events-calendar">
+                <h3>Events Calendar</h3>
+                <div id="calendar">
+                    <!-- Implement a simple calendar or use a library -->
+                    <div class="event">
+                        <span>Foundation Day</span>
+                        <span>24 Feb, 2024</span>
+                    </div>
+                    <div class="event">
+                        <span>Picnic</span>
+                        <span>28 Feb, 2024</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="scripts.js"></script>
+    <script>
+        $(document).ready(function () {
+    // Bar chart
+    var paymentsCtx = document.getElementById('paymentsChart').getContext('2d');
+    var paymentsChart = new Chart(paymentsCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            datasets: [{
+                label: 'Received Payments',
+                data: [12000, 15000, 11000, 14000, 20000, 22000, 24000, 21000, 17000, 16000, 19000, 25000],
+                backgroundColor: '#36a2eb',
+            },
+            {
+                label: 'Pending Payments',
+                data: [3000, 2000, 4000, 2500, 1000, 5000, 3000, 2000, 1500, 3000, 4000, 6000],
+                backgroundColor: '#ff6384',
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Pie chart
+    var studentsCtx = document.getElementById('studentsChart').getContext('2d');
+    var studentsChart = new Chart(studentsCtx, {
+        type: 'pie',
+        data: {
+            labels: ['Male Students', 'Female Students'],
+            datasets: [{
+                data: [56, 44],
+                backgroundColor: ['#36a2eb', '#ff6384'],
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+});
+    </script>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #fff;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.user-info {
+    text-align: right;
+}
+
+.stats-cards {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.card {
+    background-color: #e3e3e3;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 23%;
+}
+
+.card h2 {
+    margin: 10px 0;
+}
+
+.stat-increase {
+    color: green;
+}
+
+.stat-decrease {
+    color: red;
+}
+
+.charts {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+
+canvas {
+    width: 100%;
+    max-width: 400px;
+}
+
+.notice-board, .events-calendar {
+    margin-top: 40px;
+}
+
+.notice-board table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.notice-board th, .notice-board td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.events-calendar {
+    margin-top: 20px;
+}
+
+#calendar .event {
+    margin-bottom: 10px;
+}
+
+</style>
+</body>
+</html>

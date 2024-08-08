@@ -18,22 +18,12 @@
                 <div class="bg-info collapse navbar-collapse my-0" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link bg-info" href="{% url 'index' %}">Dashboard</a>
-                        </li>
-                        <li class="bg-info nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarPurchaseDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Purchase</a>
-                            <div class="dropdown-menu" aria-labelledby="navbarPurchaseDropdown">
-                                <a class="dropdown-item" href="{% url 'order' %}">Purchase Order</a>
-                                <a class="dropdown-item" href="{% url 'purchasereturn' %}">Purchase Return</a>
-                                <a class="dropdown-item" href="#">Pagination</a>
-                            </div>
+                            <a class="nav-link bg-info" href="{% url 'staff_index' %}">Dashboard</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDamageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Damage</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDamageDropdown">
                                 <a class="dropdown-item" href="{% url 'damage' %}">Report Damage</a>
-                                <a class="dropdown-item" href="#">View Damage</a>
-                                <a class="dropdown-item" href="#">--</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
@@ -41,14 +31,12 @@
                             <div class="dropdown-menu" aria-labelledby="navbarSalesDropdown">
                                 <a class="dropdown-item" href="{% url 'sales_order' %}">Sales Order</a>
                                 <a class="dropdown-item" href="{% url 'salesreturn' %}">Sales Return</a>
-                                <a class="dropdown-item" href="#">Pagination</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarStockDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Stock</a>
                             <div class="dropdown-menu" aria-labelledby="navbarStockDropdown">
-                                <a class="dropdown-item" href="{% url 'stock_list' %}">Stock List</a>
-                                <a class="dropdown-item" href="#">Stock History</a>
+                                <a class="dropdown-item" href="{% url 'stock_staff' %}">Stock List</a>
                             </div>
                         </li>
                     </ul>
@@ -68,34 +56,13 @@
                 </div>
                 {% block content %}
                 <!-- Main content goes here -->
-                <h1>ABC Company Inventory Management Dashboard</h1>
+                <h1>ABC Company Inventory Management <font color="red"> Staff </font> Dashboard</h1>
                 <h3>Welcome, {{ user.role }} - {{ user.username }} </h3>
 
                 <hr> <br>
                 <p></p>
-                <!-- New Containers with Text -->
-<!--                <div class="d-flex justify-content-between mt-4">-->
-<!--                    <div class="container text-center bg-info p-3 mr-2 custom-container">-->
-<!--                        <a href="" class="btn bg-info"><h2></h2></a>-->
-<!--                        <p>This is the first container with some text.</p>-->
-<!--                    </div>-->
-<!--                     </div> -->
-                <a href="{% url 'myadmin:index' %}"><button type="button" class="btn btn-info">Admin</button></a>
-                <a href="{% url 'vendor_pg' %}"><button type="button" class="btn btn-info">Add Vendor</button></a>
-                <a href="{% url 'item_pg' %}"><button type="button" class="btn btn-info">Add Item</button></a>
-                <a href="{% url 'price_pg' %}"><button type="button" class="btn btn-info">Set price</button></a>
-                <a href="{% url 'sample' %}"><button type="button" class="btn btn-info">sample</button></a>
-                <br><br>
                 <div class="chart bg-light">
                     <p>Stock Report</p>
-                    <img src="https://via.placeholder.com/800x400?text=Static+Graph" alt="Static Graph" class="img-fluid">
-                </div><br><br>
-                <div class="chart bg-light">
-                    <p>Purchase Report</p>
-                    <img src="https://via.placeholder.com/800x400?text=Static+Graph" alt="Static Graph" class="img-fluid">
-                </div><br><br>
-                <div class="chart bg-light">
-                    <p>Sales Report</p>
                     <img src="https://via.placeholder.com/800x400?text=Static+Graph" alt="Static Graph" class="img-fluid">
                 </div>
                 {% endblock %}

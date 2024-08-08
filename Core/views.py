@@ -6,6 +6,7 @@ from User.decorators import admin_required, staff_required
 
 @admin_required
 def item_pg(request):
+    base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     if request.method=="POST":
         item_id = request.POST.get('itemid')
         item_name= request.POST.get('itemname')
@@ -24,7 +25,7 @@ def item_pg(request):
             messages.success(request, "Item Added Successfully")
         return redirect(item_pg)
     item_data = itemTable.objects.all()
-    return render(request,"core/item.html",{'item_data':item_data})
+    return render(request,"core/item.html",{'item_data':item_data, 'base_template':base_template})
 @admin_required
 def deleteItem(request, Did):
     itemTable.objects.filter(id=Did).delete()
@@ -32,6 +33,7 @@ def deleteItem(request, Did):
     return redirect(item_pg)
 @admin_required
 def vendor_pg(request):
+    base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     if request.method=="POST":
         vendorid= request.POST.get('vendorid')
         shopname= request.POST.get('shopname')
@@ -60,7 +62,7 @@ def vendor_pg(request):
             messages.success(request, "Vendor Added Successfully")
         return redirect(vendor_pg)
     vendor_data= vendorTable.objects.all()
-    return render(request,"core/vendor.html",{'vendor_data':vendor_data})
+    return render(request,"core/vendor.html",{'vendor_data':vendor_data, 'base_template' :base_template})
 @admin_required
 def deleteVendor(request,Did):
     vendorTable.objects.filter(vendor_id=Did).delete()
@@ -68,6 +70,7 @@ def deleteVendor(request,Did):
     return redirect(vendor_pg)
 @admin_required
 def price_pg(request):
+    base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     if request.method=="POST":
         tax=request.POST.get('tax')
         offer=request.POST.get('offer')
@@ -75,7 +78,7 @@ def price_pg(request):
         messages.info(request, "Tax/Offer Updated Successfully")
         return redirect(price_pg)
     price_data= priceTable.objects.all()
-    return render(request,"core/price.html",{'price_data':price_data})
+    return render(request,"core/price.html",{'price_data':price_data, 'base_template': base_template})
 @admin_required
 def updatePrice(request):
     if request.method == "POST":
