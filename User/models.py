@@ -6,7 +6,6 @@ class User(AbstractUser):
     MY_ROLES =[
         ('Admin','Admin'),
         ('Staff','Staff'),
-        ('Unknown','Unknown')
     ]
     role = models.CharField(max_length=50, choices=MY_ROLES)
 
