@@ -15,6 +15,7 @@
     {% csrf_token %}
     <input name="vendor" type="text" id="shopSearch" placeholder="Search for a shop" required>
     <input name="vendor_id" type="hidden" id="vendorID" value="{{ vendor_data.id }}" readonly>
+    <input name="user_id" type="hidden" value="{{ user.id }}" readonly>
     <div id="shopDetails" class="d-flex justify-content-end container mt-4">
     <!-- Shop details will be displayed here -->
     </div><br>

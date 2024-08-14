@@ -24,7 +24,7 @@ def login_user_inv(request):
             elif user.role == "Staff":
                 return redirect(staff_index)
             else:
-                return redirect(trial_failed)
+                return redirect(trial_success)
         else:
             return redirect(logout_user_inv)
     else:
@@ -37,11 +37,14 @@ def logout_user_inv(request):
     return redirect(login_user_inv)
 
 @login_required
+@admin_required
 def index(request):
     if request.user.role == "Admin":
         base_template = 'user/Index.html'
-    else:
+    elif request.user.role == "Staff":
         base_template = 'user/staff_index.html'
+    else:
+        base_template = 'user/trial_success.html'
 
     low_stock_count, item_count, category_count = product_details()
     sorted_items = todays_offer()
@@ -77,6 +80,7 @@ def index(request):
     }
     return render(request, "user/Index.html", context)
 @login_required()
+@staff_required
 def staff_index(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     low_stock_count, item_count, category_count = product_details()
@@ -104,13 +108,6 @@ def trial_failed(request):
 def sample(request):
     return render(request,"user/sample.html")
 
-def lowstock_list():
-    stockdata= stockTable.objects.all()
-    stockappendList=[]
-    for i in stockdata:
-        if i.st_remainingStock < 10:
-            stockappendList.append((i.st_item.item_name,i.st_remainingStock))
-    return stockappendList
 def product_details():
     stockdata =stockTable.objects.all()
     itemdata =itemTable.objects.all()
@@ -147,6 +144,14 @@ def todays_offer():
     sorted_items = [item for _, item in offer_list]
     return sorted_items
 
+def lowstock_list():
+    stockdata= stockTable.objects.all()
+    stockappendList=[]
+    for i in stockdata:
+        if i.st_remainingStock < 10:
+            stockappendList.append((i.st_item.item_name,i.st_remainingStock))
+    return stockappendList
+
 def user_activity():
     userdata = User.objects.all()
     userlist=[]
@@ -165,13 +170,13 @@ def purchase_overview():
         if i.oit_purchase_order:
             purchaseNo.add(i.oit_purchase_order)
         if i.oit_totalprice:
-            purchaseSum +=float(i.oit_totalprice)
+            purchaseSum += float(i.oit_totalprice)
 
     for j in productReturn_data:
         if j.rit_billNum:
             purchaseReturnNo.add(j.rit_billNum)
         if j.rit_refundAmount:
-            purchaseReturnSum +=float(j.rit_refundAmount)
+            purchaseReturnSum += int(j.rit_refundAmount)
 
     return purchaseSum, len(purchaseNo), purchaseReturnSum, len(purchaseReturnNo)
 
@@ -187,13 +192,13 @@ def sales_overview():
         if i.soit_bill_number:
             salesNo.add(i.soit_bill_number)
         if i.soit_total:
-            salesSum += float(i.soit_total)
+            salesSum += int(i.soit_total)
 
     for j in salesReturn_data:
         if j.rsit_billNum:
             salesReturnNo.add(j.rsit_billNum)
         if j.rsit_refundAmount:
-            salesReturnSum += float(j.rsit_refundAmount)
+            salesReturnSum += int(j.rsit_refundAmount)
 
     return salesSum, len(salesNo), salesReturnSum, len(salesReturnNo)
 

@@ -14,7 +14,7 @@
         <div class="row">
             <!-- Form to add item -->
             <div class="form-container col-md-4">
-                <h2>Add Item</h2>
+                <h2 id="formTitle">Add Item</h2>
                 <form id="itemForm" method="post" action="{% url 'item_pg' %}">
                     {% csrf_token %}
                     <input type="hidden" name="itemid" id="itemId">

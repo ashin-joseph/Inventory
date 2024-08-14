@@ -27,6 +27,7 @@
     <form method="post" action="{% url 'salesreturn' %}">
     {% csrf_token %}
         <input name="salesOrderNum_id" type="hidden" id="salesOrderNum_id" value="{% if salesOrder %}{{ salesOrder.id }}{% endif %}" readonly>
+        <input name="user_id" type="hidden" value="{{ user.id }}" readonly>
     <div id="itemsDetails" class="container mt-4">
         {% if salesItems %}
         <table>
@@ -48,7 +49,7 @@
                     <td><input type="text" name="item_name[]" value="{{ i.soit_item }}" class="form-control" readonly>
                     <input type="hidden" name="item_id[]" value="{{ i.id }}"></td>
                     <td><input type="text"  name="item_reason[]" class="form-control  " placeholder="Reason for return" required></td>
-                    <td><input type="number" name="item_quantity[]" value="{{ i.soit_quantity }}" class="form-control small-input qty-input" placeholder="Quantity" min="1" max="{{ i.soit_quantity }}" required></td>
+                    <td><input type="number" name="item_quantity[]" value="{{ i.soit_quantity }}" class="form-control small-input qty-input" placeholder="Quantity" min="0" max="{{ i.soit_quantity }}" required></td>
                     <td><input type="number" step="0.01" name="item_price[]" value="{{ i.soit_price.pt_sellingPrice }}" class="form-control small-input price-input" placeholder="Price" min="1" readonly></td>
                     <td><input type="number" step="0.01" name="item_tax[]" value="{{ i.soit_price.pt_tax }}" class="form-control small-input tax-input" placeholder="Tax %" min="0" readonly></td>
                     <td><input type="number" step="0.01" name="item_offer[]" value="{{ i.soit_price.pt_offer }}" class="form-control small-input tax-input" placeholder="Offer %" min="0" readonly></td>

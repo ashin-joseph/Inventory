@@ -33,7 +33,7 @@
                     <td>{{ i.st_damageStock }} </td>
                     <td>{{ i.st_soldStock }} </td>
                     <td>{{ i.st_salesReturnStock }} </td>
-                    <td>{{ i.st_remainingStock }}</td>
+                    <td class="{% if i.st_remainingStock < 10 %}low-stock{% endif %}">{{ i.st_remainingStock }}</td>
                 </tr>
             {% endfor %}
         </tbody>

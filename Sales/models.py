@@ -1,10 +1,12 @@
 from django.db import models
 from Core.models import itemTable,priceTable
+from User.models import User
 
 
 class salesorderTable(models.Model):
     sot_bill_number=models.CharField(max_length=20, unique=True)
     sot_date= models.DateField(auto_now_add=True)
+    sot_user = models.ForeignKey(User, on_delete=models.CASCADE)
     sot_items=models.ManyToManyField(itemTable, through='salesorderItemTable')
 
     def __str__(self):
@@ -36,6 +38,7 @@ class returnSalesTable(models.Model):
     rst_billNum = models.CharField(max_length=20, unique=True)
     rst_poNum=models.ForeignKey(salesorderTable, on_delete=models.CASCADE)
     rst_date = models.DateTimeField(auto_now_add=True)
+    rst_user = models.ForeignKey(User, on_delete=models.CASCADE)
     rst_item = models.ManyToManyField(itemTable, through='returnsalesItemTable')
 
     def __str__(self):

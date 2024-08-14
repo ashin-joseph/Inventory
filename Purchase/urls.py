@@ -6,7 +6,4 @@ urlpatterns = [
     path('order_display/<int:order_id>/', views.order_display, name="order_display"),
     path('purchasereturn/', views.purchasereturn, name="purchasereturn"),
     path('purchaseReturn_display/<int:return_id>/', views.purchaseReturn_display, name="purchaseReturn_display"),
-
-
-    # path('purchaseReturn_save/', views.purchaseReturn_save, name="purchaseReturn_save"),
 ]

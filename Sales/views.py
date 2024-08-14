@@ -1,12 +1,14 @@
+from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect, get_object_or_404
 from Core.models import itemTable, priceTable
 import datetime
 import random
 from Sales.models import salesorderTable, salesorderItemTable, returnSalesTable, returnsalesItemTable
-from User.views import index,trial_failed, trial_success
+from User.views import index, trial_failed
 from Stock.models import stockTable
 from  django.contrib import messages
 from User.decorators import admin_required, staff_required, admin_staff_required
+User = get_user_model()
 
 @admin_staff_required
 def sales_order(request):
@@ -25,6 +27,7 @@ def sales_order(request):
 @admin_staff_required
 def save_sales_order(request):
     if request.method == "POST":
+        user_id = request.POST.get("user_id")
         item_names = request.POST.getlist('item_name[]')
         item_quantity = request.POST.getlist('item_quantity[]')
         item_prices = request.POST.getlist('item_price[]')
@@ -45,7 +48,8 @@ def save_sales_order(request):
             date_str = datetime.datetime.now().strftime("%Y%m%d")
             random_str = random.randint(99, 9999)
             order_num = f"{date_str}SO{random_str}"
-            so_obj = salesorderTable(sot_bill_number=order_num)
+            user_instance = User.objects.get(id=user_id)
+            so_obj = salesorderTable(sot_bill_number=order_num, sot_user=user_instance)
             so_obj.save()
 
             try:
@@ -90,6 +94,7 @@ def salesreturn(request):
     so_id= None
     if request.method=="POST":
         so_id=request.POST.get("salesOrderNum_id")
+        user_id = request.POST.get("user_id")
     if so_id:
         salesOrder = get_object_or_404(salesorderTable, id=so_id)
         salesItems = salesorderItemTable.objects.filter(soit_bill_number=salesOrder)
@@ -115,7 +120,8 @@ def salesreturn(request):
             Return_order_number = f"{date_Rstr}SRO{random_number}"
             try:
                 sales_instance = salesorderTable.objects.get(id=salesOdrNum_id)
-                sales_return_number = returnSalesTable(rst_billNum=Return_order_number, rst_poNum=sales_instance)
+                user_instance = User.objects.get(id=user_id)
+                sales_return_number = returnSalesTable(rst_billNum=Return_order_number, rst_poNum=sales_instance, rst_user=user_instance)
                 sales_return_number.save()
                 for ii, ir, iq, ip, it, io, ia in zip(item_names, item_reason, item_quantity, item_price, item_tax, item_offer, item_amount):
                     item_instance_return = itemTable.objects.get(item_name=ii)

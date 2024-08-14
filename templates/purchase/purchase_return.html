@@ -31,6 +31,7 @@
     <form method="post" action="{% url 'purchasereturn' %}">
     {% csrf_token %}
         <input name="purchaseOrderNum_id" type="hidden" id="purchaseOrderNum_id" value="{% if purchaseOrder %}{{ purchaseOrder.id }}{% endif %}" readonly>
+        <input name="user_id" type="hidden" value="{{ user.id }}" readonly>
     <div id="itemsDetails" class="container mt-4">
         {% if purchaseItems %}
         <table>

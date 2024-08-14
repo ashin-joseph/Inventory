@@ -1,12 +1,14 @@
 from django.db import models
 from decimal import Decimal
 from Core.models import vendorTable,itemTable
+from User.models import User
 
 
 class purchaseorderTable(models.Model):
     pot_order_number= models.CharField(max_length=20, unique=True)
     pot_date = models.DateField(auto_now_add=True)
     pot_vendor = models.ForeignKey(vendorTable, on_delete=models.CASCADE)
+    pot_user = models.ForeignKey(User, on_delete=models.CASCADE)
     pot_items = models.ManyToManyField(itemTable, through='orderitemTable')
 
     def __str__(self):
@@ -49,6 +51,7 @@ class returnPurchaseTable(models.Model):
     rpt_billNum = models.CharField(max_length=20, unique=True)
     rpt_poNum=models.ForeignKey(purchaseorderTable, on_delete=models.CASCADE)
     rpt_date = models.DateTimeField(auto_now_add=True)
+    rpt_user = models.ForeignKey(User, on_delete=models.CASCADE)
     rpt_item = models.ManyToManyField(itemTable, through='returnItemTable')
 
     def __str__(self):
