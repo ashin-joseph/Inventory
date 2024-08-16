@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>return purchase bill</title>
+    <title>Confirm purchase bill</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="{% static 'assets/style.css' %}" rel="stylesheet">
 </head>
@@ -15,23 +15,23 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="order-header text-center">
-                    <h2>Purchase Return Bill</h2>
+                    <h2>Purchase Bill</h2>
                 </div>
                 <div class="order-body">
                     <div class="print-only text-center">
-                        <p> <h2>ABC company</h2></p>
-                         <h4>Purchase Return Bill</h4>
+                        <p> <h2>StockSmart</h2></p>
+                         <h4>Purchase Bill</h4>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <p><strong>Shop Name:</strong> {{ return_order.rpt_poNum.pot_vendor.vendor_shop_name }}</p>
-                            <p><strong>Vendor Name:</strong> {{ return_order.rpt_poNum.pot_vendor.vendor_name }}</p>
-                            <p><strong>Address:</strong> {{ return_order.rpt_poNum.pot_vendor.vendor_location }}</p>
+                            <p><strong>Shop Name:</strong> {{ confirm_order.cpt_vendor.vendor_shop_name }}</p>
+                            <p><strong>Vendor Name:</strong> {{ confirm_order.cpt_vendor.vendor_name }}</p>
+                            <p><strong>Address:</strong> {{ confirm_order.cpt_vendor.vendor_location }}</p>
                         </div>
                         <div class="col-md-6 text-md-right">
-                            <p><strong>Contact Number:</strong> {{ return_order.rpt_poNum.pot_vendor.vendor_phone }}</p>
-                            <p><strong>Order Number:</strong> {{ return_order.rpt_billNum }}</p>
-                            <p><strong>Date:</strong> {{ return_order.rpt_date }}</p>
+                            <p><strong>Contact Number:</strong> {{ confirm_order.cpt_vendor.vendor_phone }}</p>
+                            <p><strong>Order Number:</strong> {{ confirm_order.cpt_billNum }}</p>
+                            <p><strong>Date:</strong> {{ confirm_order.cpt_date }}</p>
                         </div>
                     </div>
                     <table class="table table-striped order-table">
@@ -39,21 +39,19 @@
                             <tr>
                                 <th>Item</th>
                                 <th>Quantity</th>
-                                <th>Reason</th>
                                 <th>Price</th>
                                 <th>Tax %</th>
                                 <th>Amount</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for i in return_items %}
+                            {% for i in confirm_items %}
                                 <tr>
-                                    <td>{{ i.rit_item }}</td>
-                                    <td><i>No.</i>{{i.rit_qty}}</td>
-                                    <td><i>No.</i>{{i.rit_reason}}</td>
-                                    <td><i>Rs.</i>{{i.rit_price}}</td>
-                                    <td>{{i.rit_tax}}<i>%</i></td>
-                                    <td><i>Rs.</i>{{i.rit_refundAmount}}</td>
+                                    <td>{{ i.cpit_item }}</td>
+                                    <td><i>No.</i>{{i.cpit_qty}}</td>
+                                    <td><i>Rs.</i>{{i.cpit_price}}</td>
+                                    <td>{{i.cpit_tax}}<i>%</i></td>
+                                    <td><i>Rs.</i>{{i.cpit_Amount}}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -64,8 +62,8 @@
                         </div>
                     </div>
                     <div class="print-only">
-                        <p><strong>GISTIN Number: </strong> {{ return_order.rpt_poNum.pot_vendor.vendor_GST }}</p>
-                        <p><strong>Bill Note: </strong>Kindly deliver the best product with regards ABC Shop</p><p class="text-center"><i>Thank you!</i></p>
+                        <p><strong>GISTIN Number: </strong> {{ confirm_order.cpt_vendor.vendor_GST }}</p>
+                        <p><strong>Bill Note: </strong>Kindly deliver the best product with regards StockSmart.</p><p class="text-center"><i>Thank you!</i></p>
                     </div>
                     <div class="text-center print-button">
                         <button onclick="window.print()" class="btn btn-info">Print</button>

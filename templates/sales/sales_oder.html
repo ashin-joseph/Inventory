@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% extends base_template %}
+{% load static %}
 {% block content %}
 <html lang="en">
 <head>
@@ -7,15 +8,24 @@
     <title>Shop Search</title>
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'assets/style.css' %}" rel="stylesheet">
 </head>
 <body>
-<br><br>
-<form method="post" action="{% url 'save_sales_order' %}">
+
+<div class="container">
+<form method="post" action="{% url 'save_sales_order' %}" class="footer-bottom">
     {% csrf_token %}
-    <h4 class="mt-3">Select Items</h4>
+    <h4 class="mt-1">Select Items</h4>
     <input name="user_id" type="hidden" value="{{ user.id }}" readonly>
     <hr>
-    <div class="container mt-4">
+    <div class="mt-1">
+            <div class="row mb-3">
+                <div class="col">
+                    <input type="text" class="form-control small-input" id="input1" placeholder="Add item">
+                </div>
+            </div>
+        </div>
+    <div class="container mt-1">
         <div id="item-list">
             <div class="col" >
             <label for="" style="padding-right:60px; padding-left: 30px">Item</label>
@@ -23,28 +33,23 @@
             <label for="" style="padding-right:60px; padding-left: 50px">Price</label>
             <label for="" style="padding-right:50px; padding-left: 60px">Tax</label>
             <label for="" style="padding-right:90px; padding-left: 70px">Offer</label>
-            <label for="" style="padding-right:60px; padding-left: 50px">Total</label>
-            <label for="" style="padding-right:20px; padding-left: 30px">Delete</label>
+            <label for="" style="padding-right:40px; padding-left: 20px">Total</label>
+            <label for="" style=" padding-left: 60px">Delete</label>
             </div>
 <!--            List of item will appear hear-->
         </div>
-        <p class="mt-3"><i>Once items are selected enter Order button to place order</i></p><br>
+        <p class="mt-1"><i>Once items are selected enter Order button to place order</i></p>
         <div class="d-flex justify-content-end mb-3">
             <button class="btn btn-success mr-2" type="submit" id="orderButton">Order</button>
         </div>
-        <div class="mt-4">
-            <div class="row mb-3">
-                <div class="col">
-                    <input type="text" class="form-control small-input" id="input1" placeholder="Add item">
-                </div>
-            </div>
-        </div>
+
     </div>
 </form>
+</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
 
 <script>
 $(document).ready(function() {
@@ -100,9 +105,9 @@ $(document).ready(function() {
                     <input type="number" step="0.01" name="item_total[]" class="form-control small-input total-input" placeholder="Total" readonly>
                 </div>
                 <div class="col">
-                    <div class="justify-content-end">
+
                         <button class="btn btn-danger delete-item-btn" type="button">X</button>
-                    </div>
+
                 </div>
             </div>`;
         const itemList = document.getElementById('item-list');
@@ -144,15 +149,6 @@ $(document).ready(function() {
         });
     </script>
 {% endif %}
-
-<style>
-.small-input {
-    width: 110px;
-}
-.form-group {
-    margin-bottom: 10px;
-}
-</style>
 
 </body>
 </html>

@@ -1,37 +1,35 @@
 from django.db import models
-from Purchase.models import orderitemTable,returnItemTable
+from Purchase.models import confirmPurchaseItemTable
 from Sales.models import salesorderItemTable,returnsalesItemTable
-from Core.models import itemTable, priceTable
+from Core.models import itemTable
 from Damage.models import damageTable
 
 
 class stockTable(models.Model):
     st_item = models.OneToOneField(itemTable, on_delete=models.CASCADE)
     st_purchasesStock = models.PositiveIntegerField(default=0)
-    st_purchasesReturnStock = models.PositiveIntegerField(default=0)
     st_soldStock = models.PositiveIntegerField(default=0)
     st_salesReturnStock = models.PositiveIntegerField(default=0)
     st_damageStock = models.PositiveIntegerField(default=0)
     st_remainingStock = models.PositiveIntegerField(default=0)
 
-
     def __str__(self):
         return f"{self.st_item.item_name}"
 
     def save(self, *args, **kwargs):
-        # Calculate purchase orders
-        purchase_orders = orderitemTable.objects.filter(oit_item=self.st_item)
-        total_purchased_stock = 0
-        for i in purchase_orders:
-            total_purchased_stock += i.oit_quantity
-        self.st_purchasesStock = total_purchased_stock
+        # Calculate the confirmation purchase stock
+        purchase_confirm = confirmPurchaseItemTable.objects.filter(cpit_item=self.st_item)
+        total_confirm_purchase = 0
+        for cp in purchase_confirm:
+            total_confirm_purchase += cp.cpit_qty
+        self.st_purchasesStock = total_confirm_purchase
 
-        # Calculate the purchase return stock
-        purchase_return = returnItemTable.objects.filter(rit_item=self.st_item)
-        total_return_purchase=0
-        for rp in purchase_return:
-            total_return_purchase += rp.rit_qty
-        self.st_purchasesReturnStock = total_return_purchase
+        # # Calculate purchase orders
+        # purchase_orders = purchaseorderitemTable.objects.filter(oit_item=self.st_item)
+        # total_purchased_stock = 0
+        # for i in purchase_orders:
+        #     total_purchased_stock += i.oit_quantity
+        # self.st_purchaseDirectStock = total_purchased_stock
 
         # Calculate sales orders
         sales_orders = salesorderItemTable.objects.filter(soit_item=self.st_item)
@@ -55,6 +53,6 @@ class stockTable(models.Model):
         self.st_salesReturnStock = total_return_sales
 
         # Calculate the remaining stock
-        self.st_remainingStock = max(self.st_purchasesStock + self.st_salesReturnStock - self.st_purchasesReturnStock - self.st_soldStock - self.st_damageStock, 0)
+        self.st_remainingStock = max(self.st_purchasesStock + self.st_salesReturnStock - self.st_soldStock - self.st_damageStock, 0)
         super().save(*args, **kwargs)
 

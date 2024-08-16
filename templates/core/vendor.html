@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% extends base_template %}
+{% load static %}
 {% block content %}
 <html lang="en">
 <head>
@@ -8,14 +9,15 @@
     <title>Add Vendor</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+     <link href="{% static 'assets/style.css' %}" rel="stylesheet">
 </head>
 <body>
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
             <!-- Form to add vendor -->
             <div class="form-container col-md-4">
                 <h2 id="formTitle">Add Vendor</h2>
-                <form id="itemForm" method="post" action="{% url 'vendor_pg' %}" onsubmit="return validation()">
+                <form id="itemForm" method="post" action="{% url 'vendor_pg' %}" onsubmit="return validation()" class="footer-bottom">
                     {% csrf_token %}
                     <input name="vendorid" type="hidden" id="vendorid">
                     <div class="form-group">
@@ -50,7 +52,7 @@
                         <label>Note</label>
                         <textarea name="note" id="note" class="form-control" required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-info">Submit</button>
                 </form>
             </div>
 
@@ -58,7 +60,7 @@
             <div class="table-container col-md-8">
                 <h2>Vendor List</h2>
                 <table class="table table-bordered table-striped">
-                    <thead>
+                    <thead class="bg-info">
                         <tr>
                             <th>Shop Name</th>
                             <th>Location</th>
@@ -99,7 +101,7 @@
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
 
     <script>
         function editVendor(id, shopname, vendorname, location, pin, email, phonenumber, gst, note) {
@@ -158,18 +160,6 @@
     {% endfor %}
 {% endif %}
 
-
-    <style>
-        body {
-
-        }
-        .form-container {
-            width: 40%;
-        }
-        .table-container {
-            width: 55%;
-        }
-    </style>
 </body>
 </html>
 {% endblock %}

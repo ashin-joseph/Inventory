@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 {% extends base_template %}
+{% load static %}
 {% block content %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Stock List</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="{% static 'assets/style.css' %}" rel="stylesheet">
 </head>
 <body>
 <div class="container">
     <h1 class="mt-4">Stock List</h1>
     <table class="table table-striped">
-        <thead style="text-align:center">
+        <thead class="bg-info">
             <tr>
                 <th scope="col">Product</th>
                 <th scope="col">Unit</th>
                 <th scope="col">Purchase Stock</th>
-                <th scope="col">Return Purchase</th>
                 <th scope="col">Damage Stock</th>
                 <th scope="col">Sold Stock</th>
                 <th scope="col">Return Sales</th>
@@ -29,7 +30,6 @@
                     <td class="{% if i.st_remainingStock < 10 %}low-stock{% endif %}">{{ i.st_item.item_name }}</td>
                     <td>{{ i.st_item.item_unit }}</td>
                     <td>{{ i.st_purchasesStock }} </td>
-                    <td>{{ i.st_purchasesReturnStock }} </td>
                     <td>{{ i.st_damageStock }} </td>
                     <td>{{ i.st_soldStock }} </td>
                     <td>{{ i.st_salesReturnStock }} </td>
@@ -39,14 +39,6 @@
         </tbody>
     </table>
 </div>
-<style>
-    td {
-        text-align: center;
-    }
-    .low-stock{
-     color: #e83e8c;
-    }
-</style>
 </body>
 </html>
 {% endblock %}

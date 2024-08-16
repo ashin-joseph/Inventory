@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% extends base_template %}
+{% load static %}
 {% block content %}
 <html lang="en">
 <head>
@@ -7,46 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bill Details</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .table-container {
-            margin-top: 20px;
-        }
-        table {
-            width: 100%;
-        }
-        th, td {
-            text-align: center;
-            vertical-align: middle;
-        }
-        ul {
-            padding-left: 0;
-            list-style-type: none;
-            margin-bottom: 0;
-        }
-        .text-pink { color: #e83e8c; }
-        li {
-         padding-top: 3px;
-        }
-        .pagination-container {
-            margin-top: 20px;
-            margin-bottom: 80px;
-            display: flex;
-            justify-content: center;
-        }
-        .table-bordered th, .table-bordered td {
-            border-color: #dee2e6;
-        }
-        .table-hover tbody tr:hover {
-            background-color: #f1f1f1;
-        }
-    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="{% static 'assets/style.css' %}" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <div class="table-container">
-            <h2 class="text-center">Bill Details</h2>
-            <table class="table table-bordered table-hover">
+        <div class="table">
+            <h2 >Bill Details</h2>
+            <table class="table table-striped">
                 <thead class="bg-info">
                     <tr>
                         <th>S.No</th>
@@ -58,52 +27,10 @@
                 </thead>
                 <tbody id="billTable">
                     <!-- Sample Data -->
-                    {% for date, info in purchasedate_dict.items %}
-                    <tr>
-                        <td></td>
-                        <td class="side-heading">Purchase</td>
-                        <td>{{date}}</td>
-                        <td>
-                            <ul>
-                                {% for bill in info.bills %}
-                                <li>{{bill}}</li>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                        <td>
-                            <ul>
-                                {% for user in info.users %}
-                                <li>{{user}}</li>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                    {% for date, info in returndate_dic.items %}
-                    <tr>
-                        <td></td>
-                        <td class="side-heading">Purchase Return</td>
-                        <td>{{date}}</td>
-                        <td>
-                            <ul>
-                                {% for bill in info.bills %}
-                                <li>{{bill}}</li>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                        <td>
-                            <ul>
-                                {% for user in info.users %}
-                                <li>{{user}}</li>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                    </tr>
-                    {% endfor %}
                     {% for date, info in salesdate_dic.items %}
                     <tr>
                         <td></td>
-                        <td class="side-heading">Sales</td>
+                        <td class="text-green">Sales</td>
                         <td>{{date}}</td>
                         <td>
                             <ul>
@@ -124,7 +51,28 @@
                     {% for date, info in returnsalesdate_dic.items %}
                     <tr>
                         <td></td>
-                        <td class="text-pink">Sales Return</td>
+                        <td class="text-blue">Sales Return</td>
+                        <td>{{date}}</td>
+                        <td>
+                            <ul>
+                                {% for bill in info.bills %}
+                                <li>{{bill}}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                {% for user in info.users %}
+                                <li>{{user}}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% for date, info in purchaseconfirmdate_dic.items %}
+                    <tr>
+                        <td></td>
+                        <td class="text-purple">Purchase</td>
                         <td>{{date}}</td>
                         <td>
                             <ul>
@@ -151,11 +99,11 @@
         <div class="pagination-container ">
             <nav>
                 <ul class="pagination">
-                    <li class="page-item "><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    <li class="page-item "><a class="page-link bg-info" href="#">Previous</a></li>
+                    <li class="page-item"><a class="page-link bg-info" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link bg-info" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link bg-info" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link bg-info" href="#">Next</a></li>
                 </ul>
             </nav>
         </div>

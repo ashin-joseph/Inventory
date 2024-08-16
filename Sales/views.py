@@ -6,9 +6,11 @@ import random
 from Sales.models import salesorderTable, salesorderItemTable, returnSalesTable, returnsalesItemTable
 from User.views import index, trial_failed
 from Stock.models import stockTable
-from  django.contrib import messages
+from django.contrib import messages
 from User.decorators import admin_required, staff_required, admin_staff_required
+
 User = get_user_model()
+
 
 @admin_staff_required
 def sales_order(request):
@@ -19,10 +21,11 @@ def sales_order(request):
     context = {
         'item_data': item_data,
         'price_data': price_data,
-        'stock_data' : stock_data,
-        'base_template' : base_template,
+        'stock_data': stock_data,
+        'base_template': base_template,
     }
     return render(request, "sales/sales_oder.html", context)
+
 
 @admin_staff_required
 def save_sales_order(request):
@@ -56,12 +59,14 @@ def save_sales_order(request):
                 for ite, qty, pri, tot in zip(item_names, item_quantity, item_prices, item_total):
                     item_instant = itemTable.objects.get(item_name=ite)
                     price_instant = priceTable.objects.get(pt_item=item_instant, pt_sellingPrice=pri)
-                    soi_obj = salesorderItemTable(soit_bill_number=so_obj, soit_item=item_instant, soit_quantity=qty, soit_price=price_instant, soit_total=tot)
+                    soi_obj = salesorderItemTable(soit_bill_number=so_obj, soit_item=item_instant, soit_quantity=qty,
+                                                  soit_price=price_instant, soit_total=tot)
                     soi_obj.save()
                 return redirect(sales_order_display, orderId=so_obj.id)
             except priceTable.DoesNotExist:
                 return redirect(sales_order)
     return redirect(sales_order)
+
 
 @admin_staff_required
 def sales_order_display(request, orderId):
@@ -81,19 +86,20 @@ def sales_order_display(request, orderId):
         's_order': s_order,
         'so_item': so_item,
         'overall': overall,
-        'base_template' : base_template,
+        'base_template': base_template,
     }
     return render(request, "sales/sales_order_display.html", context)
+
 
 @admin_staff_required
 def salesreturn(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
-    salesOrder_data= salesorderTable.objects.all()
-    salesOrder=None
-    salesItems=None
-    so_id= None
-    if request.method=="POST":
-        so_id=request.POST.get("salesOrderNum_id")
+    salesOrder_data = salesorderTable.objects.all()
+    salesOrder = None
+    salesItems = None
+    so_id = None
+    if request.method == "POST":
+        so_id = request.POST.get("salesOrderNum_id")
         user_id = request.POST.get("user_id")
     if so_id:
         salesOrder = get_object_or_404(salesorderTable, id=so_id)
@@ -102,7 +108,7 @@ def salesreturn(request):
         'salesOrder_data': salesOrder_data,
         'salesOrder': salesOrder,
         'salesItems': salesItems,
-        'base_template' : base_template,
+        'base_template': base_template,
     }
 
     if request.method == "POST":
@@ -117,38 +123,42 @@ def salesreturn(request):
         if salesOdrNum_id and item_names:
             date_Rstr = datetime.datetime.now().strftime("%Y%m%d")
             random_number = random.randint(100, 999)
-            Return_order_number = f"{date_Rstr}SRO{random_number}"
+            Return_order_number = f"{date_Rstr}SR{random_number}"
             try:
                 sales_instance = salesorderTable.objects.get(id=salesOdrNum_id)
                 user_instance = User.objects.get(id=user_id)
-                sales_return_number = returnSalesTable(rst_billNum=Return_order_number, rst_poNum=sales_instance, rst_user=user_instance)
+                sales_return_number = returnSalesTable(rst_billNum=Return_order_number, rst_poNum=sales_instance,
+                                                       rst_user=user_instance)
                 sales_return_number.save()
-                for ii, ir, iq, ip, it, io, ia in zip(item_names, item_reason, item_quantity, item_price, item_tax, item_offer, item_amount):
+                for ii, ir, iq, ip, it, io, ia in zip(item_names, item_reason, item_quantity, item_price, item_tax,
+                                                      item_offer, item_amount):
                     item_instance_return = itemTable.objects.get(item_name=ii)
-                    return_items = returnsalesItemTable(rsit_billNum=sales_return_number, rsit_item=item_instance_return, rsit_reason=ir,
-                                               rsit_qty=iq, rsit_price=ip, rsit_tax=it, rsit_offer=io, rsit_refundAmount=ia)
+                    return_items = returnsalesItemTable(rsit_billNum=sales_return_number,
+                                                        rsit_item=item_instance_return, rsit_reason=ir,
+                                                        rsit_qty=iq, rsit_price=ip, rsit_tax=it, rsit_offer=io,
+                                                        rsit_refundAmount=ia)
                     return_items.save()
                 return redirect(salesReturn_display, return_id=sales_return_number.id)
             except salesorderTable.DoesNotExist:
                 return redirect(trial_failed)
-    return render(request,"sales/sales_return.html", context)
+    return render(request, "sales/sales_return.html", context)
 
 
 @admin_staff_required
 def salesReturn_display(request, return_id):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
-    return_order= get_object_or_404(returnSalesTable, id=return_id)
-    return_items= returnsalesItemTable.objects.filter(rsit_billNum=return_order)
-    overall=0
+    return_order = get_object_or_404(returnSalesTable, id=return_id)
+    return_items = returnsalesItemTable.objects.filter(rsit_billNum=return_order)
+    overall = 0
     for i in return_items:
         price = i.rsit_price * i.rsit_qty
-        tax = int((i.rsit_tax/100))*price
-        total= price+tax
+        tax = int((i.rsit_tax / 100)) * price
+        total = price + tax
         overall += total
-    context={
-        'return_order':return_order,
-        'return_items':return_items,
-        'overall':overall,
-        'base_template' : base_template,
+    context = {
+        'return_order': return_order,
+        'return_items': return_items,
+        'overall': overall,
+        'base_template': base_template,
     }
-    return render(request,"sales/salesReturn_display.html", context)
+    return render(request, "sales/salesReturn_display.html", context)

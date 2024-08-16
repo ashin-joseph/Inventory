@@ -1,144 +1,75 @@
 <!DOCTYPE html>
 {% extends base_template %}
+{% load static %}
 {% block content %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Details</title>
+    <title>Order Display</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'assets/style.css' %}" rel="stylesheet">
 </head>
 <body>
     <div class="container order-container">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="order-header text-center">
-                    <h2>Purchase Order</h2>
+                    <h2>Order Bill</h2>
                 </div>
                 <div class="order-body">
                     <div class="print-only text-center">
-                        <p> <h2>ABC company</h2></p>
-                         <h4>Purchase Order</h4>
+                        <p> <h2>StockSmart</h2></p>
+                         <h4>Order Bill</h4>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <p><strong>Shop Name:</strong> {{ order.pot_vendor.vendor_shop_name }}</p>
-                            <p><strong>Vendor Name:</strong> {{ order.pot_vendor.vendor_name }}</p>
-                            <p><strong>Address:</strong> {{ order.pot_vendor.vendor_location }}</p>
+                            <p><strong>Shop Name:</strong> {{ order.ot_vendor.vendor_shop_name }}</p>
+                            <p><strong>Vendor Name:</strong> {{ order.ot_vendor.vendor_name }}</p>
+                            <p><strong>Address:</strong> {{ order.ot_vendor.vendor_location }}</p>
                         </div>
                         <div class="col-md-6 text-md-right">
-                            <p><strong>Contact Number:</strong> {{ order.pot_vendor.vendor_phone }}</p>
-                            <p><strong>Order Number:</strong> {{ order.pot_order_number }}</p>
-                            <p><strong>Date:</strong> {{ order.pot_date }}</p>
+                            <p><strong>Contact Number:</strong> {{ order.ot_vendor.vendor_phone }}</p>
+                            <p><strong>Order Number:</strong> {{ order.ot_order_number }}</p>
+                            <p><strong>Date:</strong> {{ order.ot_date }}</p>
                         </div>
                     </div>
                     <table class="table table-striped order-table">
-                        <thead class="thead-dark">
+                        <thead class="bg-info">
                             <tr>
                                 <th>Item</th>
                                 <th>Quantity</th>
-                                <th>Price</th>
-                                <th>Tax %</th>
-                                <th>Amount</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for i in items %}
                                 <tr>
-                                    <td>{{ i.oit_item }}</td>
-                                    <td><i>No.</i>{{i.oit_quantity}}</td>
-                                    <td><i>Rs.</i>{{i.oit_price}}</td>
-                                    <td>{{i.oit_tax_percentage}}<i>%</i></td>
-                                    <td><i>Rs.</i>{{i.oit_totalprice}}</td>
+                                    <td>{{ i.oit_items }}</td>
+                                    <td><i>No.</i>{{i.oit_quantities}}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                     <div class="row">
                         <div class="col-md-12 text-md-right">
-                            <p><strong>Total: </strong><i>Rs.</i>{{ overall }}</p>
+<!--                            <p><strong>Total: </strong><i>Rs.</i>{{ overall }}</p>-->
                         </div>
                     </div>
                     <div class="print-only">
-                        <p><strong>GISTIN Number: </strong> {{ order.pot_vendor.vendor_GST }}</p>
-                        <p><strong>Bill Note: </strong>Please deliver the product before 4 pm with regards ABC Shop</p><p class="text-center"><i>Thank you!</i></p>
+                        <p><strong>GISTIN Number: </strong> {{ order.ot_vendor.vendor_GST }}</p>
+                        <p><strong>Bill Note: </strong>Please deliver the product before 4 pm with regards StockSmart</p><p class="text-center"><i>Thank you!</i></p>
                     </div>
                     <div class="text-center print-button">
-                        <button onclick="window.print()" class="btn btn-primary">Print</button>
+                        <button onclick="window.print()" class="btn btn-info">Print</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-
-
-    <!-- styling -->
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .order-container {
-            margin-top: 50px;
-        }
-        .order-header {
-            background-color: #007bff;
-            color: white;
-            padding: 20px;
-            border-radius: 5px 5px 0 0;
-        }
-        .order-body {
-            background-color: white;
-            padding: 20px;
-            border: 1px solid #dee2e6;
-            border-radius: 0 0 5px 5px;
-        }
-        .order-table th, .order-table td {
-            text-align: center;
-            vertical-align: middle;
-            border: none;
-            padding: 5px;
-        }
-        .order-table input {
-            width: 60px;
-            padding: 2px;
-            margin: 0;
-            border: 1px solid #dee2e6;
-            text-align: center;
-        }
-        .print-button {
-                margin: 10px 0;
-            }
-        .print-only{
-            display:none;
-        }
-         @media print {
-            /* Hide everything except the order details */
-            body * {
-                visibility: hidden;
-            }
-            .order-body, .order-body * {
-            visibility: visible;
-            }
-
-            .order-body {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-            }
-            .print-button {
-                display: none;
-            }
-            .print-only{
-            display:block;
-            visibility: visible;
-        }
-        }
-    </style>
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </body>
 </html>

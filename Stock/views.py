@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from Purchase.models import purchaseorderTable, returnPurchaseTable
+from Purchase.models import confirmPurchaseTable
 from Sales.models import salesorderTable, returnSalesTable
 from Stock.models import stockTable
 from User.decorators import admin_required, staff_required,admin_staff_required
@@ -17,31 +17,20 @@ def stock_s_list(request):
 
 def bill_details(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
-    purchasebill_data= purchaseorderTable.objects.all().order_by('pot_date')
-    purchaseReturn_data= returnPurchaseTable.objects.all().order_by('rpt_date')
+    purchaseConfirm_data= confirmPurchaseTable.objects.all().order_by('cpt_date')
     sales_data= salesorderTable.objects.all().order_by('sot_date')
     salesReturn_data= returnSalesTable.objects.all().order_by('rst_date')
-
-    date_dict = {}
-    returndate_dic={}
+    purchaseconfirmdate_dic={}
     salesdate_dic={}
     returnsalesdate_dic={}
 
-    for item in purchasebill_data:
-        if item.pot_date not in date_dict:
-            date_dict[item.pot_date] = {'bills': [], 'users': []}
-        if item.pot_order_number:
-            date_dict[item.pot_date]['bills'].append(item.pot_order_number)
-        if item.pot_user:
-            date_dict[item.pot_date]['users'].append(item.pot_user)
-
-    for item in purchaseReturn_data:
-        if item.rpt_date not in returndate_dic:
-            returndate_dic[item.rpt_date] = {'bills': [], 'users': []}
-        if item.rpt_billNum:
-            returndate_dic[item.rpt_date]['bills'].append(item.rpt_billNum)
-        if item.rpt_user:
-            returndate_dic[item.rpt_date]['users'].append(item.rpt_user)
+    for item in purchaseConfirm_data:
+        if item.cpt_date not in purchaseconfirmdate_dic:
+            purchaseconfirmdate_dic[item.cpt_date] = {'bills': [], 'users': []}
+        if item.cpt_billNum:
+            purchaseconfirmdate_dic[item.cpt_date]['bills'].append(item.cpt_billNum)
+        if item.cpt_user:
+            purchaseconfirmdate_dic[item.cpt_date]['users'].append(item.cpt_user)
 
     for item in sales_data:
         if item.sot_date not in salesdate_dic:
@@ -61,8 +50,7 @@ def bill_details(request):
 
     context={
         'base_template': base_template,
-        'purchasedate_dict': date_dict,
-        'returndate_dic': returndate_dic,
+        'purchaseconfirmdate_dic': purchaseconfirmdate_dic,
         'salesdate_dic': salesdate_dic,
         'returnsalesdate_dic': returnsalesdate_dic,
     }

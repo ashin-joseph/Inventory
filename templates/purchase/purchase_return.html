@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% extends base_template %}
+{% load static %}
 {% block content %}
 <html lang="en">
 <head>
@@ -7,13 +8,14 @@
     <title>Shop Search</title>
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'assets/style.css' %}" rel="stylesheet">
 </head>
 <body>
-<br><br>
-<h4 class="mt-3">Purchase Order Number</h4>
+<div class="container">
+<h4 class="mt-1">Purchase Order Number</h4>
 
     <input name="purchaseOrderNum" type="text" id="orderSearch" placeholder="Search for Order Number" value="{% if purchaseOrder %}{{ purchaseOrder.pot_order_number }}{% endif %}" required>
-    <div id="orderDetails" class="d-flex justify-content-end container mt-4">
+    <div id="orderDetails" class="d-flex justify-content-end container mt-1">
         {% if purchaseOrder %}
             <div>
                 <strong>Purchase Order Number:</strong> {{ purchaseOrder.pot_order_number }}<br>
@@ -24,18 +26,16 @@
                 <strong>Phone Number:</strong> {{ purchaseOrder.pot_vendor.vendor_phone }}
             </div>
         {% endif %}
-    </div><br>
-
-<!--    <h4 class="mt-3">Purchase Items</h4>-->
+    </div>
     <hr> <!-- Added horizontal line here -->
-    <form method="post" action="{% url 'purchasereturn' %}">
+    <form method="post" action="#" class="footer-bottom">
     {% csrf_token %}
         <input name="purchaseOrderNum_id" type="hidden" id="purchaseOrderNum_id" value="{% if purchaseOrder %}{{ purchaseOrder.id }}{% endif %}" readonly>
         <input name="user_id" type="hidden" value="{{ user.id }}" readonly>
-    <div id="itemsDetails" class="container mt-4">
+    <div id="itemsDetails" class="container mt-1">
         {% if purchaseItems %}
         <table>
-            <thead>
+            <thead class="bg-info">
                 <tr>
                     <th>Item Name</th>
                     <th>Reason</th>
@@ -62,17 +62,17 @@
             </tbody>
         </table>
         {% endif %}
-        <br>
-        <p class="mt-3"><i>Customize your return purchase and hit 'Return'.</i></p><br>
+        <p class="mt-1"><i>Customize your return purchase and hit 'Return'.</i></p>
         <div class="d-flex justify-content-end mb-3">
              <button class="btn btn-success mr-2" type="submit" id="orderButton">Return</button>
         </div>
     </div>
 </form>
+</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
 
 <script>
     $(document).ready(function() {
@@ -118,15 +118,6 @@
         });
     });
 </script>
-
-<style>
-    .small-input {
-        width: 150px;
-    }
-    .form-group {
-        margin-bottom: 10px;
-    }
-</style>
 
 </body>
 </html>

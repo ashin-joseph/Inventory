@@ -6,7 +6,7 @@ from Stock.models import stockTable
 from Core.models import itemTable
 from Core.models import priceTable
 from .models import User
-from Purchase.models import orderitemTable, returnItemTable
+from Purchase.models import confirmPurchaseItemTable
 from Sales.models import salesorderItemTable, returnsalesItemTable
 from User.decorators import admin_required, staff_required, admin_staff_required
 User = get_user_model()
@@ -50,7 +50,7 @@ def index(request):
     sorted_items = todays_offer()
     low_stock_list = lowstock_list()
     active_user_list = user_activity()
-    purchaseSum, purchaseNo, purchaseReturnSum, purchaseReturnNo = purchase_overview()
+    purchaseSum, purchaseNo = purchase_overview()
     salesSum, salesNo, salesReturnSum, salesReturnNo = sales_overview()
 
     context ={
@@ -69,8 +69,6 @@ def index(request):
 
         'purchaseSum':purchaseSum,
         'purchaseNo':purchaseNo,
-        'purchaseReturnSum':purchaseReturnSum,
-        'purchaseReturnNo':purchaseReturnNo,
 
         'salesSum': salesSum,
         'salesNo': purchaseNo,
@@ -160,25 +158,17 @@ def user_activity():
     return userlist
 
 def purchase_overview():
-    product_data = orderitemTable.objects.all()
-    productReturn_data = returnItemTable.objects.all()
-    purchaseSum=0
-    purchaseNo=set()
-    purchaseReturnSum = 0
-    purchaseReturnNo = set()
-    for i in product_data:
-        if i.oit_purchase_order:
-            purchaseNo.add(i.oit_purchase_order)
-        if i.oit_totalprice:
-            purchaseSum += float(i.oit_totalprice)
+    products_data = confirmPurchaseItemTable.objects.all()
+    purchaseSum = 0
+    purchaseNo = set()
 
-    for j in productReturn_data:
-        if j.rit_billNum:
-            purchaseReturnNo.add(j.rit_billNum)
-        if j.rit_refundAmount:
-            purchaseReturnSum += int(j.rit_refundAmount)
+    for j in products_data:
+        if j.cpit_billNum:
+            purchaseNo.add(j.cpit_billNum)
+        if j.cpit_Amount:
+            purchaseSum += int(j.cpit_Amount)
 
-    return purchaseSum, len(purchaseNo), purchaseReturnSum, len(purchaseReturnNo)
+    return purchaseSum, len(purchaseNo)
 
 
 def sales_overview():
