@@ -67,13 +67,13 @@
             justify-content: center;
         }
         .bg-info {
-        background-color: #372dac !important;
+        background-color: #030355 !important;
         color: #ffffff !important;
         text-decoration: none !important;
         box-shadow: none !important;
         }
         .btn-info{
-             background-color: #372dac !important;
+             background-color: #030355 !important;
              color: #ffffff !important;
              border: none !important;
              box-shadow: none !important;
@@ -83,7 +83,7 @@
             text-decoration: none !important;
         }
        .dropdown-menu{
-        background-color: #372dac !important;
+        background-color: #030355 !important;
         }
         .footer-bottom{
             margin-bottom: 80px;
@@ -118,6 +118,7 @@
         }
         .table {
             margin-bottom: 80px;
+            text-align: center;
         }
         .form-control {
             width: 250px;
@@ -126,12 +127,12 @@
         input:focus {
             outline: none !important;
             box-shadow: none !important;
-            border: 2px solid #372dac !important;
+            border: 2px solid #030355 !important;
         }
         select:focus {
             outline: none !important;
             box-shadow: none !important;
-            border: 2px solid #372dac !important;
+            border: 2px solid #030355 !important;
         }
         td input {
             text-align: center;
@@ -147,7 +148,7 @@
             margin-top: 50px;
         }
         .order-header {
-            background-color: #372dac;
+            background-color: #030355;
             color: white;
             padding: 20px;
             border-radius: 5px 5px 0 0;
@@ -217,10 +218,23 @@
             display: flex;
             justify-content: center;
         }
-        .page-link:focus, .page-item.active .page-link {
-            outline: none;
-            box-shadow: none;
-            background-color: transparent; /* Remove the background color */
-            border-color: transparent; /* Remove the border color if needed */
-            color: #fff; /* Adjust text color as needed */
+        .page-link ::hover, .page-item.active{
+            outline: none !important;
+            box-shadow: none !important;
+            background-color: #030355 !important; /* Remove the background color */
+            border-color: #030355 !important; /* Remove the border color if needed */
+            color: #fff !important; /* Adjust text color as needed */
         }
+        .page-link{
+            background-color: #030355 !important;
+            color: #ffffff !important;
+        }
+        input.form-control:focus,
+        input.form-control:hover {
+            background-color: transparent !important;
+            border-color: #80bdff; /* Optional: Keep the border highlight */
+            box-shadow: none; /* Optional: Remove shadow */
+        }
+
+        #030355
+        #372dac
