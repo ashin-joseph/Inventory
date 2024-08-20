@@ -5,26 +5,26 @@
 /* VARIABLE DEFINITIONS */
 html[data-theme="light"],
 :root {
-    --primary: #79aec8;
-    --secondary: #417690;
-    --accent: #f5dd5d;
-    --primary-fg: #fff;
+    --primary: #030355;
+    --secondary: #030355 !important;
+    --accent: #ffc700;
+    --primary-fg: #ffffff;
 
-    --body-fg: #333;
-    --body-bg: #fff;
-    --body-quiet-color: #666;
+    --body-fg: #030355;
+    --body-bg: #ffffff;
+    --body-quiet-color: #0f0f0f;
     --body-loud-color: #000;
 
-    --header-color: #ffc;
+    --header-color: #ffffff !important;
     --header-branding-color: var(--accent);
     --header-bg: var(--secondary);
     --header-link-color: var(--primary-fg);
 
     --breadcrumbs-fg: #c4dce8;
     --breadcrumbs-link-fg: var(--body-bg);
-    --breadcrumbs-bg: #264b5d;
+    --breadcrumbs-bg: #050578 !important;
 
-    --link-fg: #417893;
+    --link-fg: #050578 !important;
     --link-hover-color: #036;
     --link-selected-fg: var(--secondary);
 
@@ -35,21 +35,21 @@ html[data-theme="light"],
 
     --message-success-bg: #dfd;
     --message-warning-bg: #ffc;
-    --message-error-bg: #ffefef;
+    --message-error-bg: #f7dfdf;
 
     --darkened-bg: #f8f8f8; /* A bit darker than --body-bg */
     --selected-bg: #e4e4e4; /* E.g. selected table cells */
-    --selected-row: #ffc;
+    --selected-row: #dce3f7 !important;
 
     --button-fg: #fff;
     --button-bg: var(--secondary);
-    --button-hover-bg: #205067;
-    --default-button-bg: #205067;
+    --button-hover-bg: #030355;
+    --default-button-bg: #030355;
     --default-button-hover-bg: var(--secondary);
     --close-button-bg: #747474;
     --close-button-hover-bg: #333;
-    --delete-button-bg: #ba2121;
-    --delete-button-hover-bg: #a41515;
+    --delete-button-bg: #8a1919;
+    --delete-button-hover-bg: #8a1919;
 
     --object-tools-fg: var(--button-fg);
     --object-tools-bg: var(--close-button-bg);
@@ -145,7 +145,7 @@ h1,h2,h3,h4,h5 {
 
 h1 {
     margin: 0 0 20px;
-    font-weight: 300;
+    font-weight: 600;
     font-size: 1.25rem;
     color: var(--body-quiet-color);
 }
@@ -936,7 +936,7 @@ a.deletelink:focus, a.deletelink:hover {
     padding: 0;
     margin: 0;
     margin-inline-end: 20px;
-    font-weight: 300;
+    font-weight: normal;
     font-size: 1.5rem;
     color: var(--header-branding-color);
 }
@@ -1000,6 +1000,7 @@ a.deletelink:focus, a.deletelink:hover {
 
 #content-related {
     background: var(--darkened-bg);
+    display: none !important;
 }
 
 #content-related .module {

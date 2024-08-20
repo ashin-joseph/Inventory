@@ -229,3 +229,12 @@
             background-color: #030355 !important;
             color: #ffffff !important;
         }
+        input.form-control:focus,
+        input.form-control:hover {
+            background-color: transparent !important;
+            border-color: #80bdff; /* Optional: Keep the border highlight */
+            box-shadow: none; /* Optional: Remove shadow */
+        }
+
+        #030355
+        #372dac

@@ -4,9 +4,9 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth import get_user_model
 
 class MyAdminSite(admin.AdminSite):
-    site_header = "StockSmart Administrator"
+    site_header = "StockSmart"
     site_title = "StockSmart Admin"
-    index_title = "Welcome to StockSmart Administrator Dashboard"
+    index_title = "Add Staff"
     site_url = "/index/"
 
 admin_site = MyAdminSite(name='myadmin')
