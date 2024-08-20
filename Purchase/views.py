@@ -237,7 +237,7 @@ def confirmpurchase_display(request, confirm_id):
 #                 return redirect(purchaseReturn_display, return_id=purchase_return_number.id)
 #             except purchaseorderTable.DoesNotExist:
 #                 return redirect(trial_failed)
-#     return render(request,"purchase/purchase_return.html", context)
+#     return render(request,"purchase/purchase_ret.html", context)
 # @admin_required
 # def purchaseReturn_display1(request, return_id):
 #     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
@@ -255,7 +255,7 @@ def confirmpurchase_display(request, confirm_id):
 #         'overall':overall,
 #         'base_template' : base_template,
 #     }
-#     return render(request,"purchase/purchaseReturn_display.html", context)
+#     return render(request,"purchase/purchaseReturn_dis.html", context)
 # def purchaseReturnsave1(request):
 #     if request.method == "POST":
 #         purchaseOdrNum_id = request.POST.get('purchaseOrderNum_id')  # Get single value
