@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+{% extends base_template %}
+{% load static %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockSmart-Add Company</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+     <link href="{% static 'assets/style.css' %}" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="form-container col-md-4">
+                <h2 id="formTitle">Add Company</h2>
+                <form id="itemForm" method="post" action="{% url 'company_pg' %}" onsubmit="return validation()" class="footer-bottom">
+                    {% csrf_token %}
+                    <input name="company_id" type="hidden" id="company_id">
+                    <div class="form-group">
+                        <label>Company Name</label>
+                        <input name="company_name" id="company_name" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>contact Name</label>
+                        <input name="company_person" id="company_person" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input name="company_email" id="company_email" type="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Number</label>
+                        <input name="company_mobile" id="company_mobile" type="tel" onsubmit="return validation()" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input name="company_address" id="company_address" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>GST</label>
+                        <input name="company_gst" id="company_gst" type="tel" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Threshold of stock</label>
+                        <input name="company_threshold_Stock" id="company_threshold_Stock" type="text" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-info">Submit</button>
+                </form>
+            </div>
+
+            <!-- Table to display saved vendors -->
+            <div class="table-container col-md-8">
+                <h2>Company Details</h2>
+                <table class="table table-bordered table-striped">
+                    <thead class="bg-info">
+                    <tr>
+                        <th>Company</th>
+                    <th>Details</th>
+                    </tr>
+                    </thead>
+                    <tbody id="itemsTableBody">
+                        {% for i in company_data %}
+                        <tr>
+                            <th>Name</th>
+                            <td>{{i.company_name}}</td>
+                        </tr>
+                        <tr>
+                            <th>Contact Person</th>
+                            <td>{{i.company_person}}</td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td>{{i.company_email}}</td>
+                        </tr>
+                        <tr>
+                            <th>Contact number</th>
+                            <td>{{i.company_mobile}}</td>
+                        </tr>
+                        <tr>
+                            <th>Address</th>
+                            <td>{{i.company_address}}</td>
+                        </tr>
+                        <tr>
+                            <th>GST</th>
+                            <td>{{i.company_gst}}</td>
+                        </tr>
+                        <tr>
+                            <th>Threshold</th>
+                            <td>{{i.company_threshold_Stock}}</td>
+                        </tr>
+                        <tr>
+                           <th>Action</th>
+                        <td>
+                            <button type="button" class="btn btn-warning" onclick="editCompany('{{ i.company_id }}', '{{ i.company_name }}', '{{ i.company_person }}', '{{ i.company_email }}', '{{ i.company_mobile }}', '{{ i.company_address }}', '{{ i.company_gst }}', '{{ i.company_threshold_Stock }}')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+                                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001"/>
+                                </svg>
+                            </button>
+                        </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
+
+    <script>
+        function editCompany(id, company_name, company_person, company_email, company_mobile, company_address, company_gst, company_threshold_Stock) {
+            document.getElementById('company_id').value = id;
+            document.getElementById('company_name').value = company_name;
+            document.getElementById('company_person').value = company_person;
+            document.getElementById('company_email').value = company_email;
+            document.getElementById('company_mobile').value = company_mobile;
+            document.getElementById('company_address').value = company_address;
+            document.getElementById('company_gst').value = company_gst;
+            document.getElementById('company_threshold_Stock').value = company_threshold_Stock;
+            document.getElementById('formTitle').innerText = 'Update Company';
+        }
+    </script>
+
+    <script>
+   function validation(){
+    var company_gst=document.getElementById("company_gst").value;
+    var company_mobile=document.getElementById("company_mobile").value;
+
+    if (company_mobile.length<10){
+        alert("mobile number must be 10 character")
+        return false;
+    }
+    else if (company_gst.length<15){
+        alert("GST must be atleast 15 character")
+        return false;
+    }
+    else {
+        return true;
+        }
+   }
+</script>
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+{% if messages %}
+{% for i in messages %}
+{% if i.tags == 'warning' %}
+            <script>
+              swal('{{i}}', '', 'warning');
+            </script>
+        {% elif i.tags == 'error' %}
+            <script>
+              swal('{{i}}', '', 'error');
+            </script>
+        {% elif i.tags == 'info' %}
+            <script>
+              swal('{{i}}', '', 'info');
+            </script>
+        {% else %}
+            <script>
+              swal('{{i}}', '', 'success');
+            </script>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+</body>
+</html>
+{% endblock %}

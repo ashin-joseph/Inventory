@@ -72,6 +72,7 @@
                 <h3>Welcome, {{ user.role }} - {{ user.username }} </h3>
                 <hr>
 <!--                 New Containers with Text -->
+                <a href="{% url 'company_pg' %}"><button type="button" class="btn btn-info">Company Profile</button></a>
                 <a href="{% url 'myadmin:index' %}"><button type="button" class="btn btn-info">Add Staff</button></a>
                 <a href="{% url 'vendor_pg' %}"><button type="button" class="btn btn-info">Add Vendor</button></a>
                 <a href="{% url 'item_pg' %}"><button type="button" class="btn btn-info">Add Item</button></a>

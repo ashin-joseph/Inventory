@@ -135,3 +135,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Custom User Model app.classname
 AUTH_USER_MODEL = 'User.User'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'at.stocksmart@gmail.com'
+EMAIL_HOST_PASSWORD = 'histiurpqlhkesfe'
+
+DEFAULT_FROM_EMAIL = 'at.stocksmart@gmail.com'
+ADMIN_EMAIL = 'at.stocksmart@gmail.com' # The email where alerts should be sent

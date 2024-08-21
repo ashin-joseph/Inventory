@@ -1,4 +1,5 @@
 from decimal import Decimal
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
@@ -26,7 +27,8 @@ def login_user_inv(request):
             else:
                 return redirect(trial_success)
         else:
-            return redirect(logout_user_inv)
+            messages.error(request, "Invalid username or password")
+            return render(request, "user/Login.html")
     else:
         return render(request, "user/Login.html")
 

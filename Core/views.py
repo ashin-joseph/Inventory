@@ -1,8 +1,44 @@
 from django.shortcuts import render, redirect
-from Core.models import itemTable, vendorTable, priceTable
+from Core.models import itemTable, vendorTable, priceTable, companyprofileTable
 from User.views import index
 from django.contrib import messages
 from User.decorators import admin_required, staff_required
+
+@admin_required
+def company_pg(request):
+    base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
+    if request.method == "POST":
+        company_id = request.POST.get('company_id')
+        company_name = request.POST.get('company_name')
+        company_person = request.POST.get('company_person')
+        company_email = request.POST.get('company_email')
+        company_mobile = request.POST.get('company_mobile')
+        company_address = request.POST.get('company_address')
+        company_gst = request.POST.get('company_gst')
+        company_threshold_Stock = request.POST.get('company_threshold_Stock')
+
+        if company_id:
+            company = companyprofileTable.objects.get(id=company_id)
+            company.company_name = company_name
+            company.company_person = company_person
+            company.company_email = company_email
+            company.company_mobile = company_mobile
+            company.company_address = company_address
+            company.company_gst = company_gst
+            company.company_threshold_Stock = company_threshold_Stock
+            company.save()
+            messages.success(request, "Company Details Updated successfully")
+        else:
+            companyprofileTable.objects.create(company_name=company_name,company_person=company_person,company_email=company_email,
+                                               company_mobile=company_mobile,company_address=company_address,company_gst=company_gst,company_threshold_Stock=company_threshold_Stock)
+            messages.success(request, "Company Added Successfully")
+        return redirect(company_pg)
+    company_data = companyprofileTable.objects.all()
+    context={
+            'company_data':company_data,
+            'base_template': base_template,
+        }
+    return render(request,"core/company.html",context)
 
 
 @admin_required
