@@ -19,7 +19,7 @@
                 </div>
                 <div class="order-body">
                     <div class="print-only text-center">
-                        <p> <h2>StockSmart</h2></p>
+                        <p> <h2>{{company}}</h2></p>
                          <h4>Purchase Bill</h4>
                     </div>
                     <div class="row">
@@ -48,7 +48,7 @@
                             {% for i in confirm_items %}
                                 <tr>
                                     <td>{{ i.cpit_item }}</td>
-                                    <td><i>No.</i>{{i.cpit_qty}}</td>
+                                    <td>{{i.cpit_qty}}</td>
                                     <td><i>Rs.</i>{{i.cpit_price}}</td>
                                     <td>{{i.cpit_tax}}<i>%</i></td>
                                     <td><i>Rs.</i>{{i.cpit_Amount}}</td>
@@ -63,7 +63,7 @@
                     </div>
                     <div class="print-only">
                         <p><strong>GISTIN Number: </strong> {{ confirm_order.cpt_vendor.vendor_GST }}</p>
-                        <p><strong>Bill Note: </strong>Kindly deliver the best product with regards StockSmart.</p><p class="text-center"><i>Thank you!</i></p>
+                        <p><strong>Bill Note: </strong>Kindly deliver the best product with regards {{company}}.</p><p class="text-center"><i>Thank you!</i></p>
                     </div>
                     <div class="text-center print-button">
                         <button onclick="window.print()" class="btn btn-info">Print</button>

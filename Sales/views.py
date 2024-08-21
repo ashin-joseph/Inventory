@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect, get_object_or_404
-from Core.models import itemTable, priceTable
+from Core.models import itemTable, priceTable, companyprofileTable
 import datetime
 import random
 from Sales.models import salesorderTable, salesorderItemTable, returnSalesTable, returnsalesItemTable
@@ -73,6 +73,11 @@ def sales_order_display(request, orderId):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     s_order = get_object_or_404(salesorderTable, id=orderId)
     so_item = salesorderItemTable.objects.filter(soit_bill_number=s_order)
+    company_data = companyprofileTable.objects.get()
+    company = company_data.company_name
+    address = company_data.company_address
+    number = company_data.company_mobile
+    gst = company_data.company_gst
 
     overall = 0
     for j in so_item:
@@ -87,6 +92,10 @@ def sales_order_display(request, orderId):
         'so_item': so_item,
         'overall': overall,
         'base_template': base_template,
+        'company': company,
+        'address': address,
+        'number': number,
+        'gst': gst,
     }
     return render(request, "sales/sales_order_display.html", context)
 
@@ -149,6 +158,11 @@ def salesReturn_display(request, return_id):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     return_order = get_object_or_404(returnSalesTable, id=return_id)
     return_items = returnsalesItemTable.objects.filter(rsit_billNum=return_order)
+    company_data = companyprofileTable.objects.get()
+    company = company_data.company_name
+    address = company_data.company_address
+    number = company_data.company_mobile
+    gst = company_data.company_gst
     overall = 0
     for i in return_items:
         price = i.rsit_price * i.rsit_qty
@@ -160,5 +174,9 @@ def salesReturn_display(request, return_id):
         'return_items': return_items,
         'overall': overall,
         'base_template': base_template,
+        'company': company,
+        'address': address,
+        'number': number,
+        'gst': gst,
     }
     return render(request, "sales/salesReturn_display.html", context)

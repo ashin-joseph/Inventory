@@ -19,7 +19,7 @@
                 </div>
                 <div class="order-body">
                     <div class="print-only text-center">
-                        <p> <h2>StockSmart</h2></p>
+                        <p> <h2>{{company}}</h2></p>
                          <h4>Order Bill</h4>
                     </div>
                     <div class="row">
@@ -57,7 +57,7 @@
                     </div>
                     <div class="print-only">
                         <p><strong>GISTIN Number: </strong> {{ order.ot_vendor.vendor_GST }}</p>
-                        <p><strong>Bill Note: </strong>Please deliver the product before 4 pm with regards StockSmart</p><p class="text-center"><i>Thank you!</i></p>
+                        <p><strong>Bill Note: </strong>Please deliver the product before 4 pm with regards {{company}}</p><p class="text-center"><i>Thank you!</i></p>
                     </div>
                     <div class="text-center print-button">
                         <button onclick="window.print()" class="btn btn-info">Print</button>

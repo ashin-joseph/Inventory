@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect, get_object_or_404
-from Core.models import vendorTable, itemTable
+from Core.models import vendorTable, itemTable, companyprofileTable
 from Purchase.models import orderTable, orderitemsTable, confirmPurchaseTable, confirmPurchaseItemTable
 import datetime
 import random
@@ -65,6 +65,8 @@ def order_display(request, order_id):
 def confirmpurchase(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     purchaseOrder_data = orderTable.objects.all()
+    company_data = companyprofileTable.objects.get()
+    company = company_data.company_name
     purchaseOrder = None
     purchaseItems = None
     po_id = None
@@ -80,6 +82,7 @@ def confirmpurchase(request):
         'purchaseOrder': purchaseOrder,
         'purchaseItems': purchaseItems,
         'base_template': base_template,
+        'company': company,
     }
 
     if request.method == "POST":
@@ -117,6 +120,8 @@ def confirmpurchase_display(request, confirm_id):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     confirm_order = get_object_or_404(confirmPurchaseTable, id=confirm_id)
     confirm_items = confirmPurchaseItemTable.objects.filter(cpit_billNum=confirm_order)
+    company_data = companyprofileTable.objects.get()
+    company = company_data.company_name
     overall = 0
     for i in confirm_items:
         price = i.cpit_price * i.cpit_qty
@@ -128,6 +133,7 @@ def confirmpurchase_display(request, confirm_id):
         'confirm_items': confirm_items,
         'overall': overall,
         'base_template': base_template,
+        'company': company,
     }
     return render(request, "purchase/confirmPurchase_display.html", context)
 

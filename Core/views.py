@@ -7,38 +7,51 @@ from User.decorators import admin_required, staff_required
 @admin_required
 def company_pg(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
+
     if request.method == "POST":
         company_id = request.POST.get('company_id')
+        if not company_id:
+            messages.error(request, "Invalid operation: Company ID is required.")
+            return redirect(company_pg)
+
+        try:
+            company = companyprofileTable.objects.get(id=company_id)
+        except companyprofileTable.DoesNotExist:
+            messages.error(request, "Company not found.")
+            return redirect(company_pg)
+
         company_name = request.POST.get('company_name')
         company_person = request.POST.get('company_person')
         company_email = request.POST.get('company_email')
         company_mobile = request.POST.get('company_mobile')
         company_address = request.POST.get('company_address')
         company_gst = request.POST.get('company_gst')
+        company_Purchase_note = request.POST.get('company_Purchase_note')
+        company_Sales_note = request.POST.get('company_Sales_note')
         company_threshold_Stock = request.POST.get('company_threshold_Stock')
 
-        if company_id:
-            company = companyprofileTable.objects.get(id=company_id)
-            company.company_name = company_name
-            company.company_person = company_person
-            company.company_email = company_email
-            company.company_mobile = company_mobile
-            company.company_address = company_address
-            company.company_gst = company_gst
-            company.company_threshold_Stock = company_threshold_Stock
-            company.save()
-            messages.success(request, "Company Details Updated successfully")
-        else:
-            companyprofileTable.objects.create(company_name=company_name,company_person=company_person,company_email=company_email,
-                                               company_mobile=company_mobile,company_address=company_address,company_gst=company_gst,company_threshold_Stock=company_threshold_Stock)
-            messages.success(request, "Company Added Successfully")
+        # Update the existing company record
+        company.company_name = company_name
+        company.company_person = company_person
+        company.company_email = company_email
+        company.company_mobile = company_mobile
+        company.company_address = company_address
+        company.company_gst = company_gst
+        company.company_Purchase_note = company_Purchase_note
+        company.company_Sales_note = company_Sales_note
+        company.company_threshold_Stock = company_threshold_Stock
+        company.save()
+
+        messages.success(request, "Company Details Updated Successfully")
         return redirect(company_pg)
+
     company_data = companyprofileTable.objects.all()
-    context={
-            'company_data':company_data,
-            'base_template': base_template,
-        }
-    return render(request,"core/company.html",context)
+    context = {
+        'company_data': company_data,
+        'base_template': base_template,
+    }
+    return render(request, "core/company.html", context)
+
 
 
 @admin_required

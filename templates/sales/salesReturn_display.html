@@ -19,18 +19,19 @@
                 </div>
                 <div class="order-body">
                     <div class="print-only text-center">
-                        <p> <h2>SmartStock</h2></p>
+                        <p> <h2>{{company}}</h2></p>
                          <h4>Sales Return Bill</h4>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
                             <p><strong>Bill number: </strong> {{ return_order.rst_billNum }}</p>
-                            <p><strong>GISTIN Number:</strong> 1010101010GSTIN</p>
+                            <p><strong>GISTIN Number:</strong> {{gst}}</p>
                             <p><strong>Date: </strong> {{ return_order.rst_date }}</p>
                         </div>
                         <div class="col-md-6 text-md-right">
-                           <p><strong>Address: </strong> SmartStock Company,Thrissur,<br> Kerala-680652</p>
-                            <p><strong>Contact Number:</strong> 09630369093</p>
+                           <p><strong>Company: </strong> {{company}}</p>
+                           <p><strong>Address: </strong> {{address}}</p>
+                            <p><strong>Contact Number:</strong> {{number}}</p>
                         </div>
                     </div>
                     <table class="table table-striped order-table">
@@ -50,11 +51,11 @@
                                 <tr>
                                     <td>{{ j.rsit_item.item_name }}</td>
                                     <td>{{ j.rsit_reason }}</td>
-                                    <td><i>No.</i>{{ j.rsit_qty }}</td>
+                                    <td><{{ j.rsit_qty }}</td>
                                     <td><i>Rs.</i>{{ j.rsit_price }}</td>
                                     <td>{{ j.rsit_tax }}<i>%</i></td>
                                     <td>{{ j.rsit_offer }}<i>%</i></td>
-                                    <td>{{ j.rsit_refundAmount }}<i>%</i></td>
+                                    <td><i>Rs.</i>{{ j.rsit_refundAmount }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>

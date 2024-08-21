@@ -143,6 +143,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'at.stocksmart@gmail.com'
 EMAIL_HOST_PASSWORD = 'histiurpqlhkesfe'
-
-DEFAULT_FROM_EMAIL = 'at.stocksmart@gmail.com'
-ADMIN_EMAIL = 'at.stocksmart@gmail.com' # The email where alerts should be sent
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+# DEFAULT_FROM_EMAIL = 'at.stocksmart@gmail.com'
+# ADMIN_EMAIL = 'at.stocksmart@gmail.com' # The email where alerts should be sent
