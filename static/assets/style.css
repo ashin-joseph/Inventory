@@ -67,10 +67,10 @@
             justify-content: center;
         }
         .bg-info {
-        background-color: #030355 !important;
-        color: #ffffff !important;
-        text-decoration: none !important;
-        box-shadow: none !important;
+            background-color: #030355 !important;
+            color: #ffffff !important;
+            text-decoration: none !important;
+            box-shadow: none !important;
         }
         .btn-info{
              background-color: #030355 !important;
@@ -109,9 +109,8 @@
         .text-pink { color: #e83e8c; }
         .text-green { color: #0f8c3d; }
         .text-purple { color: #6f42c1; }
-        .form-container {
-            width: 40%;
-        }
+        .form-container { width: 40%; }
+
         .table-container {
             width: 55%;
             margin-bottom: 80px;
