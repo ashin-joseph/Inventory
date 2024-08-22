@@ -3,6 +3,9 @@ from Core.models import itemTable, vendorTable, priceTable, companyprofileTable
 from User.views import index
 from django.contrib import messages
 from User.decorators import admin_required, staff_required
+import datetime
+from User.utils import lowstock_list, daily_salesReport, daily_purchaseReport, daily_profitReport
+
 
 @admin_required
 def company_pg(request):
@@ -52,8 +55,6 @@ def company_pg(request):
     }
     return render(request, "core/company.html", context)
 
-
-
 @admin_required
 def item_pg(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
@@ -77,13 +78,11 @@ def item_pg(request):
     item_data = itemTable.objects.all()
     return render(request, "core/item.html", {'item_data': item_data, 'base_template': base_template})
 
-
 @admin_required
 def deleteItem(request, Did):
     itemTable.objects.filter(id=Did).delete()
     messages.error(request, "Item Deleted Successfully")
     return redirect(item_pg)
-
 
 @admin_required
 def vendor_pg(request):
@@ -120,13 +119,11 @@ def vendor_pg(request):
     vendor_data = vendorTable.objects.all()
     return render(request, "core/vendor.html", {'vendor_data': vendor_data, 'base_template': base_template})
 
-
 @admin_required
 def deleteVendor(request, Did):
     vendorTable.objects.filter(vendor_id=Did).delete()
     messages.error(request, "Vendor Deleted Successfully")
     return redirect(vendor_pg)
-
 
 @admin_required
 def price_pg(request):
@@ -139,7 +136,6 @@ def price_pg(request):
         return redirect(price_pg)
     price_data = priceTable.objects.all()
     return render(request, "core/price.html", {'price_data': price_data, 'base_template': base_template})
-
 
 @admin_required
 def updatePrice(request):
@@ -155,3 +151,22 @@ def updatePrice(request):
                 messages.info(request, "Updated Price/Tax/Offer Successfully")
         return redirect(price_pg)
     return redirect(index)
+@admin_required
+def report(request):
+    base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
+    current_date= datetime.datetime.today()
+    low_stock_list = lowstock_list()
+    daily_sales, daily_sales_return = daily_salesReport()
+    daily_purchase = daily_purchaseReport()
+    daily_profit = daily_profitReport()
+    context = {
+        'current_date':current_date,
+        'base_template': base_template,
+        'low_stock_list': low_stock_list,
+        'daily_sales': daily_sales,
+        'daily_sales_return': daily_sales_return,
+        'daily_purchase': daily_purchase,
+        'daily_profit': daily_profit,
+    }
+    return render(request,"core/report.html",context)
+

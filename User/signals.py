@@ -1,12 +1,13 @@
 from django.contrib.auth.signals import user_logged_in
 from django.db.models.signals import post_save
-from django.dispatch import receiver
+from django.dispatch import receiver, Signal
 from django.core.mail import send_mail
 from django.conf import settings
 from Stock.models import stockTable
 from Core.models import companyprofileTable
 
 
+pdf_requested = Signal()
 
 
 @receiver(user_logged_in)

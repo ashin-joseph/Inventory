@@ -1,15 +1,9 @@
-from decimal import Decimal
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
-from Stock.models import stockTable
-from Core.models import itemTable
-from Core.models import priceTable
-from .models import User
-from Purchase.models import confirmPurchaseItemTable
-from Sales.models import salesorderItemTable, returnsalesItemTable
 from User.decorators import admin_required, staff_required, admin_staff_required
+from .utils import product_details, todays_offer, lowstock_list, user_activity, purchase_overview, sales_overview
 User = get_user_model()
 
 
@@ -105,120 +99,25 @@ def trial_success(request):
 def trial_failed(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     return render(request,"user/trial_failed.html", {'base_template':base_template})
+
+
 def sample(request):
     return render(request,"user/sample.html")
 
-def product_details():
-    stockdata =stockTable.objects.all()
-    itemdata =itemTable.objects.all()
-    stockappendNo=[]
-    itemappendName=[]
-    itemappendCategory=[]
-    for i in itemdata:
-        itemappendCategory.append(i.item_category)
-        itemappendName.append(i.item_name)
-    for i in stockdata:
-        if i.st_remainingStock < 10:
-            stockappendNo.append(i.st_item.item_name)
-    return len(stockappendNo),len(itemappendName), len(set(itemappendCategory))
 
+# def loginuser1(request):
+#     if request.method == "POST":
+#         login_username = request.POST.get('login_username')
+#         login_password = request.POST.get('login_password')
+#         user = authenticate(request, username=login_username, password=login_password)
+#         if user is not None and user.is_active:
+#             login(request, user)
+#             return redirect(index)
+#         else:
+#             return redirect(logout_user_inv)
+#     else:
+#         return render(request, "user/Login.html")
 
-def todays_offer():
-    price_data = priceTable.objects.all()
-    offer_list = []
-    for i in price_data:
-        if i.pt_sellingPrice and i.pt_tax and i.pt_offer:
-            try:
-                selling_price = Decimal(i.pt_sellingPrice)
-                tax = (Decimal(i.pt_tax) / 100) * selling_price
-                offer = (Decimal(i.pt_offer) / 100) * selling_price
-                offer_amount = selling_price + tax - offer
-                i.calculated_price = int(offer_amount)
-                # Append the item and its calculated offer amount to the list
-                offer_list.append((offer, i))
-            except (ValueError, Decimal.InvalidOperation) as e:
-                continue
-    # Sort the list by offer amount in descending order
-    offer_list.sort(reverse=True, key=lambda x: x[0])
-    # Extract only the sorted items
-    sorted_items = [item for _, item in offer_list]
-    return sorted_items
-
-def lowstock_list():
-    stockdata= stockTable.objects.all()
-    stockappendList=[]
-    for i in stockdata:
-        if i.st_remainingStock < 10:
-            stockappendList.append((i.st_item.item_name,i.st_remainingStock))
-    return stockappendList
-
-def user_activity():
-    userdata = User.objects.all()
-    userlist=[]
-    for i in userdata:
-        userlist.append((i.username, i.last_login, i.email, i.role, i.is_active))
-    return userlist
-
-def purchase_overview():
-    products_data = confirmPurchaseItemTable.objects.all()
-    purchaseSum = 0
-    purchaseNo = set()
-
-    for j in products_data:
-        if j.cpit_billNum:
-            purchaseNo.add(j.cpit_billNum)
-        if j.cpit_Amount:
-            purchaseSum += int(j.cpit_Amount)
-
-    return purchaseSum, len(purchaseNo)
-
-
-def sales_overview():
-    sales_data = salesorderItemTable.objects.all()
-    salesReturn_data = returnsalesItemTable.objects.all()
-    salesSum = 0
-    salesNo = set()
-    salesReturnSum = 0
-    salesReturnNo = set()
-    for i in sales_data:
-        if i.soit_bill_number:
-            salesNo.add(i.soit_bill_number)
-        if i.soit_total:
-            salesSum += int(i.soit_total)
-
-    for j in salesReturn_data:
-        if j.rsit_billNum:
-            salesReturnNo.add(j.rsit_billNum)
-        if j.rsit_refundAmount:
-            salesReturnSum += int(j.rsit_refundAmount)
-
-    return salesSum, len(salesNo), salesReturnSum, len(salesReturnNo)
-
-
-def loginuser1(request):
-    if request.method == "POST":
-        login_username = request.POST.get('login_username')
-        login_password = request.POST.get('login_password')
-        user = authenticate(request, username=login_username, password=login_password)
-        if user is not None and user.is_active:
-            login(request, user)
-            return redirect(index)
-        else:
-            return redirect(logout_user_inv)
-    else:
-        return render(request, "user/Login.html")
-def todaysoffer():
-    price_data = priceTable.objects.all()
-    total_offer_amount=0
-    for i in price_data:
-        if i.pt_sellingPrice and i.pt_tax and i.pt_offer:
-            selling_price = Decimal(i.pt_sellingPrice)
-            tax=(Decimal(i.pt_tax/100))*selling_price
-            offer=(Decimal(i.pt_offer/100))*selling_price
-            offer_amount = selling_price + tax - offer
-            total_offer_amount += offer_amount
-            i.calculated_price = int(offer_amount)
-    return price_data
 
 
 
