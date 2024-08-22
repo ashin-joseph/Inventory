@@ -25,7 +25,7 @@ class orderitemsTable(models.Model):
 
 class confirmPurchaseTable(models.Model):
     cpt_billNum = models.CharField(max_length=20, unique=True)
-    cpt_poNum=models.ForeignKey(orderTable, on_delete=models.CASCADE)
+    # cpt_poNum=models.ForeignKey(orderTable, on_delete=models.CASCADE)
     cpt_vendor=models.ForeignKey(vendorTable, on_delete=models.CASCADE)
     cpt_date = models.DateField(auto_now_add=True)
     cpt_user = models.ForeignKey(User, on_delete=models.CASCADE)

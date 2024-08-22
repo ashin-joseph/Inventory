@@ -24,7 +24,7 @@ def order(request):
         if vendor_id and item_names:
             date_str = datetime.datetime.now().strftime("%Y%m%d")
             random_number = random.randint(100, 999)
-            order_number = f"{date_str}PL{random_number}"
+            order_number = f"{date_str}PO{random_number}"
             try:
                 vendor_instance = vendorTable.objects.get(vendor_id=vendor_id)
                 user_instance = User.objects.get(id=user_id)
@@ -53,15 +53,17 @@ def order_display(request, order_id):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     order = get_object_or_404(orderTable, id=order_id)
     items = orderitemsTable.objects.filter(oit_orderNum=order)
+    company_data = companyprofileTable.objects.get()
+    company = company_data.company_name
 
     context = {
         'order': order,
         'items': items,
         'base_template': base_template,
+        'company': company,
     }
     return render(request, 'purchase/order_display.html', context)
-
-
+@admin_required
 def confirmpurchase(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     purchaseOrder_data = orderTable.objects.all()
@@ -77,30 +79,24 @@ def confirmpurchase(request):
     if po_id:
         purchaseOrder = get_object_or_404(orderTable, id=po_id)
         purchaseItems = orderitemsTable.objects.filter(oit_orderNum=purchaseOrder)
-    context = {
-        'purchaseOrder_data': purchaseOrder_data,
-        'purchaseOrder': purchaseOrder,
-        'purchaseItems': purchaseItems,
-        'base_template': base_template,
-        'company': company,
-    }
 
     if request.method == "POST":
         purchaseOdrNum_id = request.POST.get('purchaseOrderNum_id')  # Get single value
+        purchaseOrderNum = request.POST.get('purchaseOrderNum')
         item_names = request.POST.getlist('item_name[]')
         item_quantity = request.POST.getlist('item_quantity[]')
         item_price = request.POST.getlist('item_price[]')
         item_tax = request.POST.getlist('item_tax[]')
         item_amount = request.POST.getlist('item_amount[]')
         if purchaseOdrNum_id and item_names:
-            date_Rstr = datetime.datetime.now().strftime("%Y%m%d")
-            random_number = random.randint(100, 999)
-            Confirm_order_number = f"{date_Rstr}PC{random_number}"
+            # date_Rstr = datetime.datetime.now().strftime("%Y%m%d")
+            # random_number = random.randint(100, 999)
+            # Confirm_order_number = f"{date_Rstr}PC{random_number}"
+            confirmOrderNumber = purchaseOrderNum
             try:
-                purchase_instance = orderTable.objects.get(id=purchaseOdrNum_id)
                 user_instance = User.objects.get(id=user_id)
                 vendor_instance = vendorTable.objects.get(vendor_id=vendor_id)
-                purchase_number = confirmPurchaseTable(cpt_billNum=Confirm_order_number, cpt_poNum=purchase_instance,
+                purchase_number = confirmPurchaseTable(cpt_billNum=confirmOrderNumber,
                                                        cpt_vendor=vendor_instance, cpt_user=user_instance)
                 purchase_number.save()
                 for ii, iq, ip, it, ia in zip(item_names, item_quantity, item_price, item_tax, item_amount):
@@ -109,9 +105,18 @@ def confirmpurchase(request):
                                                              cpit_item=item_instance_return,
                                                              cpit_qty=iq, cpit_price=ip, cpit_tax=it, cpit_Amount=ia)
                     confirm_items.save()
+                orderTable.objects.filter(id=purchaseOdrNum_id).delete()
                 return redirect(confirmpurchase_display, confirm_id=purchase_number.id)
             except orderTable.DoesNotExist:
                 return redirect(trial_failed)
+    context = {
+        'purchaseOrder_data': purchaseOrder_data,
+        'purchaseOrder': purchaseOrder,
+        'purchaseItems': purchaseItems,
+        'base_template': base_template,
+        'company': company,
+    }
+
     return render(request, "purchase/confirmpurchase_order.html", context)
 
 
@@ -136,6 +141,66 @@ def confirmpurchase_display(request, confirm_id):
         'company': company,
     }
     return render(request, "purchase/confirmPurchase_display.html", context)
+
+
+
+# def confirmpurchasesave(request):
+#     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
+#     purchaseOrder_data = orderTable.objects.all()
+#     company_data = companyprofileTable.objects.get()
+#     company = company_data.company_name
+#     purchaseOrder = None
+#     purchaseItems = None
+#     po_id = None
+#     if request.method == "POST":
+#         po_id = request.POST.get("purchaseOrderNum_id")
+#         user_id = request.POST.get("user_id")
+#         vendor_id = request.POST.get("vendor_id")
+#         if po_id:
+#             purchaseOrder = get_object_or_404(orderTable, id=po_id)
+#             purchaseItems = orderitemsTable.objects.filter(oit_orderNum=purchaseOrder)
+#         purchaseOdrNum_id = request.POST.get('purchaseOrderNum_id')  # Get single value
+#         purchaseOrderNum = request.POST.get('purchaseOrderNum')
+#         item_names = request.POST.getlist('item_name[]')
+#         item_quantity = request.POST.getlist('item_quantity[]')
+#         item_price = request.POST.getlist('item_price[]')
+#         item_tax = request.POST.getlist('item_tax[]')
+#         item_amount = request.POST.getlist('item_amount[]')
+#         if purchaseOdrNum_id and item_names:
+#             confirmOrderNumber = purchaseOrderNum
+#             try:
+#                 user_instance = User.objects.get(id=user_id)
+#                 vendor_instance = vendorTable.objects.get(vendor_id=vendor_id)
+#                 # Save the purchase order
+#                 purchase_number = confirmPurchaseTable(
+#                     cpt_billNum=confirmOrderNumber,
+#                     cpt_vendor=vendor_instance,
+#                     cpt_user=user_instance)
+#                 purchase_number.save()
+#                 # Save each item in the purchase order
+#                 for ii, iq, ip, it, ia in zip(item_names, item_quantity, item_price, item_tax, item_amount):
+#                     item_instance_return = itemTable.objects.get(item_name=ii)
+#                     confirm_items = confirmPurchaseItemTable(
+#                         cpit_billNum=purchase_number,
+#                         cpit_item=item_instance_return,
+#                         cpit_qty=iq,
+#                         cpit_price=ip,
+#                         cpit_tax=it,
+#                         cpit_Amount=ia
+#                     )
+#                     confirm_items.save()
+#                 orderTable.objects.filter(id=purchaseOdrNum_id).delete()
+#                 return redirect(confirmpurchase_display, confirm_id=purchase_number.id)
+#             except orderTable.DoesNotExist:
+#                 return redirect(trial_failed)
+#     context = {
+#         'purchaseOrder_data': purchaseOrder_data,
+#         'purchaseOrder': purchaseOrder,
+#         'purchaseItems': purchaseItems,
+#         'base_template': base_template,
+#         'company': company,
+#     }
+#     return render(request, "purchase/confirmpurchase_order.html", context)
 
 # @admin_required
 # def purchaseorder1(request):
@@ -178,6 +243,7 @@ def confirmpurchase_display(request, confirm_id):
 #
 #     return render(request, "purchase/purchase_order.html",
 #                   {'vendor_data': vendor_data, 'item_data': item_data, 'base_template': base_template})
+
 # @admin_required
 # def purchaseorder_display1(request, order_id):
 #     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
@@ -198,6 +264,7 @@ def confirmpurchase_display(request, confirm_id):
 #         'base_template':base_template,
 #     }
 #     return render(request, 'purchase/purchaseOrder_display.html', context)
+
 # @admin_required
 # def purchasereturn1(request):
 #     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
@@ -244,6 +311,7 @@ def confirmpurchase_display(request, confirm_id):
 #             except purchaseorderTable.DoesNotExist:
 #                 return redirect(trial_failed)
 #     return render(request,"purchase/purchase_ret.html", context)
+
 # @admin_required
 # def purchaseReturn_display1(request, return_id):
 #     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
@@ -262,29 +330,3 @@ def confirmpurchase_display(request, confirm_id):
 #         'base_template' : base_template,
 #     }
 #     return render(request,"purchase/purchaseReturn_dis.html", context)
-# def purchaseReturnsave1(request):
-#     if request.method == "POST":
-#         purchaseOdrNum_id = request.POST.get('purchaseOrderNum_id')  # Get single value
-#         item_names = request.POST.getlist('item_name[]')
-#         item_reason = request.POST.getlist('item_reason[]')
-#         item_quantity = request.POST.getlist('item_quantity[]')
-#         item_price = request.POST.getlist('item_price[]')
-#         item_tax = request.POST.getlist('item_tax[]')
-#         item_amount = request.POST.getlist('item_amount[]')
-#         if purchaseOdrNum_id and item_names:
-#             date_Rstr = datetime.datetime.now().strftime("%Y%m%d")
-#             random_number = random.randint(100, 999)
-#             Return_order_number = f"{date_Rstr}RO{random_number}"
-#             try:
-#                 purchase_instance = purchaseorderTable.objects.get(id=purchaseOdrNum_id)
-#                 purchase_return_number = returnPurchaseTable(rpt_billNum=Return_order_number, rpt_poNum=purchase_instance)
-#                 purchase_return_number.save()
-#                 for ii, ir, iq, ip, it, ia in zip(item_names, item_reason, item_quantity, item_price, item_tax, item_amount):
-#                     item_instance_return = itemTable.objects.get(item_name=ii)
-#                     return_items = returnItemTable(rit_billNum=purchase_return_number, rit_item=item_instance_return, rit_reason=ir,
-#                                                rit_qty=iq, rit_price=ip, rit_tax=it, rit_refundAmount=ia)
-#                     return_items.save()
-#                 return redirect(trial_failed)
-#             except purchaseorderTable.DoesNotExist:
-#                 return redirect(trial_failed)
-#     return redirect(purchasereturn)
