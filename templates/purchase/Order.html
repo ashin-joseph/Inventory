@@ -11,49 +11,54 @@
     <link href="{% static 'assets/style.css' %}" rel="stylesheet">
 </head>
 <body>
-<div class="container">
-<h4 class="mt-1">Select Vendor</h4>
-<form method="post" action="{% url 'order' %}" class="footer-bottom">
-    {% csrf_token %}
-    <input name="vendor" type="text" id="shopSearch" placeholder="Search for a shop" class="form-control" required>
-    <input name="vendor_id" type="hidden" id="vendorID" value="{{ vendor_data.id }}" readonly>
-    <input name="user_id" type="hidden" value="{{ user.id }}" readonly>
-    <div id="shopDetails" class="d-flex justify-content-end container mt-1">
-    <!-- Shop details will be displayed here -->
+<div class="container-fluid x d-flex">
+    <div class="col-1 x">
+        Item list
+        <div class="x d-flex flex-wrap">
+            {% for i in item_data %}
+                <button type="button" value="{{i.id}}" class="btn m-1 btn-warning itemButton">{{i.item_name}}</button>
+            {% endfor %}
+        </div>
     </div>
+    <div class="col-8 x">
+        <h4 class="mt-1">Select Vendor</h4>
+        <form method="post" action="{% url 'order' %}" class="footer-bottom">
+            {% csrf_token %}
+            <input name="vendor" type="text" id="shopSearch" placeholder="Search for a shop" class="form-control" required>
+            <input name="vendor_id" type="hidden" id="vendorID" value="{{ vendor_data.id }}" readonly>
+            <input name="user_id" type="hidden" value="{{ user.id }}" readonly>
+            <div id="shopDetails" class="d-flex justify-content-end container mt-1">
+                <!-- Shop details will be displayed here -->
+            </div>
 
-    <h4 class="mt-1">Select Items</h4>
-    <hr> <!-- Added horizontal line here -->
+            <h4 class="mt-1">Select Items</h4>
+            <hr> <!-- Added horizontal line here -->
 
-    <div class="mt-1">
-            <div class="row mb-3">
-                <div class="col">
-                    <input type="text" class="form-control small-input" id="input1" placeholder="Add item" >
+            <div class="mt-1">
+                <div class="row mb-3">
+                    <div class="col">
+                        <input type="text" class="form-control small-input" id="input1" placeholder="Add item">
+                    </div>
                 </div>
             </div>
-<!--            <div class="d-flex justify-content-end">-->
-<!--                <button class="btn btn-primary" type="button" onclick="addItem()">Add</button>-->
-<!--            </div>-->
-        </div>
 
-    <div class="container mt-1">
-        <div id="item-list">
-              <div class="col d-flex justify-content-around" >
-            <label for="" >Item</label>
-            <label for="" >Quantity</label>
-            <label for="" >Delete</label>
+            <div class="container mt-1">
+                <div id="item-list">
+                    <div class="col d-flex justify-content-around">
+                        <label>Item</label>
+                        <label>Quantity</label>
+                        <label>Delete</label>
+                    </div>
+                    <!-- Input fields for selected items will be dynamically added here -->
+                </div>
+                <p class="mt-1"><i>Select vendor and items, then hit 'Order' button.</i></p>
+                <div class="d-flex justify-content-end mb-3">
+                    <button class="btn btn-info mr-2" type="submit" id="orderButton">Order</button>
+                </div>
             </div>
-            <!-- Input fields for selected items will be dynamically added here -->
-        </div>
-        <p class="mt-1"><i>Select vendor and Items and hit 'Order' button.</i></p>
-        <div class="d-flex justify-content-end mb-3">
-            <button class="btn btn-info mr-2" type="submit" id="orderButton">Order</button>
-<!--            <a href=""><button class="btn btn-secondary" type="button">Save</button></a>-->
-        </div>
-
+        </form>
     </div>
-</form>
-    </div>
+</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -93,6 +98,15 @@
                 }
             }
         });
+
+        // Add event listener for item buttons
+        $('.itemButton').on('click', function() {
+            var itemId = $(this).val();
+            var selectedItem = itemData.find(item => item.id == itemId);
+            if (selectedItem) {
+                addItem(selectedItem.name);
+            }
+        });
     });
 
     function addItem(itemName) {
@@ -108,17 +122,17 @@
                     <input type="number" name="item_quantity[]" class="form-control small-input qty-input" placeholder="Quantity" min="1" required>
                 </div>
                 <div class="col d-flex justify-content-around">
-            <div class=" justify-content-end">
-               <button class="btn btn-danger delete-item-btn" type="button" >Delete</button>
-           </div>
+                    <div class="justify-content-end">
+                        <button class="btn btn-danger delete-item-btn" type="button">Delete</button>
+                    </div>
                 </div>
             </div>`;
         const itemList = document.getElementById('item-list');
         itemList.appendChild(newItem);
         document.getElementById('input1').value = '';
 
-        // Attach change event handlers to newly added fields
-         newItem.querySelector('.delete-item-btn').addEventListener('click', function() {
+        // Attach event handler to delete button
+        newItem.querySelector('.delete-item-btn').addEventListener('click', function() {
             deleteItem(newItem);
         });
     }

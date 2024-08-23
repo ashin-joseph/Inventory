@@ -1,11 +1,17 @@
 from django.shortcuts import render, redirect
 from Core.models import itemTable, vendorTable, priceTable, companyprofileTable
-from User.views import index
+from InventorySystem import settings
+from User.views import index, trial_failed
 from django.contrib import messages
 from User.decorators import admin_required, staff_required
 import datetime
 from User.utils import lowstock_list, daily_salesReport, daily_purchaseReport, daily_profitReport
 
+from django.core.mail import EmailMessage
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+import io
 
 @admin_required
 def company_pg(request):
@@ -70,7 +76,7 @@ def item_pg(request):
             item.item_category = item_category
             item.item_unit = item_unit
             item.save()
-            messages.warning(request, "Item Updated successfully")
+            messages.success(request, "Item Updated successfully")
         else:
             itemTable.objects.create(item_name=item_name, item_category=item_category, item_unit=item_unit)
             messages.success(request, "Item Added Successfully")
@@ -151,10 +157,22 @@ def updatePrice(request):
                 messages.info(request, "Updated Price/Tax/Offer Successfully")
         return redirect(price_pg)
     return redirect(index)
+
+def render_to_pdf(template_src, context_dict={}):
+    template = get_template(template_src)
+    html = template.render(context_dict)
+    result = io.BytesIO()
+    pdf = pisa.CreatePDF(io.BytesIO(html.encode("UTF-8")), dest=result)
+    if not pdf.err:
+        return result
+    return None
+
 @admin_required
 def report(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
-    current_date= datetime.datetime.today()
+    company_profile = companyprofileTable.objects.first()  # Adjust this if you have multiple company profiles
+    company_email = company_profile.company_email if company_profile else None
+    current_date= datetime.datetime.now().strftime("%Y/%m/%d-%H:%M")
     low_stock_list = lowstock_list()
     daily_sales, daily_sales_return = daily_salesReport()
     daily_purchase = daily_purchaseReport()
@@ -168,5 +186,70 @@ def report(request):
         'daily_purchase': daily_purchase,
         'daily_profit': daily_profit,
     }
-    return render(request,"core/report.html",context)
 
+    if request.method == 'POST' and 'send_pdf' in request.POST:
+        pdf = render_to_pdf('core/report.html', context)
+        if pdf:
+            email = EmailMessage(
+                'Daily Report',
+                f'Here is the attachment of the Daily Report on {current_date} in PDF.',
+                settings.DEFAULT_FROM_EMAIL,
+                [company_email],
+            )
+            email.attach(f'daily_report{current_date}.pdf', pdf.getvalue(), 'application/pdf')
+            email.send()
+            messages.success(request, "Please check your inbox for the report")
+            return redirect(report)
+        return redirect(trial_failed)
+
+    return render(request, "core/report.html", context)
+
+
+@admin_required
+def report_text(request):
+    base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
+    company_profile = companyprofileTable.objects.first()  # Adjust this if you have multiple company profiles
+    company_email = company_profile.company_email if company_profile else None
+    current_date = datetime.datetime.today().strftime("%Y/%m-%d-%H:%M")
+    low_stock_list = lowstock_list()
+    daily_sales, daily_sales_return = daily_salesReport()
+    daily_purchase = daily_purchaseReport()
+    daily_profit = daily_profitReport()
+
+    context = {
+        'current_date': current_date,
+        'base_template': base_template,
+        'low_stock_list': low_stock_list,
+        'daily_sales': daily_sales,
+        'daily_sales_return': daily_sales_return,
+        'daily_purchase': daily_purchase,
+        'daily_profit': daily_profit,
+    }
+
+    if request.method == 'POST' and 'send_pdf' in request.POST:
+        # Create the email content as plain text
+        email_body = f"Daily Report for {current_date}\n\n"
+        email_body += f"Income:\n  - Sales: {daily_sales}\n"
+        email_body += f"Expense:\n  - Sales Return: {daily_sales_return}\n"
+        email_body += f"  - Purchase: {daily_purchase}\n"
+        email_body += f"\nProfit: {daily_profit}\n"
+
+        if low_stock_list:
+            email_body += "\nLow Stock Items:\n"
+            for item_name, item_quantity in low_stock_list:
+                email_body += f"  - {item_name}: {item_quantity}\n"
+        else:
+            email_body += "\nNo items with low stock.\n"
+
+        # Send the email
+        email = EmailMessage(
+            'Daily Report',
+            email_body,
+            settings.DEFAULT_FROM_EMAIL,
+            [company_email],
+        )
+        email.send()
+
+        return redirect(index)
+
+    return render(request, "core/report.html", context)

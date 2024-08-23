@@ -1,4 +1,4 @@
-
+    .x{  border: rgb(245, 12, 62) 2px solid; }
         body {
             overflow-x: hidden; /* Disable horizontal scrolling */
             height: 100vh;
