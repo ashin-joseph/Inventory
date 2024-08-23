@@ -142,7 +142,24 @@ def confirmpurchase_display(request, confirm_id):
     }
     return render(request, "purchase/confirmPurchase_display.html", context)
 
+def purchase_bill(request):
+    base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
+    purchaseConfirm_data= confirmPurchaseTable.objects.all().order_by('cpt_date')
+    purchaseconfirmdate_dic={}
 
+    for item in purchaseConfirm_data:
+        if item.cpt_date not in purchaseconfirmdate_dic:
+            purchaseconfirmdate_dic[item.cpt_date] = {'bills': [], 'users': []}
+        if item.cpt_billNum:
+            purchaseconfirmdate_dic[item.cpt_date]['bills'].append(item.cpt_billNum)
+        if item.cpt_user:
+            purchaseconfirmdate_dic[item.cpt_date]['users'].append(item.cpt_user)
+
+    context={
+        'base_template': base_template,
+        'purchaseconfirmdate_dic': purchaseconfirmdate_dic,
+    }
+    return render(request,"purchase/purchase_bills.html", context)
 
 # def confirmpurchasesave(request):
 #     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'

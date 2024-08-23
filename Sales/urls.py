@@ -8,4 +8,5 @@ urlpatterns = [
      path('sales_order_display/<int:orderId>/',views.sales_order_display, name="sales_order_display"),
      path('salesreturn/',views.salesreturn, name="salesreturn"),
      path('salesReturn_display/<int:return_id>/',views.salesReturn_display, name="salesReturn_display"),
+     path('sales_bill/',views.sales_bill, name="sales_bill"),
 ]

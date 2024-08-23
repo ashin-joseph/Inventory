@@ -11,11 +11,19 @@
     <link href="{% static 'assets/style.css' %}" rel="stylesheet">
 </head>
 <body>
-<div class="container">
-<h4 class="mt-1">Purchase Order Number</h4>
-
-    <input class="form-control" name="purchaseOrderNum" type="text" id="orderSearch" placeholder="Search for Order Number" value="{% if purchaseOrder %}{{ purchaseOrder.pot_order_number }}{% endif %}" required>
-    <div id="orderDetails" class="d-flex justify-content-end container mt-1">
+<div class="container-fluid x d-flex">
+    <div class="col-1 x">
+        <h3>Unconfirmed List</h3>
+        <div class="x d-flex flex-wrap">
+            {% for i in purchaseOrder_data %}
+                <button type="button" value="{{i.id}}" class="btn m-1 btn-warning orderButton" >{{i.ot_order_number}}</button>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-8 x">
+        <h4 class="mt-1">Purchase Order Number</h4>
+        <input class="form-control" name="purchaseOrderNum" type="text" id="orderSearch" placeholder="Search for Order Number" value="{% if purchaseOrder %}{{ purchaseOrder.pot_order_number }}{% endif %}" required>
+        <div id="orderDetails" class="d-flex justify-content-end container mt-1 orderDetails">
         {% if purchaseOrder %}
             <div>
                 <strong>Purchase Order Number:</strong> {{ purchaseOrder.ot_order_number }}<br>
@@ -27,8 +35,8 @@
             </div>
         {% endif %}
     </div>
-    <hr> <!-- Added horizontal line here -->
-    <form method="post" action="{% url 'confirmpurchase' %}" class="footer-bottom ">
+        <hr> <!-- Added horizontal line here -->
+        <form method="post" action="{% url 'confirmpurchase' %}" class="footer-bottom ">
     {% csrf_token %}
         <input name="purchaseOrderNum_id" type="hidden" id="purchaseOrderNum_id" value="{% if purchaseOrder %}{{ purchaseOrder.id }}{% endif %}" readonly>
         <input name="purchaseOrderNum" type="hidden" id="purchaseOrderNum" value="{{purchaseOrder.ot_order_number}}" readonly>
@@ -70,7 +78,8 @@
         </div>
     </div>
 </form>
-</div>
+    </div>
+    </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>

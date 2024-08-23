@@ -31,6 +31,7 @@
                             <div class="dropdown-menu" aria-labelledby="navbarPurchaseDropdown">
                                 <a class="dropdownItem" href="{% url 'order' %}">Place Order</a>
                                 <a class="dropdownItem" href="{% url 'confirmpurchase' %}">Confirm Purchase</a>
+                                <a class="dropdownItem" href="{% url 'purchase_bill' %}">Purchase Bills</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
@@ -38,21 +39,28 @@
                             <div class="dropdown-menu" aria-labelledby="navbarSalesDropdown">
                                 <a class="dropdownItem" href="{% url 'sales_order' %}">Sales Order</a>
                                 <a class="dropdownItem" href="{% url 'salesreturn' %}">Sales Return</a>
+                                <a class="dropdownItem" href="{% url 'sales_bill' %}">Sales Bills</a>
                             </div>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDamageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Damage</a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDamageDropdown">
-                                <a class="dropdownItem" href="{% url 'damage' %}">Damage</a>
-                            </div>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'damage' %}">Damage</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarStockDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Stock</a>
-                            <div class="dropdown-menu" aria-labelledby="navbarStockDropdown">
-                                <a class="dropdownItem" href="{% url 'stock_list' %}">Stock List</a>
-                                <a class="dropdownItem" href="{% url 'bill_details' %}">Bill's</a>
-                            </div>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'stock_list' %}">Stock</a>
                         </li>
+<!--                        <li class="nav-item dropdown">-->
+<!--                            <a class="nav-link dropdown-toggle" href="{% url 'damage' %}" id="navbarDamageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Damage</a>-->
+<!--                            <div class="dropdown-menu" aria-labelledby="navbarDamageDropdown">-->
+<!--                                <a class="dropdownItem" href="{% url 'damage' %}">Damage</a>-->
+<!--                            </div>-->
+<!--                        </li>-->
+<!--                        <li class="nav-item dropdown">-->
+<!--                            <a class="nav-link dropdown-toggle" href="{% url 'stock_list' %}" id="navbarStockDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Stock</a>-->
+<!--                            <div class="dropdown-menu" aria-labelledby="navbarStockDropdown">-->
+<!--                                <a class="dropdownItem" href="{% url 'stock_list' %}">Stock List</a>-->
+<!--                                <a class="dropdownItem" href="{% url 'bill_details' %}">Bill's</a>-->
+<!--                            </div>-->
+<!--                        </li>-->
                     </ul>
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item dropdown">

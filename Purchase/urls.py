@@ -6,6 +6,7 @@ urlpatterns = [
     path('order_display/<int:order_id>/', views.order_display, name="order_display"),
     path('confirmpurchase/', views.confirmpurchase, name="confirmpurchase"),
     path('confirmpurchase_display/<int:confirm_id>/', views.confirmpurchase_display, name="confirmpurchase_display"),
+    path('purchase_bill/', views.purchase_bill, name="purchase_bill"),
 
 
     # path('purchaseorder/', views.purchaseorder, name="purchaseorder"),

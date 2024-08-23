@@ -180,3 +180,33 @@ def salesReturn_display(request, return_id):
         'gst': gst,
     }
     return render(request, "sales/salesReturn_display.html", context)
+
+def sales_bill(request):
+    base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
+    sales_data= salesorderTable.objects.all().order_by('sot_date')
+    salesReturn_data= returnSalesTable.objects.all().order_by('rst_date')
+    salesdate_dic={}
+    returnsalesdate_dic={}
+
+    for item in sales_data:
+        if item.sot_date not in salesdate_dic:
+            salesdate_dic[item.sot_date] = {'bills': [], 'users': []}
+        if item.sot_bill_number:
+            salesdate_dic[item.sot_date]['bills'].append(item.sot_bill_number)
+        if item.sot_user:
+            salesdate_dic[item.sot_date]['users'].append(item.sot_user)
+
+    for item in salesReturn_data:
+        if item.rst_date not in returnsalesdate_dic:
+            returnsalesdate_dic[item.rst_date] = {'bills': [], 'users': []}
+        if item.rst_billNum:
+            returnsalesdate_dic[item.rst_date]['bills'].append(item.rst_billNum)
+        if item.rst_user:
+            returnsalesdate_dic[item.rst_date]['users'].append(item.rst_user)
+
+    context={
+        'base_template': base_template,
+        'salesdate_dic': salesdate_dic,
+        'returnsalesdate_dic': returnsalesdate_dic,
+    }
+    return render(request,"sales/sales_bills.html", context)

@@ -12,8 +12,17 @@
 </head>
 <body>
 
-<div class="container">
-<form method="post" action="{% url 'save_sales_order' %}" class="footer-bottom">
+<div class="container-fluid x d-flex">
+    <div class="col-1 x">
+        <h3>Item list</h3>
+        <div class="x d-flex flex-wrap">
+            {% for i in item_data %}
+                <button type="button" value="{{i.id}}" class="btn m-1 btn-warning itemButton" >{{i.item_name}}</button>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-8 x">
+        <form method="post" action="{% url 'save_sales_order' %}" class="footer-bottom">
     {% csrf_token %}
     <h4 class="mt-1">Select Items</h4>
     <input name="user_id" type="hidden" value="{{ user.id }}" readonly>
@@ -45,6 +54,7 @@
 
     </div>
 </form>
+    </div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -65,7 +75,6 @@ $(document).ready(function() {
         {% endfor %}
     ];
 
-
     $("#input1").autocomplete({
         source: itemData.map(item => item.name),
         select: function(event, ui) {
@@ -76,6 +85,13 @@ $(document).ready(function() {
                 return false;
             }
         }
+    });
+
+    // Add event listener to item buttons
+    $(".itemButton").click(function() {
+        var itemId = $(this).val();
+        var itemName = $(this).text();
+        addItem(itemId, itemName);
     });
 
     function addItem(itemId, itemName) {
@@ -139,6 +155,7 @@ $(document).ready(function() {
     }
 });
 </script>
+
 
 {% if messages %}
     <script>
