@@ -9,4 +9,6 @@ urlpatterns = [
      path('salesreturn/',views.salesreturn, name="salesreturn"),
      path('salesReturn_display/<int:return_id>/',views.salesReturn_display, name="salesReturn_display"),
      path('sales_bill/',views.sales_bill, name="sales_bill"),
+     path('salesBill_display/<int:billId>/',views.salesBill_display, name="salesBill_display"),
+     path('returnBill_display/<int:billId>/',views.returnBill_display, name="returnBill_display"),
 ]

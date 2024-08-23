@@ -19,7 +19,6 @@
                 <thead class="bg-info">
                     <tr>
                         <th>S.No</th>
-                        <th>Bill Type</th>
                         <th>Date</th>
                         <th>Bill No</th>
                         <th>Staff</th>
@@ -30,12 +29,11 @@
                     {% for date, info in salesdate_dic.items %}
                     <tr>
                         <td></td>
-                        <td class="text-green">Sales</td>
                         <td>{{date}}</td>
                         <td>
                             <ul>
-                                {% for bill in info.bills %}
-                                <li>{{bill}}</li>
+                                {% for pair in info.bills_pairs %}
+                                    <a href="{% url 'salesBill_display' billId=pair.sid %}"><input type="hidden" value="{{ pair.sid }}"><li>{{ pair.sbill }}</li></a>
                                 {% endfor %}
                             </ul>
                         </td>
@@ -51,12 +49,11 @@
                     {% for date, info in returnsalesdate_dic.items %}
                     <tr>
                         <td></td>
-                        <td class="text-blue">Sales Return</td>
                         <td>{{date}}</td>
                         <td>
                             <ul>
-                                {% for bill in info.bills %}
-                                <li>{{bill}}</li>
+                                {% for pair in info.billsr_pairs %}
+                                    <a href="{% url 'returnBill_display' billId=pair.srid %}"><input type="hidden" value="{{ pair.srid }}"><li>{{ pair.srbill }}</li></a>
                                 {% endfor %}
                             </ul>
                         </td>

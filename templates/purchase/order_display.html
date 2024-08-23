@@ -11,31 +11,47 @@
     <link href="{% static 'assets/style.css' %}" rel="stylesheet">
 </head>
 <body>
+<!DOCTYPE html>
+<div class="navheight" style="height: 100px"></div>
+
     <div class="container order-container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="order-header text-center">
-                    <h2>Order Bill</h2>
-                </div>
+
+            <div class="col-12">
                 <div class="order-body">
-                    <div class="print-only text-center">
-                        <p> <h2>{{company}}</h2></p>
-                         <h4>Order Bill</h4>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p><strong>Shop Name:</strong> {{ order.ot_vendor.vendor_shop_name }}</p>
-                            <p><strong>Vendor Name:</strong> {{ order.ot_vendor.vendor_name }}</p>
-                            <p><strong>Address:</strong> {{ order.ot_vendor.vendor_location }}</p>
+
+                    <div class="bill-header d-flex">
+
+                        <div class="col vendor-details-head">
+                        <h2>{{company_data.company_name}}</h2>
+                            <p>{{company_data.company_address}}</p>
+                            <p>Phone: {{company_data.company_mobile}}</p>
                         </div>
-                        <div class="col-md-6 text-md-right">
-                            <p><strong>Contact Number:</strong> {{ order.ot_vendor.vendor_phone }}</p>
-                            <p><strong>Order Number:</strong> {{ order.ot_order_number }}</p>
-                            <p><strong>Date:</strong> {{ order.ot_date }}</p>
+
+                        <div class="col print-only text-right vendor-details-head">
+                            <p>Order Number: <h5>{{ order.ot_order_number }}</h5></p>
                         </div>
                     </div>
-                    <table class="table table-striped order-table">
-                        <thead class="bg-info">
+
+
+
+                    <div class="d-flex">
+                        <div class="col vendor-details">
+                            <p>Vendor: <strong>{{ order.ot_vendor.vendor_shop_name }}</strong> </p>
+                            <p>Address: <strong>{{ order.ot_vendor.vendor_location }}</strong> </p>
+                            <p>GISTIN: <strong> {{ order.ot_vendor.vendor_GST }}</strong> </p>
+                            <br>
+                        </div>
+                        <div class="col text-right vendor-details">
+                            <p>Date:<strong> {{ order.ot_date }}</strong> </p>
+                            <p>Contact: <strong>{{ order.ot_vendor.vendor_name }}</strong> </p>
+                            <p>Phone: <strong>{{ order.ot_vendor.vendor_phone }}</strong> </p>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <table class=" table table-striped ">
+                        <thead class="">
                             <tr>
                                 <th>Item</th>
                                 <th>Quantity</th>
@@ -50,22 +66,29 @@
                             {% endfor %}
                         </tbody>
                     </table>
+                    </div>
+
                     <div class="row">
                         <div class="col-md-12 text-md-right">
 <!--                            <p><strong>Total: </strong><i>Rs.</i>{{ overall }}</p>-->
                         </div>
                     </div>
-                    <div class="print-only">
-                        <p><strong>GISTIN Number: </strong> {{ order.ot_vendor.vendor_GST }}</p>
-                        <p><strong>Bill Note: </strong>Please deliver the product before 4 pm with regards {{company}}</p><p class="text-center"><i>Thank you!</i></p>
+                    <div class="text-center">
+                        <br>
+                        <br>
+                        <br>
+                        <p><i>Thank you!</i></p>
                     </div>
-                    <div class="text-center print-button">
-                        <button onclick="window.print()" class="btn btn-info">Print</button>
-                    </div>
+
                 </div>
+            </div>
+            <div class="col-12 text-center print-button">
+                        <button onclick="window.print()" class="btn btn-success px-5">Print</button>
             </div>
         </div>
     </div>
+
+<div class="bottom-space"></div>
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>

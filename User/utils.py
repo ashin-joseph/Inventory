@@ -127,9 +127,6 @@ def daily_profitReport():
     profit = daily_sales - daily_purchase + daily_sales_return
     return profit
 
-def call_item():
-    item_data = itemTable.objects.all()
-    return item_data
 
 def offerAndprice():
     price_data = priceTable.objects.all()

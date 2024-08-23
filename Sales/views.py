@@ -190,17 +190,17 @@ def sales_bill(request):
 
     for item in sales_data:
         if item.sot_date not in salesdate_dic:
-            salesdate_dic[item.sot_date] = {'bills': [], 'users': []}
-        if item.sot_bill_number:
-            salesdate_dic[item.sot_date]['bills'].append(item.sot_bill_number)
+            salesdate_dic[item.sot_date] = {'bills_pairs': [], 'users': []}
+        if item.sot_bill_number and item.id:
+            salesdate_dic[item.sot_date]['bills_pairs'].append({'sbill': item.sot_bill_number, 'sid': item.id})
         if item.sot_user:
             salesdate_dic[item.sot_date]['users'].append(item.sot_user)
 
     for item in salesReturn_data:
         if item.rst_date not in returnsalesdate_dic:
-            returnsalesdate_dic[item.rst_date] = {'bills': [], 'users': []}
-        if item.rst_billNum:
-            returnsalesdate_dic[item.rst_date]['bills'].append(item.rst_billNum)
+            returnsalesdate_dic[item.rst_date] = {'billsr_pairs': [], 'users': []}
+        if item.rst_billNum and item.id:
+            returnsalesdate_dic[item.rst_date]['billsr_pairs'].append({'srbill': item.rst_billNum, 'srid': item.id})
         if item.rst_user:
             returnsalesdate_dic[item.rst_date]['users'].append(item.rst_user)
 
@@ -210,3 +210,46 @@ def sales_bill(request):
         'returnsalesdate_dic': returnsalesdate_dic,
     }
     return render(request,"sales/sales_bills.html", context)
+def salesBill_display(request, billId):
+    base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
+    company_data = companyprofileTable.objects.get()
+    sale_ord = get_object_or_404(salesorderTable, id=billId)
+    sale_itm = salesorderItemTable.objects.filter(soit_bill_number=sale_ord)
+    sale_Amount = 0
+    for j in sale_itm:
+        price = j.soit_price.pt_sellingPrice * j.soit_quantity
+        tax = int((j.soit_price.pt_tax / 100)) * price
+        offer = int((j.soit_price.pt_offer / 100)) * price
+        total_s = price + tax - offer
+        sale_Amount += total_s
+
+    context = {
+        'base_template': base_template,
+        'sale_ord': sale_ord,
+        'sale_itm': sale_itm,
+        'sale_Amount': sale_Amount,
+        'company_data': company_data,
+    }
+    return render(request, "sales/salesbill_display.html", context)
+
+def returnBill_display(request, billId):
+    base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
+    company_data = companyprofileTable.objects.get()
+    saleret_ord = get_object_or_404(returnSalesTable, id=billId)
+    saleret_itm = returnsalesItemTable.objects.filter(rsit_billNum=saleret_ord)
+    saleret_Amount = 0
+    for j in saleret_itm:
+        price = j.rsit_price * j.rsit_qty
+        tax = int((j.rsit_tax / 100)) * price
+        offer = int((j.rsit_offer / 100)) * price
+        total_s = price + tax - offer
+        saleret_Amount += total_s
+
+    context = {
+        'base_template': base_template,
+        'saleret_ord': saleret_ord,
+        'saleret_itm': saleret_itm,
+        'saleret_Amount': saleret_Amount,
+        'company_data': company_data,
+    }
+    return render(request, "sales/returnbill_display.html", context)

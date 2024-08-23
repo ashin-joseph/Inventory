@@ -2,6 +2,7 @@
 {% extends base_template %}
 {% load static %}
 {% block content %}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,72 +11,107 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="{% static 'assets/style.css' %}" rel="stylesheet">
 </head>
+
+
 <body>
-<div class="container-fluid x d-flex">
-    <div class="col-1 x">
-        <h3>Item list</h3>
-        <div class="x d-flex flex-wrap">
-            {% for i in item_data %}
-                <button type="button" value="{{i.id}}" class="btn m-1 btn-warning itemButton" >{{i.item_name}}</button>
-            {% endfor %}
+<div class="navheight"></div>
+<br>
+<br>
+
+<!-- list -->
+<div class="container d-flex flex-wrap">
+
+    <div class="col-4">
+    <h3>Item list</h3>
+        <div class=" d-flex flex-wrap itemlist mb-2">
+        {% for i in item_data %}
+        <button type="button" value="{{i.id}}" class="col-6 itemButton" >{{i.item_name}}</button>
+        {% endfor %}
         </div>
     </div>
-    <div class="col-8 x">
-        <h4 class="mt-1">Select Vendor</h4>
-        <form method="post" action="{% url 'order' %}" class="footer-bottom">
-            {% csrf_token %}
-            <input name="vendor" type="text" id="shopSearch" placeholder="Search for a shop" class="form-control" required>
+
+    <div class="col-8">
+        <h4 class="">Add Vendor</h4>
+        <form method="post" action="{% url 'order' %}" class="">
+        {% csrf_token %}
+        <input name="vendor" type="text" id="shopSearch" placeholder="Search for a shop" class="form-control" required>
+
             <input name="vendor_id" type="hidden" id="vendorID" value="{{ vendor_data.id }}" readonly>
             <input name="user_id" type="hidden" value="{{ user.id }}" readonly>
-            <div id="shopDetails" class="d-flex justify-content-end container mt-1">
-                <!-- Shop details will be displayed here -->
-            </div>
 
-            <h4 class="mt-1">Select Items</h4>
-            <hr> <!-- Added horizontal line here -->
 
-            <div class="mt-1">
-                <div class="row mb-3">
-                    <div class="col">
-                        <input type="text" class="form-control small-input" id="input1" placeholder="Add item">
-                    </div>
-                </div>
-            </div>
+        <div class="d-flex">
+        <div class="col-3 shop-details-header mt-4">
+            <b>Shop Name:</b></br>
+            <b>Contact Person:</b></br>
+            <b>Contact Number:</b></br>
+            <b>Address:</b>
+        </div>
+        <div id="shopDetails" class="shop-details container col-9 mt-4">
 
-            <div class="container mt-1">
-                <div id="item-list">
-                    <div class="col d-flex justify-content-around">
-                        <label>Item</label>
-                        <label>Quantity</label>
-                        <label>Delete</label>
-                    </div>
-                    <!-- Input fields for selected items will be dynamically added here -->
-                </div>
-                <p class="mt-1"><i>Select vendor and items, then hit 'Order' button.</i></p>
-                <div class="d-flex justify-content-end mb-3">
-                    <button class="btn btn-info mr-2" type="submit" id="orderButton">Order</button>
-                </div>
-            </div>
-        </form>
+            <!-- Shop details will be displayed here -->
+        </div>
+        </div>
+
+
+    <hr>
+    <h4 class="mt-1">Select Items</h4>
+
+    <div class="mt-1">
+    <div class="">
+    <input type="text" class="form-control small-input" id="input1" placeholder="Add item">
+
+        <br>
+    </div>
+    </div>
+
+    <div class="container ">
+    <div id="item-list" class="">
+
+            <table class="table" >
+            <tr >
+            <th class="headerx col-6" scope="col">Item</th>
+            <th class="headerx col-4" scope="col">Quantity</th>
+            <th class="headerx col-2" scope="col">Delete</th>
+            </tr>
+            </table>
+    <!-- Input fields for selected items will be dynamically added here -->
+    </div>
+        <hr>
+    <div class="d-flex justify-content-end my-3">
+    <button class="btn btn-success mr-2 px-5" type="submit" id="orderButton">Order</button>
+    </div>
+    </div>
+
+
+    </form>
+
     </div>
 </div>
+<div class="bottom-space"></div>
+
+
+
+
+
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script>
-    $(document).ready(function() {
-        var shopData = [
-            {% for i in vendor_data %}
-                { "id": "{{ i.vendor_id }}", "name": "{{ i.vendor_shop_name }}", "person": "{{ i.vendor_name }}", "address": "{{ i.vendor_location }}", "number": "{{i.vendor_phone}}" }{% if not forloop.last %},{% endif %}
-            {% endfor %}
-        ];
+        $(document).ready(function() {
+            var shopData = [
+                {% for i in vendor_data %}
+                    { "id": "{{ i.vendor_id }}", "name": "{{ i.vendor_shop_name }}", "person": "{{ i.vendor_name }}", "address": "{{ i.vendor_location }}", "number": "{{i.vendor_phone}}" }{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ];
 
         $("#shopSearch").autocomplete({
             source: shopData.map(shop => shop.name),
             select: function(event, ui) {
                 var selectedShop = shopData.find(shop => shop.name === ui.item.value);
                 if (selectedShop) {
-                    $('#shopDetails').html('<div><strong>Shop Name:</strong> ' + selectedShop.name + '<br><strong>Contact Person:</strong> ' + selectedShop.person + '<br><strong>Address:</strong> ' + selectedShop.address + '<br><strong>Contact Number:</strong> ' + selectedShop.number + '</div>');
+                    $('#shopDetails').html('<div>' + selectedShop.name + '<br> ' + selectedShop.person + '<br>' + selectedShop.number + '<br> ' + selectedShop.address + '</div>');
                     $('#vendorID').val(selectedShop.id);
                 }
             }
@@ -112,21 +148,22 @@
     function addItem(itemName) {
         const input1 = itemName || document.getElementById('input1').value;
         const newItem = document.createElement('div');
-        newItem.classList.add('form-group');
+        newItem.classList.add('input-group');
         newItem.innerHTML = `
-            <div class="row">
-                <div class="col d-flex justify-content-around">
-                    <input type="text" name="item_name[]" class="form-control small-input" value="${input1}" readonly>
-                </div>
-                <div class="col d-flex justify-content-around">
-                    <input type="number" name="item_quantity[]" class="form-control small-input qty-input" placeholder="Quantity" min="1" required>
-                </div>
-                <div class="col d-flex justify-content-around">
-                    <div class="justify-content-end">
-                        <button class="btn btn-danger delete-item-btn" type="button">Delete</button>
-                    </div>
-                </div>
-            </div>`;
+<table class="table table-hover" >
+<tr>
+<td class="col-6">
+<input type="text" name="item_name[]" class="form-pdt" value="${input1}" readonly>
+</td>
+
+<td class="col-4">
+<input type="number" name="item_quantity[]" class="form-control" placeholder="Quantity" min="1" required>
+</td>
+
+<td class="col-2"><button class="btn btn-danger delete-item-btn" type="button">Delete</button></td>
+</tr>
+</table>
+        `;
         const itemList = document.getElementById('item-list');
         itemList.appendChild(newItem);
         document.getElementById('input1').value = '';

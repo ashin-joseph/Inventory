@@ -54,13 +54,11 @@ def order_display(request, order_id):
     order = get_object_or_404(orderTable, id=order_id)
     items = orderitemsTable.objects.filter(oit_orderNum=order)
     company_data = companyprofileTable.objects.get()
-    company = company_data.company_name
-
     context = {
         'order': order,
         'items': items,
         'base_template': base_template,
-        'company': company,
+        'company_data': company_data,
     }
     return render(request, 'purchase/order_display.html', context)
 @admin_required
@@ -141,7 +139,7 @@ def confirmpurchase_display(request, confirm_id):
         'company': company,
     }
     return render(request, "purchase/confirmPurchase_display.html", context)
-
+@admin_required
 def purchase_bill(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     purchaseConfirm_data= confirmPurchaseTable.objects.all().order_by('cpt_date')
@@ -149,9 +147,9 @@ def purchase_bill(request):
 
     for item in purchaseConfirm_data:
         if item.cpt_date not in purchaseconfirmdate_dic:
-            purchaseconfirmdate_dic[item.cpt_date] = {'bills': [], 'users': []}
-        if item.cpt_billNum:
-            purchaseconfirmdate_dic[item.cpt_date]['bills'].append(item.cpt_billNum)
+            purchaseconfirmdate_dic[item.cpt_date] = {'bill_pairs': [], 'users': []}
+        if item.cpt_billNum and item.id:
+            purchaseconfirmdate_dic[item.cpt_date]['bill_pairs'].append({'bill': item.cpt_billNum, 'id': item.id})
         if item.cpt_user:
             purchaseconfirmdate_dic[item.cpt_date]['users'].append(item.cpt_user)
 
@@ -160,6 +158,32 @@ def purchase_bill(request):
         'purchaseconfirmdate_dic': purchaseconfirmdate_dic,
     }
     return render(request,"purchase/purchase_bills.html", context)
+@admin_required
+def purchaseBill_display(request, billId):
+    base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
+    pur_ord = get_object_or_404(confirmPurchaseTable, id=billId)
+    pur_itm = confirmPurchaseItemTable.objects.filter(cpit_billNum=pur_ord)
+    company_data = companyprofileTable.objects.get()
+    company = company_data.company_name
+    pur_Amount = 0
+    for i in pur_itm:
+        price = i.cpit_price * i.cpit_qty
+        tax = int((i.cpit_tax / 100)) * price
+        total = price + tax
+        pur_Amount += total
+    context = {
+        'base_template': base_template,
+        'pur_ord': pur_ord,
+        'pur_itm': pur_itm,
+        'pur_Amount': pur_Amount,
+        'company': company,
+    }
+    return render(request,"purchase/purchasebill_display.html", context)
+
+
+
+
+
 
 # def confirmpurchasesave(request):
 #     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'

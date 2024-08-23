@@ -19,7 +19,6 @@
                 <thead class="bg-info">
                     <tr>
                         <th>S.No</th>
-                        <th>Bill Type</th>
                         <th>Date</th>
                         <th>Bill No</th>
                         <th>Staff</th>
@@ -30,12 +29,11 @@
                     {% for date, info in purchaseconfirmdate_dic.items %}
                     <tr>
                         <td></td>
-                        <td class="text-purple">Purchase</td>
                         <td>{{date}}</td>
                         <td>
                             <ul>
-                                {% for bill in info.bills %}
-                                <li>{{bill}}</li>
+                                {% for pair in info.bill_pairs %}
+                                    <a href="{% url 'purchaseBill_display' billId=pair.id %}"><input type="hidden" value="{{ pair.id }}"><li>{{ pair.bill }}</li></a>
                                 {% endfor %}
                             </ul>
                         </td>

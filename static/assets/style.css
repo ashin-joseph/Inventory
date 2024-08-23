@@ -1,29 +1,217 @@
-    .x{  border: rgb(245, 12, 62) 2px solid; }
-        body {
-            overflow-x: hidden; /* Disable horizontal scrolling */
-            height: 100vh;
-            font-family: Arial, sans-serif;
-            margin-bottom: 20px;
-        }
-        .content {
-            flex-grow: 1;
-            padding: 10px;
-        }
-        .navbar {
-            margin-bottom: 20px;
-            padding: 20px;
-            color: white;
-        }
-        .navbar-collapse {
-            margin-bottom: 20px;
-            padding: 10px;
-            color: white;
-        }
+.x{
+border: 1px solid red;
+}
+
+.activex {
+    color: #FFB533 !important;
+    border-bottom: 1px solid #FFB533 !important;
+    background-color: #37513A !important;
+}
+
+
+
+
+.nav-item{
+border-bottom: 1px solid #1C2C1E;
+}
+
+/* color-green */
+.alert-success,
+.bg-success,
+.text-success,
+.border-success {
+    background-color: #1C2C1E !important;
+    color: #ffffff !important; /* If needed */
+    border-color: #your-border-color !important; /* If needed */
+}
+
+/* elements */
+body {
+    overflow-x: hidden; /* Disable horizontal scrolling */
+    height: 95vh;
+    margin-bottom: 20px;
+}
+
+a{
+    text-decoration: none !important;
+}
+table{
+margin-bottom: 0px !important;
+}
+
+.bottom-space{
+height: 5vh;
+}
+
+/* Nav-bar */
+
+.navbar{
+padding: 0Px !important;
+}
+
+.nav-item{
+padding: .5rem .5rem;
+}
+
+.navbar-brand {
+   font-size: 1.5rem !important;
+}
+
+.navbar a{
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+
+.navbar a:hover {
+    color: #FFCC7B !important;
+    text-decoration: none !important;
+}
+
+.navbar a:active, {
+    border-color: #your-new-active-border-color;
+    color: #FFCC7B !important;
+}
+
+.dropdown-menu{
+    background-color: #2A492D !important;
+    }
+
+.dropdownItem {
+    padding: 2px;
+    margin-left:8px;
+    align-items: center;
+    justify-content: space-between;
+    display: inline-flex;
+    vertical-align: middle;
+    position: relative;
+    display: inline-block;
+    width: 100%
+}
+
+/* footer */
+.footer-bottom{
+    margin-bottom: 80px;
+}
+
+/* Default state */
+.btn-success {
+    background-color: #1C2C1E !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-color: #your-border-color !important;
+}
+
+/* Hover state */
+.btn-success:hover {
+    background-color: #2A572E !important;
+    border-color: #your-new-hover-border-color;
+    color: #your-new-hover-text-color;
+}
+
+/* Active state */
+.btn-success:active,
+.btn-success.active,
+.show > .btn-success.dropdown-toggle {
+    background-color: #2A572E!important;
+    border-color: #your-new-active-border-color;
+    color: #your-new-active-text-color;
+}
+
+/* Focus state */
+.btn-success:focus,
+.btn-success.focus {
+    background-color: #2A572E !important;
+    border-color: #2F912F !important;
+    color: #your-new-focus-text-color;
+    box-shadow: 0 0 0 0rem rgba(#2F912F;, 0)!important;
+}
+
+/* Disabled state */
+.btn-success.disabled,
+.btn-success:disabled {
+    background-color: #566857 !important;
+    border-color: #your-new-disabled-border-color;
+    color: #your-new-disabled-text-color;
+}
+
+
+
+
+.btn-add {
+background-color: #FFB533 !important;
+margin: 5px;
+padding: 10px 5px;
+border-radius: 5px;
+text-align: center;
+font-size: .8rem;
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+
+}
+
+.btn-add a {
+color: #000000 !important;
+font-weight: 500;
+}
+
+.btn-add:active,
+.btn-add.active,
+.btn-add:focus,
+.btn-add.focus,
+.btn-add:hover{
+background-color: #FFCC7B !important;
+}
+
+
+.top-fig {
+    margin: 10px 5px 5px 5px;
+    background-color: #FFFFC0;
+    opacity: 0.8;
+    border-radius: 10px;
+    color: rgb(4, 32, 12);
+}
+
+.banner {
+background-image: url("../images/background1-01.svg");
+background-color: #2E522A;
+color: #ffffff;
+}
+
+
+
+
+/* Table */
+
+.headerx{
+    background-color: rgb(29, 70, 4) !important;
+    color: #fdfffa !important;
+}
+
+td{
+    background: rgba(227, 255, 227, 0) !important;
+}
+
+th{
+    background:rgba(227, 255, 227, 0) !important;
+}
+
+
+/* Dashboard */
+
+Dash-Price-card{
+height: 350px;
+}
+
+
+
+
+
+
         .profile-info {
             display: flex;
             align-items: center;
             padding: 15px;
         }
+
         .profile-info img {
             border-radius: 50%;
             width: 50px;
@@ -44,14 +232,6 @@
           padding-top : 2px;
           font-size: 12px;
         }
-        .card {
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .card-title {
-            font-size: 14px;
-            font-weight: bold;
-            color: #666;
 
         }
         .card-text {
@@ -66,39 +246,19 @@
             align-items: center;
             justify-content: center;
         }
-        .bg-info {
-            background-color: #030355 !important;
-            color: #ffffff !important;
-            text-decoration: none !important;
-            box-shadow: none !important;
-        }
+
         .btn-info{
              background-color: #030355 !important;
              color: #ffffff !important;
              border: none !important;
              box-shadow: none !important;
         }
-        a{
-            color: #ffffff !important;
-            text-decoration: none !important;
-        }
-       .dropdown-menu{
-        background-color: #030355 !important;
-        }
-        .footer-bottom{
-            margin-bottom: 80px;
-        }
-        .dropdownItem {
-            padding: 2px;
-            margin-left:8px;
-            align-items: center;
-            justify-content: space-between;
-            display: inline-flex;
-            vertical-align: middle;
-            position: relative;
-            display: inline-block;
-            width: 100%
-        }
+
+
+
+
+
+
         .bg-light-blue { background-color: #e6f3ff; }
         .bg-light-yellow { background-color: #fff9e6; }
         .bg-light-purple { background-color: #f3e6ff; }
@@ -111,94 +271,28 @@
         .text-purple { color: #6f42c1; }
         .form-container { width: 40%; }
 
-        .table-container {
-            width: 55%;
-            margin-bottom: 80px;
-        }
-        .table {
-            margin-bottom: 80px;
-            text-align: center;
-        }
-        .form-control {
-            width: 250px;
-            text-align: center;
-        }
+
         input:focus {
             outline: none !important;
             box-shadow: none !important;
-            border: 2px solid #030355 !important;
+            border: 1px solid #1D4604 !important;
         }
+
         select:focus {
             outline: none !important;
             box-shadow: none !important;
-            border: 2px solid #030355 !important;
-        }
-        td input {
-            text-align: center;
-        }
-        .small-input {
-            width: 98px;
-        }
-        .form-group {
-            margin-bottom: 10px;
+            border: 1px solid #1D4604 !important;
         }
 
-        .order-container {
-            margin-top: 50px;
-        }
-        .order-header {
-            background-color: #030355;
-            color: white;
-            padding: 20px;
-            border-radius: 5px 5px 0 0;
-        }
-        .order-body {
-            background-color: white;
-            padding: 20px;
-            border: 1px solid #dee2e6;
-            border-radius: 0 0 5px 5px;
-        }
-        .order-table th, .order-table td {
-            text-align: center;
-            vertical-align: middle;
-            border: none;
-            padding: 5px;
-        }
-        .order-table input {
-            width: 60px;
-            padding: 2px;
-            margin: 0;
-            border: 1px solid #dee2e6;
-            text-align: center;
-        }
-        .print-button {
-                margin: 10px 0;
-            }
-        .print-only{
-            display:none;
-        }
-         @media print {
-            /* Hide everything except the order details */
-            body * {
-                visibility: hidden;
-            }
-            .order-body, .order-body * {
-            visibility: visible;
-            }
 
-            .order-body {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-            }
-            .print-button {
-                display: none;
-            }
-            .print-only{
-            display:block;
-            visibility: visible;
-        }
+
+
+
+
+
+
+
+
         }
         .low-stock{
             color: #e83e8c;
@@ -235,5 +329,142 @@
             box-shadow: none; /* Optional: Remove shadow */
         }
 
-        #030355
-        #372dac
+
+
+
+.navheight{
+    height: 3vh;
+}
+
+.itemlist{
+    overflow-x: hidden; /* Disable horizontal scrolling */
+    height: 80vh;
+}
+
+
+.itemButton {
+background-color: #FFE7C0 !important;
+text-align: center;
+height: 50px;
+border: .5px solid #FFFFFF;
+overflow: hidden;
+}
+
+
+.itemButton:hover {
+background-color: #FFCC7B !important;
+border: .5px solid #FFFFFF;
+}
+
+.shop-details{
+height: 120px;
+}
+
+.shop-details-header {
+height: 120px;
+font-weight: 500;
+}
+
+.shop-details-header p{
+font-weight: 500;
+color: #999999;
+}
+
+.shop-details-header b{
+font-weight: 500;
+color: #999999;
+}
+
+.form-pdt{
+border: 0px solid #FFFFFF;
+background-color: rgba(0, 0, 0, 0);
+
+}
+
+
+
+  .order-header {
+    background-color: #1D4604;
+    color: white;
+    padding:8px;
+    border-radius: 0px
+}
+
+.order-body {
+    background-color: white;
+    border: 1px solid #848484;
+    border-radius: 0px;
+}
+
+.order-body hr{
+    margin: 0px;
+    padding: 0px;
+}
+
+.vendor-details{
+margin-top: 15px;
+}
+
+.vendor-details p{
+margin-bottom: .5rem;
+}
+
+.vendor-details strong{
+margin-bottom: .5rem;
+}
+
+.vendor-details-head p{
+margin-bottom: .2rem;
+}
+
+.bill-header{
+background-color: #D4D7A2;
+padding:15px 5px 15px 5px;
+margin-bottom: 15px;
+color: #000000;
+border-width: 0px 0px 1px 0px;
+border-style: solid;
+border-color: #848484;
+}
+
+.print-button {
+    margin: 10px 0;
+}
+
+.print-onlyx{
+display:none;
+}
+
+@media print {
+/* Hide everything except the order details */
+body * {
+visibility: hidden;
+}
+
+.order-body {
+background-color: white;
+border: 0px solid #1D4604;
+border-radius: 0px;
+}
+
+.order-body, .order-body * {
+visibility: visible;
+}
+
+.order-body {
+position: absolute;
+left: 0;
+top: 0;
+width: 100%;
+}
+.print-button {
+display: none;
+}
+.print-only{
+display:block;
+visibility: visible;
+}
+
+
+
+}
