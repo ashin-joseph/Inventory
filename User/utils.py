@@ -2,8 +2,8 @@ from decimal import Decimal, InvalidOperation
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.shortcuts import get_object_or_404
 from Stock.models import stockTable
-from Core.models import itemTable
-from Core.models import priceTable
+from Core.models import itemTable, priceTable
+from Damage.models import damageTable
 from .models import User
 from Purchase.models import confirmPurchaseItemTable
 from Sales.models import salesorderItemTable, returnsalesItemTable, salesorderTable, returnSalesTable
@@ -104,28 +104,56 @@ def daily_salesReport():
     daily_sales_return = 0
     sales_data = salesorderItemTable.objects.filter(soit_bill_number__sot_date=current_date)
     sales_return_data = returnsalesItemTable.objects.filter(rsit_billNum__rst_date=current_date)
-    for sale in sales_data:
-        if sale.soit_total:
-            daily_sales += sale.soit_total
-    for sale_return in sales_return_data:
-        if sale_return.rsit_refundAmount:
-            daily_sales_return += sale_return.rsit_refundAmount
+    for j in sales_data:
+        price = j.soit_price.pt_sellingPrice * j.soit_quantity
+        tax = int((j.soit_price.pt_tax / 100)) * price
+        offer = int((j.soit_price.pt_offer / 100)) * price
+        total_s = price + tax - offer
+        daily_sales += int(total_s)
+    for j in sales_return_data:
+        price = j.rsit_price * j.rsit_qty
+        tax = int((j.rsit_tax / 100)) * price
+        offer = int((j.rsit_offer / 100)) * price
+        total_sr = price + tax - offer
+        daily_sales_return += int(total_sr)
     return ( daily_sales, daily_sales_return )
 
+def daily_damageReport():
+    current_date = datetime.now().date()  # Get the current date
+    daily_damage = 0
+
+    # Fetch damage data for the current date
+    damage_data = damageTable.objects.filter(dpt_timestamp=current_date)
+
+    for item in damage_data:
+        # Fetch the price data for the item in the damageTable
+        price_data = priceTable.objects.filter(pt_item=item.dpt_item).first()
+
+        if price_data:
+            price = price_data.pt_sellingPrice * item.dpt_damage_qty
+            tax = int((price_data.pt_tax / 100)) * price
+            offer = int((price_data.pt_offer / 100)) * price
+            total_d = price + tax - offer
+            daily_damage += int(total_d)
+
+    return daily_damage
 def daily_purchaseReport():
     current_date = datetime.now().date()  # Get the current date
     daily_purchase = 0
     purchase_data = confirmPurchaseItemTable.objects.filter(cpit_billNum__cpt_date=current_date)
-    for pur in purchase_data:
-        if pur.cpit_Amount:
-            daily_purchase += pur.cpit_Amount
+    for i in purchase_data:
+        price = i.cpit_price * i.cpit_qty
+        tax = int((i.cpit_tax / 100)) * price
+        total_p = price + tax
+        daily_purchase += int(total_p)
     return daily_purchase
 
 def daily_profitReport():
     daily_sales, daily_sales_return = daily_salesReport()
     daily_purchase = daily_purchaseReport()
-    profit = daily_sales - daily_purchase + daily_sales_return
-    return profit
+    daily_damage = daily_damageReport()
+    profit = daily_sales - daily_purchase - daily_damage + daily_sales_return
+    return int(profit)
 
 
 def offerAndprice():

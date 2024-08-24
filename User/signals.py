@@ -40,7 +40,7 @@ def check_stock_alert(sender, instance, **kwargs):
         # Send email alert
         send_mail(
             'Low Stock Alert',
-            f'The stock for {instance.st_item.item_name} is below the required level. Current quantity: {instance.st_remainingStock}.',
+            f'The stock for {instance.st_item.item_name} is below the threshold level. Current quantity: {instance.st_remainingStock}.',
             'at.stocksmart@gmail.com',  # Default sender email
             [company_email],  # Recipient email in a list
             fail_silently=False,

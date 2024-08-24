@@ -16,8 +16,8 @@
     <div class="col-1 x">
         <h3>Item list</h3>
         <div class="x d-flex flex-wrap">
-            {% for i in item_data %}
-                <button type="button" value="{{i.id}}" class="btn m-1 btn-warning itemButton" >{{i.item_name}}</button>
+            {% for i in stock_data %}
+                <button type="button" value="{{i.id}}" class="btn m-1 btn-warning itemButton {% if i.st_remainingStock < 10 %}btn-success{% endif %}">{{i.st_item.item_name}}</button>
             {% endfor %}
         </div>
     </div>

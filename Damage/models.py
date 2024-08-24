@@ -5,7 +5,7 @@ from Core.models import itemTable
 class damageTable(models.Model):
     dpt_item = models.ForeignKey(itemTable, on_delete=models.CASCADE)
     dpt_damage_qty = models.PositiveIntegerField(null=True, blank=True)
-    dpt_timestamp = models.DateTimeField(auto_now_add=True)
+    dpt_timestamp = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.dpt_item.item_name}"

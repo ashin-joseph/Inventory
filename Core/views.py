@@ -5,7 +5,7 @@ from User.views import index, trial_failed
 from django.contrib import messages
 from User.decorators import admin_required, staff_required
 import datetime
-from User.utils import lowstock_list, daily_salesReport, daily_purchaseReport, daily_profitReport
+from User.utils import lowstock_list, daily_salesReport, daily_purchaseReport, daily_profitReport, daily_damageReport
 
 from django.core.mail import EmailMessage
 from django.http import HttpResponse
@@ -114,7 +114,7 @@ def vendor_pg(request):
             vendor.vendor_GST = gst
             vendor.vendor_note = note
             vendor.save()
-            messages.warning(request, "Vendor Updated successfully")
+            messages.success(request, "Vendor Updated successfully")
         else:
             vendorTable.objects.create(vendor_shop_name=shopname, vendor_location=location, vendor_pin=pin,
                                        vendor_email=email,
@@ -138,7 +138,7 @@ def price_pg(request):
         tax = request.POST.get('tax')
         offer = request.POST.get('offer')
         priceTable.objects.all().update(pt_tax=tax, pt_offer=offer)
-        messages.info(request, "Tax/Offer Updated Successfully")
+        messages.success(request, "Tax/Offer Updated Successfully")
         return redirect(price_pg)
     price_data = priceTable.objects.all()
     return render(request, "core/price.html", {'price_data': price_data, 'base_template': base_template})
@@ -154,7 +154,7 @@ def updatePrice(request):
         if item_ids:
             for ii, sp, ta, of in zip(item_ids, selling_prices, taxes, offers):
                 priceTable.objects.filter(id=ii).update(pt_sellingPrice=sp, pt_tax=ta, pt_offer=of)
-                messages.info(request, "Updated Price/Tax/Offer Successfully")
+                messages.success(request, "Updated Price/Tax/Offer Successfully")
         return redirect(price_pg)
     return redirect(index)
 
@@ -176,6 +176,7 @@ def report(request):
     low_stock_list = lowstock_list()
     daily_sales, daily_sales_return = daily_salesReport()
     daily_purchase = daily_purchaseReport()
+    daily_damage = daily_damageReport()
     daily_profit = daily_profitReport()
     context = {
         'current_date':current_date,
@@ -184,6 +185,7 @@ def report(request):
         'daily_sales': daily_sales,
         'daily_sales_return': daily_sales_return,
         'daily_purchase': daily_purchase,
+        'daily_damage': daily_damage,
         'daily_profit': daily_profit,
     }
 
@@ -214,6 +216,7 @@ def report_text(request):
     low_stock_list = lowstock_list()
     daily_sales, daily_sales_return = daily_salesReport()
     daily_purchase = daily_purchaseReport()
+    daily_damage = daily_damageReport()
     daily_profit = daily_profitReport()
 
     context = {
@@ -223,6 +226,7 @@ def report_text(request):
         'daily_sales': daily_sales,
         'daily_sales_return': daily_sales_return,
         'daily_purchase': daily_purchase,
+        'daily_damage': daily_damage,
         'daily_profit': daily_profit,
     }
 
@@ -232,6 +236,7 @@ def report_text(request):
         email_body += f"Income:\n  - Sales: {daily_sales}\n"
         email_body += f"Expense:\n  - Sales Return: {daily_sales_return}\n"
         email_body += f"  - Purchase: {daily_purchase}\n"
+        email_body += f"  - Damage: {daily_damage}\n"
         email_body += f"\nProfit: {daily_profit}\n"
 
         if low_stock_list:

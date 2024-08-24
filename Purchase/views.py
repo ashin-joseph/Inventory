@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect, get_object_or_404
 from Core.models import vendorTable, itemTable, companyprofileTable
 from Purchase.models import orderTable, orderitemsTable, confirmPurchaseTable, confirmPurchaseItemTable
+from Stock.models import stockTable
 import datetime
 import random
 from User.views import index, trial_failed
@@ -16,6 +17,7 @@ def order(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     vendor_data = vendorTable.objects.all()
     item_data = itemTable.objects.all()
+    stock_data = stockTable.objects.all()
     if request.method == "POST":
         user_id = request.POST.get("user_id")
         vendor_id = request.POST.get("vendor_id")
@@ -43,6 +45,7 @@ def order(request):
     context = {
         'vendor_data': vendor_data,
         'item_data': item_data,
+        'stock_data': stock_data,
         'base_template': base_template,
     }
     return render(request, "purchase/Order.html", context)

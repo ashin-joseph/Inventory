@@ -17,7 +17,8 @@ def sales_order(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     item_data = itemTable.objects.all()
     price_data = priceTable.objects.select_related('pt_item').all()
-    stock_data = stockTable.objects.select_related('st_remainingStock').all()
+    stock_data = stockTable.objects.all()
+    # stock_data = stockTable.objects.select_related('st_remainingStock').all()
     context = {
         'item_data': item_data,
         'price_data': price_data,
