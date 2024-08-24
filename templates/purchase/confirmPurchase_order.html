@@ -11,31 +11,51 @@
     <link href="{% static 'assets/style.css' %}" rel="stylesheet">
 </head>
 <body>
-<div class="container-fluid x d-flex">
-    <div class="col-1 x">
-        <h3>Unconfirmed List</h3>
-        <div class="x d-flex flex-wrap">
-            {% for i in purchaseOrder_data %}
-                <button type="button" value="{{i.id}}" class="btn m-1 btn-warning orderButton" >{{i.ot_order_number}}</button>
-            {% endfor %}
-        </div>
-    </div>
-    <div class="col-8 x">
-        <h4 class="mt-1">Purchase Order Number</h4>
+<div class="navheight"></div>
+<br>
+<br>
+<div class="container d-flex flex-wrap">
+
+<!-- vendor details -->
+
+    <div class="col-12">
+        <h4 class="mt-1">Confirmed Purchase Order</h4>
+
         <input class="form-control" name="purchaseOrderNum" type="text" id="orderSearch" placeholder="Search for Order Number" value="{% if purchaseOrder %}{{ purchaseOrder.pot_order_number }}{% endif %}" required>
-        <div id="orderDetails" class="d-flex justify-content-end container mt-1 orderDetails">
-        {% if purchaseOrder %}
-            <div>
-                <strong>Purchase Order Number:</strong> {{ purchaseOrder.ot_order_number }}<br>
-                <strong>Date of purchase:</strong> {{ purchaseOrder.ot_date }}<br>
-                <strong>Vendor shop:</strong> {{ purchaseOrder.ot_vendor.vendor_shop_name }}<br>
-                <strong>Contact Person:</strong> {{ purchaseOrder.ot_vendor.vendor_name }}<br>
-                <strong>Address:</strong> {{ purchaseOrder.ot_vendor.vendor_location }}<br>
-                <strong>Phone Number:</strong> {{ purchaseOrder.ot_vendor.vendor_phone }}
+
+        <div id="orderDetails" class="d-flex ">
+
+            <div class="col-3 shop-details-header mt-4 " style="height:160px;">
+                <b>Purchase Order Number:</b></br>
+                <b>Date of purchase:</b></br>
+                <b>Vendor shop</b></br>
+                <b>Contact Person:</b></br>
+                <b>Address:</b></br>
+                <b>Phone Number:</b>
             </div>
-        {% endif %}
+
+            <div id="shopDetails" class="shop-details container col-9 mt-4 " style="height:160px;">
+                {% if purchaseOrder %}
+
+                    {{ purchaseOrder.ot_order_number }}<br>
+                    {{ purchaseOrder.ot_date }}<br>
+                    {{ purchaseOrder.ot_vendor.vendor_shop_name }}<br>
+                    {{ purchaseOrder.ot_vendor.vendor_name }}<br>
+                    {{ purchaseOrder.ot_vendor.vendor_location }}<br>
+                    {{ purchaseOrder.ot_vendor.vendor_phone }}
+
+                {% endif %}
+            <!-- Shop details will be displayed here -->
+            </div>
+
+        </div>
+
     </div>
-        <hr> <!-- Added horizontal line here -->
+
+<!-- bill details -->
+
+    <div class="col-12">
+
         <form method="post" action="{% url 'confirmpurchase' %}" class="footer-bottom ">
     {% csrf_token %}
         <input name="purchaseOrderNum_id" type="hidden" id="purchaseOrderNum_id" value="{% if purchaseOrder %}{{ purchaseOrder.id }}{% endif %}" readonly>
@@ -44,42 +64,68 @@
         <input name="user_id" type="hidden" value="{{ user.id }}" readonly>
     <div id="itemsDetails" class="container mt-1">
         <div class="justify-content-between" >
-        {% if purchaseItems %}
-        <table style="width:100%">
-            <thead class="bg-info">
+
+        <table class="table">
+            <thead>
                 <tr>
-                    <th>Item Name</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Tax</th>
-                    <th>Amount</th>
-                    <th>Action</th>
+                    <th class="headerx" scope="col">Item Name</th>
+                    <th class="headerx" scope="col">Quantity</th>
+                    <th class="headerx" scope="col">Price</th>
+                    <th class="headerx" scope="col">Tax</th>
+                    <th class="headerx" scope="col">Amount</th>
+                    <th class="headerx" scope="col">Action</th>
                 </tr>
             </thead>
             <tbody>
+            {% if purchaseItems %}
                 {% for item in purchaseItems %}
-                <tr>
-                    <td><input type="text" name="item_name[]" value="{{ item.oit_items }}" class="form-control small-input" readonly>
+
+                <tr >
+                    <td><input type="text" name="item_name[]" value="{{ item.oit_items }}" class="form-pdt form-pdt " readonly>
                     <input type="hidden" name="item_id[]" value="{{ item.id }}"></td>
-                    <td><input type="number" name="item_quantity[]" value="{{ item.oit_quantities }}" class="form-control small-input qty-input" placeholder="Quantity" min="1" max="" required></td>
-                    <td><input type="number" step="0.01" name="item_price[]" class="form-control small-input price-input" placeholder="Price" min="1" required></td>
-                    <td><input type="number" step="0.01" name="item_tax[]"  class="form-control small-input tax-input" placeholder="Tax %" min="0" required></td>
-                    <td><input type="number" step="0.01" name="item_amount[]" class="form-control small-input total-input" placeholder="Total" readonly required></td>
-                    <td><button class="btn btn-danger delete-item-btn" type="button">Delete</button></td>
+                    <td><input type="number" name="item_quantity[]" value="{{ item.oit_quantities }}" class="form-control  qty-input" placeholder="Quantity" min="1" max="" required></td>
+                    <td><input type="number" step="0.01" name="item_price[]" class="form-control  price-input" placeholder="Price" min="1" required></td>
+                    <td><input type="number" step="0.01" name="item_tax[]"  class="form-control  tax-input" placeholder="Tax %" min="0" required></td>
+                    <td><input type="number" step="0.01" name="item_amount[]" class="form-pdt total-input" placeholder="Total" readonly required></td>
+                    <td><button class="btn btn-danger delete-item-btn" type="button">X</button></td>
                 </tr>
                 {% endfor %}
+            {% endif %}
+                </div>
             </tbody>
         </table>
-        {% endif %}
+
         </div>
+        <hr>
         <p class="mt-1"><i>Customize your purchase and hit 'Confirm'.</i></p>
         <div class="d-flex justify-content-end mb-3">
-            <button class="btn btn-info mr-2" type="submit" id="orderButton" >Confirm</button>
+            <button class="btn btn-success mr-2 px-5" type="submit" id="orderButton" >Confirm</button>
         </div>
     </div>
 </form>
+
+
+</div>
+
+
+        <div class="col-12">
+        <h4>Unconfirmed Order List</h4>
+        <hr>
+        <div class=" d-flex flex-wrap">
+            {% for i in purchaseOrder_data %}
+                <div class="d-flex unconfirmed-list py-2">
+                    <div class="col-4"> <b>{{i.ot_order_number}}</b></div>
+                    <div class="col-4 text-right">{{i.ot_date}}</div>
+                    <div class="col-4 text-right">{{i.ot_vendor}}</div>
+
+                </div>
+                <!-- <button type="button" value="{{i.id}}" class="btn m-1 btn-warning orderButton" >{{i.ot_order_number}}</button>-->
+            {% endfor %}
+        </div>
     </div>
+
     </div>
+</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>

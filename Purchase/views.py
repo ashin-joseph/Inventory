@@ -69,7 +69,6 @@ def confirmpurchase(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     purchaseOrder_data = orderTable.objects.all()
     company_data = companyprofileTable.objects.get()
-    company = company_data.company_name
     purchaseOrder = None
     purchaseItems = None
     po_id = None
@@ -115,7 +114,7 @@ def confirmpurchase(request):
         'purchaseOrder': purchaseOrder,
         'purchaseItems': purchaseItems,
         'base_template': base_template,
-        'company': company,
+        'company_data': company_data,
     }
 
     return render(request, "purchase/confirmpurchase_order.html", context)
@@ -127,7 +126,6 @@ def confirmpurchase_display(request, confirm_id):
     confirm_order = get_object_or_404(confirmPurchaseTable, id=confirm_id)
     confirm_items = confirmPurchaseItemTable.objects.filter(cpit_billNum=confirm_order)
     company_data = companyprofileTable.objects.get()
-    company = company_data.company_name
     overall = 0
     for i in confirm_items:
         price = i.cpit_price * i.cpit_qty
@@ -139,7 +137,7 @@ def confirmpurchase_display(request, confirm_id):
         'confirm_items': confirm_items,
         'overall': overall,
         'base_template': base_template,
-        'company': company,
+        'company_data': company_data,
     }
     return render(request, "purchase/confirmPurchase_display.html", context)
 @admin_required

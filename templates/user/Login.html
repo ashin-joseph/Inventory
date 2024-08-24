@@ -7,41 +7,48 @@
     <link rel="icon" href="{% static 'images/stocksmart-logo.jpg' %}" type="image/x-icon">
     <title>StockSmart-Login</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{% static 'assets/loginStyle.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/style.css' %}" rel="stylesheet">
+
+
 
 </head>
 <body class="login-body">
-    <div class="container p-5">
-        <div class="row justify-content-center align-items-center min-vh-100">
-            <div class="col-md-6">
-                <div class="card login-card" style="width: fit-content;">
-                    <div class="row no-gutters">
-                        <div class="col-md-6">
-                            <img src="{% static 'images/smartstock-login.avif' %}" class=" card-img card login-card-img" alt="Graph Image">
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card-body">
-<!--                                <img src="your-image-url.jpg" alt="Graph Image">-->
-                                <h3 class="login-card-title card-title text-center">Welcome to StockSmart!</h3>
-                                <form method="post" action="{% url 'login' %}" class="footer-bottom p-2">
-                                    {% csrf_token %}
-                                    <div class="form-group">
-                                        <input name="login_username" type="text" class="form-control" placeholder="Username" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <input name="login_password" type="password" class="form-control" placeholder="Password" required>
-                                    </div>
 
-                                    <button type="submit" class="btn btn-ss btn-block ">Login</button>
-                                </form>
-                                <a href="{% url 'register_admin' %}"><button class="btn btn-black btn-block" type="button">Register</button></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="container" style="padding-top: 30vh;">
+    <div class="d-flex justify-content-center align-items-center">
+
+        <div class="col">
+            <div class="col d-flex flex-column" >
+                <div class="col d-flex justify-content-center "><img src="{% static 'images/SSmartlogo.svg' %}" alt="logo" width="80" height="80"></div>
+                <div class="col login-text-title " >StockSmart</div>
+                <div class="col login-text-subtitle ">Inventory Made Simple</div>
+            </div>
+        </div>
+
+        <div class="login-card col-4  pt-5 pb-5">
+            <div class="col-12 d-flex align-items-center">
+            <div class=" col">
+            <!--<img src="your-image-url.jpg" alt="Graph Image">-->
+            <h3 class="login-card-title card-title text-center">Login</h3>
+            <h5 class="login-card-title card-title text-center">Welcome back!</h5>
+            <form method="post" action="{% url 'login' %}" class="p-2">
+            {% csrf_token %}
+            <div class="form-group">
+            <input name="login_username" type="text" class="form-control" placeholder="Username" required>
+            </div>
+            <div class="form-group">
+            <input name="login_password" type="password" class="form-control" placeholder="Password" required>
+            </div>
+            <button type="submit" class="btn btn-block btn-success">Login</button>
+            </form>
+            <hr>
+            <a href="{% url 'register_admin' %}"><button class="btn btn-black btn-block" type="button">Admin</button></a>
+            </div>
             </div>
         </div>
     </div>
+</div>
+
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
