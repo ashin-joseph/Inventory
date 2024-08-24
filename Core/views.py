@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from Core.models import itemTable, vendorTable, priceTable, companyprofileTable
 from InventorySystem import settings
+from User.models import User
 from User.views import index, trial_failed
 from django.contrib import messages
 from User.decorators import admin_required, staff_required
@@ -60,6 +61,37 @@ def company_pg(request):
         'base_template': base_template,
     }
     return render(request, "core/company.html", context)
+
+@admin_required
+def staff_pg(request):
+    base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
+    if request.method == "POST":
+        userid = request.POST.get('userid')
+        username = request.POST.get('username')
+        role = request.POST.get('role')
+        password = request.POST.get('password')
+        email = request.POST.get('email')
+
+        if userid:
+            user_data = User.objects.get(id=userid)
+            user_data.username = username
+            user_data.role = role
+            user_data.password = password
+            user_data.email = email
+            user_data.save()
+            messages.success(request, "Vendor Updated successfully")
+        else:
+            User.objects.create(username=username, role=role, password=password, email=email)
+            messages.success(request, "Vendor Added Successfully")
+        return redirect(staff_pg)
+    staff_data = User.objects.all()
+    return render(request, "core/staff.html", {'staff_data': staff_data, 'base_template': base_template})
+
+@admin_required
+def deletestaff(request, Did):
+    User.objects.filter(id=Did).delete()
+    messages.error(request, "User Deleted Successfully")
+    return redirect(staff_pg)
 
 @admin_required
 def item_pg(request):

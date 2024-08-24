@@ -6,6 +6,34 @@ from User.decorators import admin_required, staff_required, admin_staff_required
 from .utils import product_details, todays_offer, lowstock_list, user_activity, purchase_overview, sales_overview
 User = get_user_model()
 
+def register_admin(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+        email = request.POST['email']
+        role = request.POST['role']
+        is_superuser = 'is_superuser' in request.POST
+        is_staff = 'is_staff' in request.POST
+
+        if password == confirm_password:
+            user = User.objects.create_user(
+                username=username,
+                password=password,
+                email=email,
+                role=role,
+                is_superuser=is_superuser,
+                is_staff=is_staff
+            )
+            user.save()
+            messages.success(request, "You have registered as an Admin")
+            return redirect(index)
+        else:
+            messages.error(request, "Your Password does not match..!")
+            return redirect(register_admin)
+
+    return render(request, 'user/register_admin.html')
+
 
 def login_user_inv(request):
     if request.method == 'POST':
@@ -31,6 +59,7 @@ def login_user_inv(request):
 def logout_user_inv(request):
     logout(request)
     return redirect(login_user_inv)
+
 
 @login_required
 @admin_required

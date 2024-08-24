@@ -5,10 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register Administrator</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
      <link href="{% static 'assets/stylex.css' %}" rel="stylesheet">
 </head>
 <body>
-    <h2>Register Administrator</h2>
+<div class="container  p-2 col-4">
+    <h2>Register Administrator</h2><br><br>
     <form action="/register_admin/" method="POST">
         {% csrf_token %}
         <label for="username">Username:</label>
@@ -30,12 +33,13 @@
         </select><br><br>
 
         <input type="checkbox" id="is_superuser" name="is_superuser">
-        <label for="is_superuser">Is Superuser</label><br><br>
+        <label for="is_superuser">Administartor</label><br><br>
 
         <input type="checkbox" id="is_staff" name="is_staff">
-        <label for="is_staff">Is Staff</label><br><br>
+        <label for="is_staff">Staff</label><br><br>
 
-        <input type="submit" value="Register">
+        <button type="submit" >Register</button>
     </form>
+</div>
 </body>
 </html>
