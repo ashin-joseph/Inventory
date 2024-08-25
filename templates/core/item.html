@@ -6,115 +6,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StockSmart-Add Item</title>
+    <title>StockSmart-Item</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="{% static 'assets/style.css' %}" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <!-- Form to add item -->
-            <div class="form-container col-md-4">
-                <h2 id="formTitle">Add Item</h2>
-                <form id="itemForm" method="post" action="{% url 'item_pg' %}" class="footer-bottom">
-                    {% csrf_token %}
-                    <input type="hidden" name="itemid" id="itemId">
-                    <div class="form-group">
-                        <label for="itemName">Item Name</label>
-                        <input name="itemname" type="text" class="form-control" id="itemName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="itemCategory">Item Category</label>
-                        <select name="itmecategory" class="form-control" id="itemCategory" required>
-                            <option value="">-----</option>
-                            <option value="Vegetables">Veg</option>
-                            <option value="Fruits">Fru</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="itemUnit">Item Unit</label>
-                        <select name="itemunit" class="form-control" id="itemUnit" required>
-                            <option value="">-----</option>
-                            <option value="Kilogram">Kg</option>
-                            <option value="Pieces">Pcs</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-info">Submit</button>
-                </form>
-            </div>
+<div class="navheight"></div>
+<br><br>
 
-            <!-- Table to display saved items -->
-            <div class="table-container col-md-8">
-                <h2>Item List</h2>
-                <table class="table table-bordered table-striped">
-                    <thead class="bg-info">
-                        <tr>
-                            <th>Item Name</th>
-                            <th>Item Category</th>
-                            <th>Item Unit</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="itemsTableBody">
-                    {% for i in item_data %}
-                    <tr>
-                        <td>{{i.item_name}}</td>
-                        <td>{{i.item_category}}</td>
-                        <td>{{i.item_unit}}</td>
-                        <td><button type="button" class="btn btn-warning" onclick="editItem('{{i.id}}', '{{i.item_name}}', '{{i.item_category}}', '{{i.item_unit}}')">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
-                                <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001"/>
-                            </svg></button>
-
-                            <a href="{% url 'deleteItem' Did=i.id%}"><button type="submit" class="btn btn-danger" id="deleteItem">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-                                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
-                            </svg></button></a></td>
-                    </tr>
-                    {% endfor %}
-                        <!-- Rows will be added dynamically here -->
-                    </tbody>
-                </table>
+<!-- Modal to add a new item -->
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-success">
+                <h5 class="modal-title" id="exampleModalLabel">Add Item</h5>
             </div>
+            <div class="modal-body d-flex flex-wrap">
+                <div class="col">
+                    <form id="itemForm" method="post" action="{% url 'item_pg' %}" class="footer-bottom">
+                        {% csrf_token %}
+                        <input type="hidden" name="itemid" id="itemId">
+                        <div class="form-group">
+                            <label for="itemName">Item Name</label>
+                            <input name="itemname" type="text" class="form-control" id="itemName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="itemCategory">Item Category</label>
+                            <select name="itmecategory" class="form-control" id="itemCategory" required>
+                                <option value="">-----</option>
+                                <option value="Vegetables">Veg</option>
+                                <option value="Fruits">Fru</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="itemUnit">Item Unit</label>
+                            <select name="itemunit" class="form-control" id="itemUnit" required>
+                                <option value="">-----</option>
+                                <option value="Kilogram">Kg</option>
+                                <option value="Pieces">Pcs</option>
+                            </select>
+                        </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-success px-5">Submit</button>
+            </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Modal to edit an existing item -->
+<div class="modal fade" id="myModal22" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-success">
+                <h5 class="modal-title" id="exampleModalLabel2">Edit Item</h5>
+            </div>
+            <div class="modal-body d-flex flex-wrap">
+                <div class="col">
+                    <form id="itemForm2" method="post" action="{% url 'item_pg' %}" class="footer-bottom">
+                        {% csrf_token %}
+                        <input type="hidden" name="itemid" id="itemId2">
+                        <div class="form-group">
+                            <label for="itemName">Item Name</label>
+                            <input name="itemname" type="text" class="form-control" id="itemName2" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="itemCategory">Item Category</label>
+                            <select name="itmecategory" class="form-control" id="itemCategory2" required>
+                                <option value="">-----</option>
+                                <option value="Vegetables">Veg</option>
+                                <option value="Fruits">Fru</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="itemUnit">Item Unit</label>
+                            <select name="itemunit" class="form-control" id="itemUnit2" required>
+                                <option value="">-----</option>
+                                <option value="Kilogram">Kg</option>
+                                <option value="Pieces">Pcs</option>
+                            </select>
+                        </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-success px-5">Update</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Table to display saved items -->
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h2>Items</h2>
+            <br>
+            <div class="col-12" style="text-align: right;">
+                <button type="button" class="btn btn-success px-5" data-toggle="modal" data-target="#myModal2" style="margin-bottom: 20px;">
+                    Add a New Item
+                </button>
+            </div>
+            <table class="table table-hover ">
+                <thead class="">
+                    <tr>
+                        <th class="headerx col-4" scope="col">Item Name</th>
+                        <th class="headerx col-4" scope="col">Item Category</th>
+                        <th class="headerx col-2" scope="col">Item Unit</th>
+                        <th class="headerx col-2" scope="col">Action</th>
+                    </tr>
+                </thead>
+
+                </table>
+
+                <div class="" style="height: 60vh; overflow: auto;">
+                <table  class="table table-hover table-striped" >
+                    <tbody id="itemTable">
+                {% for i in item_data %}
+                <tr>
+                    <td class="col-4" style="padding-left: 25px;">{{ i.item_name }}</td>
+                    <td class="col-4" style="padding-left: 25px;">{{ i.item_category }}</td>
+                    <td class="col-2" style="padding-left: 25px;">{{ i.item_unit }}</td>
+                    <td class="col-2" style="padding-left: 25px;">
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal22" onclick="editItem('{{ i.id }}', '{{ i.item_name }}', '{{ i.item_category }}', '{{ i.item_unit }}')">
+                            Edit
+                        </button>
+                        <a href="{% url 'deleteItem' Did=i.id %}">
+                            <button type="button" class="btn btn-danger">
+                                X
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+                    </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="bottom-space"></div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
 <script>
-        function editItem(id, name, category, unit) {
-            document.getElementById('itemId').value = id;
-            document.getElementById('itemName').value = name;
-            document.getElementById('itemCategory').value = category;
-            document.getElementById('itemUnit').value = unit;
-            document.getElementById('formTitle').innerText = 'Update Item';
-        }
-    </script>
+    function editItem(id, name, category, unit) {
+        document.getElementById('itemId2').value = id;
+        document.getElementById('itemName2').value = name;
+        document.getElementById('itemCategory2').value = category;
+        document.getElementById('itemUnit2').value = unit;
+        document.getElementById('exampleModalLabel2').innerText = name;
+    }
 
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    function updateSerialNumbers() {
+            const table = document.getElementById('itemTable');
+            const rows = table.getElementsByTagName('td');
+            for (let i = 0; i < rows.length; i++) {
+                rows[i].cells[0].innerText = i + 1;
+     }
+    }
+</script>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 {% if messages %}
 {% for i in messages %}
 {% if i.tags == 'warning' %}
-            <script>
-              swal('{{i}}', '', 'warning');
-            </script>
-        {% elif i.tags == 'error' %}
-            <script>
-              swal('{{i}}', '', 'error');
-            </script>
-        {% elif i.tags == 'info' %}
-            <script>
-              swal('{{i}}', '', 'info');
-            </script>
-        {% else %}
-            <script>
-              swal('{{i}}', '', 'success');
-            </script>
-        {% endif %}
-    {% endfor %}
+    <script>
+        swal('{{i}}', '', 'warning');
+    </script>
+{% elif i.tags == 'error' %}
+    <script>
+        swal('{{i}}', '', 'error');
+    </script>
+{% elif i.tags == 'info' %}
+    <script>
+        swal('{{i}}', '', 'info');
+    </script>
+{% else %}
+    <script>
+        swal('{{i}}', '', 'success');
+    </script>
 {% endif %}
+{% endfor %}
+{% endif %}
+
 </body>
 </html>
 {% endblock %}

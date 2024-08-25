@@ -303,7 +303,6 @@ height: 350px;
         .text-pink { color: #e83e8c; }
         .text-green { color: #0f8c3d; }
         .text-purple { color: #6f42c1; }
-        .form-container { width: 40%; }
 
 
         input:focus {
@@ -408,8 +407,9 @@ color: #999999;
 }
 
 .form-pdt{
-border: 1px solid rgba(0, 0, 0, 0);
-background-color: rgba(0, 0, 0, 0);
+border: 1px solid rgba(0, 0, 0, 0) !important;
+background-color: rgba(0, 0, 0, 0) !important;
+
 }
 
 
@@ -512,4 +512,22 @@ width:100%;
 
 total-input{
 font-weight: bold;
+}
+
+
+
+.modallink{
+color: #007bff !important;
+}
+
+tr:hover {
+    background-color: #F7F7EB !important; /* Replace with your desired color */
+}
+
+table-striped tr:nth-of-type(odd) {
+    background-color: #F9FFF9 !important; /* Replace with your desired color */
+}
+
+.price-tabel{
+width:100% !important;
 }

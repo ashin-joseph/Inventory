@@ -2,64 +2,74 @@
 {% extends base_template %}
 {% load static %}
 {% block content %}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StockSmart-Report Damage</title>
-    <!-- Bootstrap CSS -->
+    <title>StockSmart-Damage</title>
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="{% static 'assets/style.css' %}" rel="stylesheet">
 </head>
+
 <body>
-    <div class="container">
-        <div class="row">
-            <!-- Form to report damage -->
-            <div class="form-container col-md-4">
-                <h2>Report Damage</h2>
-                <form id="itemForm" method="post" action="{% url 'damage' %}">
+<div class="navheight"></div>
+<br>
+<br>
+
+<!-- list -->
+<div class="container d-flex flex-wrap justify-content-center">
+
+    <div class="col-6">
+    <h3>Report Damage</h3>
+        <form id="itemForm" method="post" action="{% url 'damage' %}">
                     {% csrf_token %}
-                    <div class="form-group">
-                        <label for="itemName">Item Name</label>
-                        <input placeholder="Product Name" name="itemname" type="text" class="form-control" id="itemName" required>
+                    <div>
+                        <input placeholder="Product Name" class="form-control" name="itemname" type="text" id="itemName" required>
                         <input name="item_id" type="hidden" id="item_id" value="{{item_data.id}}" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="damageQty">Damage Quantity</label>
-                        <input placeholder="Kg/Pcs" name="damageqty" type="number" class="form-control" id="damageQty" required>
-                    </div>
+                    </div><br>
+                    <div>
+                        <input placeholder="Kg/Pcs" class="form-control" name="damageqty" type="number" id="damageQty" required>
+                    </div><br>
 
-                    <button type="submit" class="btn btn-info">Submit</button>
-                </form>
-            </div>
+                    <button class="btn btn-success mr-2 px-5" type="submit" >Submit</button>
+                </form><br>
+        <div class=" d-flex flex-wrap mb-2">
 
-            <!-- Table to display reported damages -->
-            <div class="table-container col-md-8">
-                <h2>Damage Reported</h2>
-                <table class="table table-bordered table-striped">
-                    <thead class="bg-info">
-                        <tr>
-                            <th>Damage Date</th>
-                        </tr>
-                    </thead>
-                    <tbody id="itemsTableBody">
-                    {% for i in damage_data %}
-                        <tr>
-                            <td>{{ i.dpt_timestamp }} -> {{i.dpt_item.item_name}}</td>
-                        </tr>
-                    {% endfor %}
-                        <!-- Rows will be added dynamically here -->
-                    </tbody>
-                </table>
-            </div>
+
         </div>
     </div>
 
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script>
+    <div class="container ">
+         <h3>Damage Reported</h3>
+    <div class="">
+            <table class="table" >
+            <tr>
+            <th class="headerx col-6" scope="col">Item</th>
+            <th class="headerx col-4" scope="col">Quantity</th>
+            <th class="headerx col-2" scope="col">Date</th>
+            </tr></table>
+                <div class="" style="height: 300px; overflow: auto;">
+            <table class="table table-hover" >
+                 {% for i in damage_data %}
+                <tr>
+                    <td  class="col-6"> {{i.dpt_item.item_name}}</td>
+                    <td  class="col-4" style="padding-left: 25px;"> {{ i.dpt_damage_qty }}</td>
+                    <td  class="col-2" style="padding-left: 25px;"> {{ i.dpt_timestamp }} </td>
+                </tr>
+                {% endfor %}
+            </table>
+    <!-- Input fields for selected items will be dynamically added here -->
+    </div>
+    </div>
+</div>
+<div class="bottom-space"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+ <script>
         $(document).ready(function(){
             var itemdata = [
             {% for i in item_data %}
@@ -106,7 +116,6 @@
         {% endif %}
     {% endfor %}
 {% endif %}
-
 </body>
 </html>
 {% endblock %}

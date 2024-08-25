@@ -81,7 +81,7 @@
                 {% for item in purchaseItems %}
 
                 <tr >
-                    <td><input type="text" name="item_name[]" value="{{ item.oit_items }}" class="form-pdt form-pdt " readonly>
+                    <td><input type="text" name="item_name[]" value="{{ item.oit_items }}" class=" form-pdt " readonly>
                     <input type="hidden" name="item_id[]" value="{{ item.id }}"></td>
                     <td><input type="number" name="item_quantity[]" value="{{ item.oit_quantities }}" class="form-control  qty-input" placeholder="Quantity" min="1" max="" required></td>
                     <td><input type="number" step="0.01" name="item_price[]" class="form-control  price-input" placeholder="Price" min="1" required></td>
@@ -126,7 +126,7 @@
 
     </div>
 </div>
-<div class="bottom-space"></div>
+<div class="bottom-space"></div><br>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>

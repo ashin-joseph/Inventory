@@ -6,18 +6,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StockSmart-Add Vendor</title>
+    <title>StockSmart-Vendor</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
      <link href="{% static 'assets/style.css' %}" rel="stylesheet">
 </head>
 <body>
+<div class="navheight"></div>
+<br>
+<br>
+
+
+
+ <!-- Modal 2 add new -->
+    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable " role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-success">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Vendor</h5>
+                </div>
+                <div class="modal-body d-flex flex-wrap">
+                    <div class="col">
+                    <form id="itemForm" method="post" action="{% url 'vendor_pg' %}" onsubmit="return validation()" >
+                    {% csrf_token %}
+                    <input name="vendorid" type="hidden" id="vendorid">
+                    <div class="form-group">
+                        <label>Vendor Name</label>
+                        <input name="shopname" id="shopname" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Name</label>
+                        <input name="vendorname" id="vendorname" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input name="location" id="location" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Pin</label>
+                        <input name="pin" id="pin" type="text" class="form-control" required>
+                    </div>
+                        </div>
+
+                    <div class="col">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input name="email" id="email" type="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone number</label>
+                        <input name="phonenumber" id="phonenumber" type="tel" onsubmit="return validation()" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>GST</label>
+                        <input name="gst" id="gst" type="text" class="form-control" required>
+                    </div>
+
+                        </div>
+
+                    <div class="col-12">
+
+                    <div class="form-group">
+                        <label>Note</label>
+                        <textarea name="note" id="note" class="form-control" required></textarea>
+                    </div>
+
+                        </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success px-5">Submit</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+ <!-- Modal 3 edit -->
+
+    <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable " role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-success">
+                    <h5 class="modal-title" id="exampleModalLabel3">Edit Vendor</h5>
+                </div>
+                <div class="modal-body d-flex flex-wrap">
+                    <div class="col">
+                    <form id="itemForm3" method="post" action="{% url 'vendor_pg' %}" onsubmit="return validationedit()" >
+                    {% csrf_token %}
+                    <input name="vendorid" type="hidden" id="vendorid3">
+                    <div class="form-group">
+                        <label>Vendor Name</label>
+                        <input name="shopname" id="shopname3" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Name</label>
+                        <input name="vendorname" id="vendorname3" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input name="location" id="location3" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Pin</label>
+                        <input name="pin" id="pin3" type="text" class="form-control" required>
+                    </div>
+                        </div>
+
+                    <div class="col">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input name="email" id="email3" type="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone number</label>
+                        <input name="phonenumber" id="phonenumber3" type="tel" onsubmit="return validationedit()" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>GST</label>
+                        <input name="gst" id="gst3" type="text" class="form-control" required>
+                    </div>
+
+                        </div>
+
+                    <div class="col-12">
+
+                    <div class="form-group">
+                        <label>Note</label>
+                        <textarea name="note" id="note3" class="form-control" required></textarea>
+                    </div>
+
+                        </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success px-5">Submit</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<!-- Modal 4 edit -->
+
+<div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-success">
+        <h5 class="modal-title" id="formTitle4">Vendor Details</h5>
+      </div>
+      <div class="modal-body d-flex flex-wrap">
+  <div class="col-6">
+    <!-- Vendor ID hidden -->
+    <p style="display: none;">Vendor ID: <br><span id="vendorid4"></span></p>
+    <p style="font-weight:bold; color:#999999;">Shop Name: <br><span id="shopname4" style="color:#000000; font-weight:normal;"></span></p>
+    <p style="font-weight:bold; color:#999999;">Vendor Name: <br><span id="vendorname4" style="color:#000000; font-weight:normal;"></span></p>
+    <p style="font-weight:bold; color:#999999;">Location: <br><span id="location4" style="color:#000000; font-weight:normal;"></span></p>
+    <p style="font-weight:bold; color:#999999;">Pin: <br><span id="pin4" sstyle="color:#000000; font-weight:normal;"></span></p>
+  </div>
+
+  <div class="col-6">
+    <p style="font-weight:bold; color:#999999;">Email: <br><span id="email4" style="color:#000000; font-weight:normal;"></span></p>
+    <p style="font-weight:bold; color:#999999;">Phone Number: <br><span id="phonenumber4" style="color:#000000; font-weight:normal;"></span></p>
+    <p style="font-weight:bold; color:#999999;">GST: <br><span id="gst4" style="color:#000000; font-weight:normal;"></span></p>
+  </div>
+  <div class="col-12">
+    <p style="font-weight:bold; color:#999999;">Note: <br><span id="note4" style="color:#000000; font-weight:normal;"></span></p>
+  </div>
+</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
     <div class="container">
+
+
+
+
         <div class="row">
             <!-- Form to add vendor -->
-            <div class="form-container col-md-4">
+           <!-- <div class="form-container col-md-4">
                 <h2 id="formTitle">Add Vendor</h2>
-                <form id="itemForm" method="post" action="{% url 'vendor_pg' %}" onsubmit="return validation()" class="footer-bottom">
+                <form id="itemForm5" method="post" action="{% url 'vendor_pg' %}" onsubmit="return validation()" class="footer-bottom">
                     {% csrf_token %}
                     <input name="vendorid" type="hidden" id="vendorid">
                     <div class="form-group">
@@ -54,42 +233,52 @@
                     </div>
                     <button type="submit" class="btn btn-info">Submit</button>
                 </form>
-            </div>
+            </div> -->
 
             <!-- Table to display saved vendors -->
-            <div class="table-container col-md-8">
-                <h2>Vendor List</h2>
-                <table class="table table-bordered table-striped">
-                    <thead class="bg-info">
-                        <tr>
-                            <th style="width:120px">Shop Name</th>
-                            <th style="width:120px">Location</th>
-                            <th style="width:120px">Name</th>
-                            <th style="width:120px">Contact No.</th>
-                            <th style="width:120px">GST No.</th>
-                            <th style="width:120px">Action</th>
+            <div class="col">
+
+                <h2>Vendors</h2>
+                <br>
+                        <div class="col-12" style="text-align: right;"><button type="button" class="btn btn-success px-5" data-toggle="modal" data-target="#myModal2" style="margin-bottom: 20px;">
+                        Add a New Vendor
+                        </button>
+                            </div>
+
+                <table class="table table-hover">
+                    <thead class="">
+                        <tr >
+
+                            <th class="headerx col-4" scope="col">Vendor</th>
+                            <th class="headerx col-2" scope="col">location</th>
+                            <th class="headerx col-2" scope="col">Contact</th>
+                            <th class="headerx col-2" scope="col">Phone</th>
+                            <th class="headerx col-2" scope="col">Action</th>
+
                         </tr>
                     </thead>
                     <tbody id="itemsTableBody">
                     {% for i in vendor_data %}
                     <tr>
-                        <td>{{ i.vendor_shop_name }}</td>
-                        <td>{{ i.vendor_location }}</td>
-                        <td>{{ i.vendor_name }}</td>
-                        <td>{{ i.vendor_phone }}</td>
-                        <td>{{ i.vendor_GST }}</td>
-                        <td>
-                            <button type="button" class="btn btn-warning" onclick="editVendor('{{ i.vendor_id }}', '{{ i.vendor_shop_name }}', '{{ i.vendor_name }}', '{{ i.vendor_location }}', '{{ i.vendor_pin }}', '{{ i.vendor_email }}', '{{ i.vendor_phone }}', '{{ i.vendor_GST }}', '{{ i.vendor_note }}')">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
-                                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001"/>
-                                </svg>
-                            </button>
-                            <a href="{% url 'deleteVendor' Did=i.vendor_id %}"><button type="button" class="btn btn-danger">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
-                                </svg>
+                            <td class=" col-4">
+                            <a type="button" data-toggle="modal" data-target="#myModal4" class="modallink"
+                            onclick="showVendor('{{ i.vendor_id }}', '{{ i.vendor_shop_name }}', '{{ i.vendor_name }}', '{{ i.vendor_location }}', '{{ i.vendor_pin }}', '{{ i.vendor_email }}', '{{ i.vendor_phone }}', '{{ i.vendor_GST }}', '{{ i.vendor_note }}')">
+                            {{ i.vendor_shop_name }}
+                            </a>
+
+                            <td class=" col-2" style="padding-left: 25px;">{{ i.vendor_location }}</td>
+                            <td class=" col-2" style="padding-left: 20px;">{{ i.vendor_name }}</td>
+                            <td class=" col-2" style="padding-left: 25px;">{{ i.vendor_phone }}</td>
+                            <td class=" col-2" style="padding-left: 25px;">
+
+                            <a type="button" data-toggle="modal" data-target="#myModal3" class="btn btn-warning"
+                            onclick="editVendor('{{ i.vendor_id }}', '{{ i.vendor_shop_name }}', '{{ i.vendor_name }}', '{{ i.vendor_location }}', '{{ i.vendor_pin }}', '{{ i.vendor_email }}', '{{ i.vendor_phone }}', '{{ i.vendor_GST }}', '{{ i.vendor_note }}')">
+                            Edit
+                            </a>
+                               <a href="{% url 'deleteVendor' Did=i.vendor_id %}"> <button type="button" class="btn btn-danger">
+                            X
                             </button></a>
-                        </td>
+                            </td>
                     </tr>
                     {% endfor %}
                     </tbody>
@@ -105,23 +294,53 @@
 
     <script>
         function editVendor(id, shopname, vendorname, location, pin, email, phonenumber, gst, note) {
-            document.getElementById('vendorid').value = id;
-            document.getElementById('shopname').value = shopname;
-            document.getElementById('vendorname').value = vendorname;
-            document.getElementById('location').value = location;
-            document.getElementById('pin').value = pin;
-            document.getElementById('email').value = email;
-            document.getElementById('phonenumber').value = phonenumber;
-            document.getElementById('gst').value = gst;
-            document.getElementById('note').value = note;
-            document.getElementById('formTitle').innerText = 'Update Vendor';
+            document.getElementById('vendorid3').value = id;
+            document.getElementById('shopname3').value = shopname;
+            document.getElementById('vendorname3').value = vendorname;
+            document.getElementById('location3').value = location;
+            document.getElementById('pin3').value = pin;
+            document.getElementById('email3').value = email;
+            document.getElementById('phonenumber3').value = phonenumber;
+            document.getElementById('gst3').value = gst;
+            document.getElementById('note3').value = note;
+            document.getElementById('formTitle3').innerText = 'Update Vendor';
         }
+
+        function showVendor(id, shopname, vendorname, location, pin, email, phonenumber, gst, note) {
+            document.getElementById('vendorid4').innerText = id;
+            document.getElementById('shopname4').innerText = shopname;
+            document.getElementById('vendorname4').innerText = vendorname;
+            document.getElementById('location4').innerText = location;
+            document.getElementById('pin4').innerText = pin;
+            document.getElementById('email4').innerText = email;
+            document.getElementById('phonenumber4').innerText = phonenumber;
+            document.getElementById('gst4').innerText = gst;
+            document.getElementById('note4').innerText = note;
+            document.getElementById('formTitle4').innerText = shopname;
+    }
     </script>
 
     <script>
    function validation(){
     var gst=document.getElementById("gst").value;
     var phonenumber=document.getElementById("phonenumber").value;
+
+    if (phonenumber.length<10){
+        alert("mobile number must be 10 character")
+        return false;
+    }
+    else if (gst.length<15){
+        alert("GST must be atleast 15 character")
+        return false;
+    }
+    else {
+        return true;
+        }
+   }
+
+        function validationedit(){
+    var gst=document.getElementById("gst3").value;
+    var phonenumber=document.getElementById("phonenumber3").value;
 
     if (phonenumber.length<10){
         alert("mobile number must be 10 character")

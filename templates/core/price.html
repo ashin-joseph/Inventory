@@ -12,57 +12,110 @@
     <link href="{% static 'assets/style.css' %}" rel="stylesheet">
 </head>
 <body>
+<div class="navheight"></div>
+<br><br>
 <div class="container">
-        <div class="row">
-            <!-- Form to add item -->
-            <div class="form-container col-md-4">
-                <h2>Set default % </h2>
-                <form method="post" action="{% url 'price_pg' %}" class="footer-bottom">
-                    {% csrf_token %}
-                <div class="form-group">
-                    <label>Tax % </label>
-                    <input id="defaultTax" name="tax" type="text" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label>Offer %</label>
-                    <input id="defaultOffer" name="offer" type="text" class="form-control" required>
-                </div>
-                    <button type="submit" class="btn btn-info">Submit</button>
-                    </form>
-            </div>
+        <h2>Price Chart</h2>
+
+        <div class="d-flex flex-wrap">
+        <!-- Form to add item -->
+
+        <div class="col-12" style="margin-bottom:1px;"><h5>Set default tax% and Offer%</h5></div>
+
+        <form method="post" action="{% url 'price_pg' %}" class="col-12">
+        {% csrf_token %}
+        <div class="col-12 d-flex flex-wrap">
+
+        <div class="form-group col-6">
+        <input id="defaultTax" name="tax" type="text" class="form-control" placeholder="Tax %" required>
+        </div>
+
+        <div class="form-group col-6">
+        <input id="defaultOffer" name="offer" type="text" class="form-control" placeholder="Offer %" required>
+        </div>
+
+        </div>
+        <div class="col-12" style="text-align: right;"><button type="submit" class="btn btn-success px-5">Submit</button></div>
+        </form>
+        </div>
+
+<br>
             <!-- Table to display saved items -->
-            <div class=" col-md-8">
-                <h2>Price Chart</h2><br>
-                <form class="footer-bottom" id="itemForm" method="post" action="{% url 'updatePrice' %}" >
-                    {% csrf_token %}
-                    <table class="table table-bordered table-striped">
-                        <thead class="bg-info">
-                            <tr>
-                                <th>Item Name</th>
-                                <th>Selling Price <i>(Rs.)</i> </th>
-                                <th>Tax <i>(%)</i> </th>
-                                <th>Offer <i>(%)</i> </th>
-                            </tr>
-                        </thead>
-                        <tbody id="itemsTableBody">
+            <div class=" col-12">
+<br>
+
+<form class="footer-bottom" id="itemForm" method="post" action="{% url 'updatePrice' %}" >
+{% csrf_token %}
+<table class="table table-bordered table-striped">
+<thead class="">
+    <tr>
+        <th class="headerx  col-6">Item Name</th>
+    <th class="headerx  col-2">Selling Price (Rs.)</th>
+    <th class="headerx  col-2">Tax (%) </th>
+    <th class="headerx  col-2">Offer (%)</th>
+    </tr>
+</thead>
+</table>
+                <div class="" style="height: 50vh; overflow: auto;">
+                    <table class="table table-hover price-tabel" >
                         {% for i in price_data %}
                         <tr>
-                            <td style="text-align: center;"><input name="id[]" type="hidden" value="{{i.id}}">
-                            <input name="itemname[]" type="text" class="form-control" value="{{i.pt_item.item_name}}" readonly></td>
-                            <td style="text-align: center;"><input name="sellingprice[]" type="text" class="form-control small-input" value="{{i.pt_sellingPrice}}"></td>
-                            <td style="text-align: center;"><input name="tax[]" type="text" class="form-control small-input" value="{{i.pt_tax}}"></td>
-                            <td style="text-align: center;"><input name="offer[]" type="text" class="form-control small-input" value="{{i.pt_offer}}"></td>
+                            <input name="id[]" type="hidden" class=" form-pdt" value="{{i.id}}" readonly>
+                            <td class=" col-6" style="padding-left: 25px;"><input name="itemname[]" type="text" class=" form-pdt" value="{{i.pt_item.item_name}}" readonly></td>
+                            <td class=" col-2 " style="padding-left: 25px;"><input name="sellingprice[]" type="text" class="price-tabel form-control" value="{{i.pt_sellingPrice}}"></td>
+                            <td class=" col-2 " style="padding-left: 25px;"><input name="tax[]" type="text" class="price-tabel form-control" value="{{i.pt_tax}}"></td>
+                            <td class=" col-2 " style="padding-left: 25px;"><input name="offer[]" type="text" class="price-tabel form-control" value="{{i.pt_offer}}"></td>
                         </tr>
                         {% endfor %}
-                            <!-- Rows will be added dynamically here -->
-                        </tbody>
                     </table>
-                    <button type="submit" class="btn btn-info">Submit</button>
+                </div>
+    <br>
+
+
+<!-- <table>
+
+<div class="" style="height: 300px; overflow: auto;">
+<table class="table table-hover" >
+{% for i in sorted_items %}
+<tr>
+<td><input name="id[]" type="hidden" value="{{i.id}}">
+<input name="itemname[]" type="text" class="" value="{{i.pt_item.item_name}}" readonly></td>
+<td style="text-align: center;"><input name="sellingprice[]" type="text" class=" small-input" value="{{i.pt_sellingPrice}}"></td>
+<td style="text-align: center;"><input name="tax[]" type="text" class="small-input x" value="{{i.pt_tax}}"></td>
+<td style="text-align: center;"><input name="offer[]" type="text" class="small-input x" value="{{i.pt_offer}}"></td>
+</tr>
+{% endfor %}
+</table>
+</div> -->
+
+
+
+<!-- <tbody id="itemsTableBody">
+<div class="x" style="height: 300px; overflow: auto;">
+{% for i in price_data %}
+<tr>
+<td><input name="id[]" type="hidden" value="{{i.id}}">
+<input name="itemname[]" type="text" class="form-control" value="{{i.pt_item.item_name}}" readonly></td>
+<td style="text-align: center;"><input name="sellingprice[]" type="text" class="form-control small-input" value="{{i.pt_sellingPrice}}"></td>
+<td style="text-align: center;"><input name="tax[]" type="text" class="form-control small-input x" value="{{i.pt_tax}}"></td>
+<td style="text-align: center;"><input name="offer[]" type="text" class="form-control small-input x" value="{{i.pt_offer}}"></td>
+</tr>
+{% endfor %}
+<tbody>
+Rows will be added dynamically here
+</div>
+</tbody>
+
+
+</table> -->
+
+
+                    <div style="text-align: right;"><button type="submit" class="btn btn-success px-5">Submit</button></div>
                 </form>
             </div>
         </div>
     </div>
-
+</div>
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
