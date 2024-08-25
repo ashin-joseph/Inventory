@@ -20,7 +20,9 @@
         <h3>Item list</h3>
         <div class="d-flex flex-wrap itemlist mb-2">
             {% for i in stock_data %}
-                <button type="button" value="{{i.id}}" class="col-6 itemButton {% if i.st_remainingStock < 10 %} itemButtonRed {% endif %}">{{i.st_item.item_name}} </button>
+            <button type="button" value="{{i.id}}" data-stock="{{i.st_remainingStock}}" class="col-6 itemButton {% if i.st_remainingStock < 10 %} itemButtonRed {% endif %}">{{i.st_item.item_name}}</button>
+
+<!--                <button type="button" value="{{i.id}}" class="col-6 itemButton {% if i.st_remainingStock < 10 %} itemButtonRed {% endif %}">{{i.st_item.item_name}} </button>-->
             {% endfor %}
         </div>
     </div>
@@ -166,6 +168,16 @@ $(document).ready(function() {
 });
 </script>
 
+<script>
+$(".itemButton").click(function() {
+    var itemId = $(this).val();
+    var itemName = $(this).text();
+    var itemStock = $(this).data('stock');  // Assuming you pass stock data with a data attribute
+
+
+    addItem(itemId, itemName);
+});
+</script>
 
 {% if messages %}
     <script>
