@@ -6,33 +6,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StockSmart-purchase bill</title>
+    <title>StockSmart-Bill Details</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="{% static 'assets/style.css' %}" rel="stylesheet">
 </head>
 <body>
+<div class="navheight" style="height: 100px"></div>
+
     <div class="container order-container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="order-header text-center">
-                    <h2>{{company}}</h2>
-                    <h4>Purchase Bill</h4>
-                </div>
+
+            <div class="col-12">
                 <div class="order-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p><strong>Shop Name:</strong> {{ pur_ord.cpt_vendor.vendor_shop_name }}</p>
-                            <p><strong>Vendor Name:</strong> {{ pur_ord.cpt_vendor.vendor_name }}</p>
-                            <p><strong>Address:</strong> {{ pur_ord.cpt_vendor.vendor_location }}</p>
+
+                    <div class="bill-header d-flex">
+
+                        <div class="col vendor-details-head">
+                        <h2>{{company_data.company_name}}</h2>
+                            <p>{{company_data.company_address}}</p>
+                            <p>Phone: {{company_data.company_mobile}}</p>
                         </div>
-                        <div class="col-md-6 text-md-right">
-                            <p><strong>Contact Number:</strong> {{ pur_ord.cpt_vendor.vendor_phone }}</p>
-                            <p><strong>Order Number:</strong> {{ pur_ord.cpt_billNum }}</p>
-                            <p><strong>Date:</strong> {{ pur_ord.cpt_date }}</p>
+
+                        <div class="col print-only text-right vendor-details-head">
+                            <p>Purchase Order Number: <h5>{{pur_ord.cpt_billNum }}</h5></p>
                         </div>
                     </div>
-                    <table class="table table-striped order-table">
-                        <thead class="bg-info">
+
+
+
+                    <div class="d-flex">
+                        <div class="col vendor-details">
+                            <p>Vendor: <strong>{{ pur_ord.cpt_vendor.vendor_shop_name }}</strong> </p>
+                            <p>Address: <strong>{{ pur_ord.cpt_vendor.vendor_location }}</strong> </p>
+                            <p>GISTIN: <strong> {{ pur_ord.cpt_vendor.vendor_GST }}</strong> </p>
+                            <br>
+                        </div>
+                        <div class="col text-right vendor-details">
+                            <p>Date:<strong> {{ pur_ord.cpt_date }}</strong> </p>
+                            <p>Contact: <strong>{{ pur_ord.cpt_vendor.vendor_name }}</strong> </p>
+                            <p>Phone: <strong>{{ pur_ord.cpt_vendor.vendor_phone }}</strong> </p>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <table class=" table table-striped ">
+                        <thead class="">
                             <tr>
                                 <th>Item</th>
                                 <th>Quantity</th>
@@ -51,22 +69,43 @@
                                     <td><i>Rs.</i>{{i.cpit_Amount}}</td>
                                 </tr>
                             {% endfor %}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><i>Rs.</i><b>{{pur_Amount}}</b></td>
+                        </tr>
                         </tbody>
                     </table>
+                    </div>
+
                     <div class="row">
-                        <div class="col-md-12 text-md-right">
-                            <p><strong>Total: </strong><i>Rs.</i>{{ pur_Amount }}</p>
+                        <div class="col-md-12 text-md-right px-5">
+<!--                            <p><strong>Total: </strong><i>Rs.</i>{{ pur_Amount }}</p>-->
                         </div>
                     </div>
-                    <div class="text-center print-button">
-                        <a href="{% url 'index' %}"><button class="btn btn-info">Ok</button></a>
+                    <div class="text-center">
+                        <br>
+                        <br>
+                        <br>
+                        <p><i>Thank you!</i></p>
                     </div>
+
                 </div>
+            </div>
+            <div class="col-12 text-center print-button">
+<!--                        <button class="btn btn-success px-5">ok</button>-->
+                        <a href="{% url 'purchase_bill' %}"><button type="submit" class="btn btn-success px-5">Ok</button></a>
             </div>
         </div>
     </div>
+
+<div class="bottom-space"></div>
+
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </body>
 </html>

@@ -6,31 +6,57 @@
 <head>
     <meta charset="UTF-8">
     <title>StockSmart-Stock List</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="{% static 'assets/style.css' %}" rel="stylesheet">
 </head>
 <body>
-<div class="container">
-    <h1 class="mt-4">Stock List</h1>
-    <table class="table table-striped">
-        <thead class="bg-info">
-            <tr>
-                <th scope="col">Product</th>
-                <th scope="col">Unit</th>
-                <th scope="col">Available Stock</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for i in st %}
+<div class="navheight"></div>
+<br>
+<br>
+<div class="container d-flex flex-wrap">
+
+<!-- vendor details -->
+
+    <div class="col-12">
+       <div class="col-12 Dash-Price-card mt-3">
+        <div class="my-3">
+             <h1 class="mt-4">Stock List</h1>
+        </div>
+
+        <div>
+            <table class="table table-hover" >
+             <tr >
+                 <th class="headerx col-4" scope="col">Product</th>
+                 <th class="headerx col-4" scope="col">Unit</th>
+                 <th class="headerx col-4" scope="col">Available</th>
+
+                 </tr></table>
+                <div class="" style="height: 500px; overflow: auto;">
+                    <table class="table table-hover" >
+                {% for i in st %}
                 <tr>
-                    <td>{{ i.st_item.item_name }}</td>
-                    <td>{{ i.st_item.item_unit }}</td>
-                    <td class="{% if i.st_remainingStock < 10 %}low-stock{% endif %}">{{ i.st_remainingStock }}</td>
+                <td class=" col-4" >{{ i.st_item.item_name }}</td>
+                <td class=" col-4" style="padding-left: 20px;">{{i.st_item.item_unit}}</td>
+                <td class=" col-4 {% if i.st_remainingStock < 10 %}text-pink{% endif %}" style="padding-left: 25px;font-weight: 600;">{{i.st_remainingStock}}</td>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                {% endfor %}
+                    </table>
+                </div>
+
+
+        </div>
+
+    </div>
+
+    </div>
+
+
+    </div>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 </body>
 </html>
 {% endblock %}

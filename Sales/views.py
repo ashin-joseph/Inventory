@@ -75,25 +75,20 @@ def sales_order_display(request, orderId):
     s_order = get_object_or_404(salesorderTable, id=orderId)
     so_item = salesorderItemTable.objects.filter(soit_bill_number=s_order)
     company_data = companyprofileTable.objects.get()
-    company = company_data.company_name
     address = company_data.company_address
     number = company_data.company_mobile
     gst = company_data.company_gst
 
     overall = 0
     for j in so_item:
-        price = j.soit_price.pt_sellingPrice * j.soit_quantity
-        tax = int((j.soit_price.pt_tax / 100)) * price
-        offer = int((j.soit_price.pt_offer / 100)) * price
-        total_s = price + tax - offer
-        overall += total_s
+        overall += j.soit_total
 
     context = {
         's_order': s_order,
         'so_item': so_item,
         'overall': overall,
         'base_template': base_template,
-        'company': company,
+        'company_data': company_data,
         'address': address,
         'number': number,
         'gst': gst,
@@ -160,25 +155,15 @@ def salesReturn_display(request, return_id):
     return_order = get_object_or_404(returnSalesTable, id=return_id)
     return_items = returnsalesItemTable.objects.filter(rsit_billNum=return_order)
     company_data = companyprofileTable.objects.get()
-    company = company_data.company_name
-    address = company_data.company_address
-    number = company_data.company_mobile
-    gst = company_data.company_gst
     overall = 0
     for i in return_items:
-        price = i.rsit_price * i.rsit_qty
-        tax = int((i.rsit_tax / 100)) * price
-        total = price + tax
-        overall += total
+        overall += i.rsit_refundAmount
     context = {
         'return_order': return_order,
         'return_items': return_items,
         'overall': overall,
         'base_template': base_template,
-        'company': company,
-        'address': address,
-        'number': number,
-        'gst': gst,
+        'company_data': company_data,
     }
     return render(request, "sales/salesReturn_display.html", context)
 
@@ -218,11 +203,7 @@ def salesBill_display(request, billId):
     sale_itm = salesorderItemTable.objects.filter(soit_bill_number=sale_ord)
     sale_Amount = 0
     for j in sale_itm:
-        price = j.soit_price.pt_sellingPrice * j.soit_quantity
-        tax = int((j.soit_price.pt_tax / 100)) * price
-        offer = int((j.soit_price.pt_offer / 100)) * price
-        total_s = price + tax - offer
-        sale_Amount += total_s
+        sale_Amount += j.soit_total
 
     context = {
         'base_template': base_template,
@@ -240,11 +221,7 @@ def returnBill_display(request, billId):
     saleret_itm = returnsalesItemTable.objects.filter(rsit_billNum=saleret_ord)
     saleret_Amount = 0
     for j in saleret_itm:
-        price = j.rsit_price * j.rsit_qty
-        tax = int((j.rsit_tax / 100)) * price
-        offer = int((j.rsit_offer / 100)) * price
-        total_s = price + tax - offer
-        saleret_Amount += total_s
+        saleret_Amount += j.rsit_refundAmount
 
     context = {
         'base_template': base_template,

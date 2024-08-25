@@ -105,17 +105,9 @@ def daily_salesReport():
     sales_data = salesorderItemTable.objects.filter(soit_bill_number__sot_date=current_date)
     sales_return_data = returnsalesItemTable.objects.filter(rsit_billNum__rst_date=current_date)
     for j in sales_data:
-        price = j.soit_price.pt_sellingPrice * j.soit_quantity
-        tax = int((j.soit_price.pt_tax / 100)) * price
-        offer = int((j.soit_price.pt_offer / 100)) * price
-        total_s = price + tax - offer
-        daily_sales += int(total_s)
+        daily_sales += j.soit_total
     for j in sales_return_data:
-        price = j.rsit_price * j.rsit_qty
-        tax = int((j.rsit_tax / 100)) * price
-        offer = int((j.rsit_offer / 100)) * price
-        total_sr = price + tax - offer
-        daily_sales_return += int(total_sr)
+        daily_sales_return += j.rsit_refundAmount
     return ( daily_sales, daily_sales_return )
 
 def daily_damageReport():
@@ -142,10 +134,7 @@ def daily_purchaseReport():
     daily_purchase = 0
     purchase_data = confirmPurchaseItemTable.objects.filter(cpit_billNum__cpt_date=current_date)
     for i in purchase_data:
-        price = i.cpit_price * i.cpit_qty
-        tax = int((i.cpit_tax / 100)) * price
-        total_p = price + tax
-        daily_purchase += int(total_p)
+        daily_purchase += i.cpit_Amount
     return daily_purchase
 
 def daily_profitReport():

@@ -145,8 +145,7 @@
                 <th class="headerx " scope="col">Offer</th>
                 <th class="headerx " scope="col">Price</th>
 
-            </tr>
-            </table>
+                </tr></table>
                 <div class="" style="height: 300px; overflow: auto;">
                     <table class="table table-hover" >
                 {% for i in sorted_items %}
@@ -156,10 +155,8 @@
                 <td class=" col-3" style="padding-left: 25px;">{{i.calculated_price}}</td>
                 </tr>
                 {% endfor %}
-                    </table>
-                </div>
-
             </table>
+                </div>
         </div>
 
     </div>
@@ -176,8 +173,7 @@
              <tr >
                 <th class="headerx  col-6" scope="col">Item</th>
                 <th class="headerx col-6" scope="col">Stock</th>
-            </tr>
-            </table>
+                </tr></table>
                 <div class="" style="height: 300px; overflow: auto;">
                     {% if low_stock_list %}
                     <table class="table table-hover" >
@@ -192,8 +188,6 @@
                     <p>No item with Low stock </p>
                     {% endif %}
                 </div>
-
-            </table>
         </div>
 
     </div>
@@ -212,9 +206,8 @@
                 <th class="headerx col-5" scope="col">Email</th>
                  <th class="headerx col-3" scope="col">Last Login</th>
 
-            </tr>
-            </table>
-                <div class="" style="height: 300px; overflow: auto;">
+                 </tr></table>
+                <div class="" style="height: 250px; overflow: auto;">
                     <table class="table table-hover" >
                 {% for i in active_user_list %}
                 <tr>
@@ -227,7 +220,7 @@
                     </table>
                 </div>
 
-            </table>
+
         </div>
 
     </div>

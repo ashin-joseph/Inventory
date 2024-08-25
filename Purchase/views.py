@@ -128,10 +128,7 @@ def confirmpurchase_display(request, confirm_id):
     company_data = companyprofileTable.objects.get()
     overall = 0
     for i in confirm_items:
-        price = i.cpit_price * i.cpit_qty
-        tax = int((i.cpit_tax / 100)) * price
-        total = price + tax
-        overall += total
+        overall += i.cpit_Amount
     context = {
         'confirm_order': confirm_order,
         'confirm_items': confirm_items,
@@ -165,19 +162,15 @@ def purchaseBill_display(request, billId):
     pur_ord = get_object_or_404(confirmPurchaseTable, id=billId)
     pur_itm = confirmPurchaseItemTable.objects.filter(cpit_billNum=pur_ord)
     company_data = companyprofileTable.objects.get()
-    company = company_data.company_name
     pur_Amount = 0
     for i in pur_itm:
-        price = i.cpit_price * i.cpit_qty
-        tax = int((i.cpit_tax / 100)) * price
-        total = price + tax
-        pur_Amount += total
+        pur_Amount += i.cpit_Amount
     context = {
         'base_template': base_template,
         'pur_ord': pur_ord,
         'pur_itm': pur_itm,
         'pur_Amount': pur_Amount,
-        'company': company,
+        'company_data': company_data,
     }
     return render(request,"purchase/purchasebill_display.html", context)
 

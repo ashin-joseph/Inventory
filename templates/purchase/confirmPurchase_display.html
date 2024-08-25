@@ -28,7 +28,7 @@
                         </div>
 
                         <div class="col print-only text-right vendor-details-head">
-                            <p>Order Number: <h5>{{ confirm_order.cpt_billNum }}</h5></p>
+                            <p>Purchase Order Number: <h5>{{ confirm_order.cpt_billNum }}</h5></p>
                         </div>
                     </div>
 
@@ -69,12 +69,19 @@
                                     <td><i>Rs.</i>{{i.cpit_Amount}}</td>
                                 </tr>
                             {% endfor %}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><i>Rs.</i><b>{{overall}}</b></td>
+                        </tr>
                         </tbody>
                     </table>
                     </div>
 
                     <div class="row">
-                        <div class="col-md-12 text-md-right">
+                        <div class="col-md-12 text-md-right px-5">
 <!--                            <p><strong>Total: </strong><i>Rs.</i>{{ overall }}</p>-->
                         </div>
                     </div>

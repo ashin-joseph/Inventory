@@ -12,43 +12,53 @@
     <link href="{% static 'assets/style.css' %}" rel="stylesheet">
 </head>
 <body>
+<div class="navheight"></div>
+<br>
+<br>
     <div class="container">
-        <div class="table">
-            <h2 >Bill Details</h2>
-            <table class="table table-striped">
-                <thead class="bg-info">
-                    <tr>
-                        <th>S.No</th>
-                        <th>Date</th>
-                        <th>Bill No</th>
-                        <th>Staff</th>
-                    </tr>
-                </thead>
-                <tbody id="billTable">
-                    <!-- Data -->
-                    {% for date, info in purchaseconfirmdate_dic.items %}
-                    <tr>
-                        <td></td>
-                        <td>{{date}}</td>
-                        <td>
-                            <ul>
-                                {% for pair in info.bill_pairs %}
-                                    <a href="{% url 'purchaseBill_display' billId=pair.id %}"><input type="hidden" value="{{ pair.id }}"><li>{{ pair.bill }}</li></a>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                        <td>
-                            <ul>
-                                {% for user in info.users %}
-                                <li>{{user}}</li>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+
+        <div class="col-12 Dash-Price-card mt-3">
+        <div class="my-3">
+            <h4>Purchase Bills</h4>
         </div>
+
+        <div>
+            <table class="table table-hover" >
+             <tr >
+                 <th class="headerx col-3" scope="col">S.No</th>
+                 <th class="headerx col-3" scope="col">Date</th>
+                <th class="headerx col-3" scope="col">Bill No</th>
+                <th class="headerx col-3" scope="col">Staff</th>
+                 </tr>
+<!--                <div class="" style="height: 60vh; overflow: auto;">-->
+<!--                    <table class="table table-hover" >-->
+                    <tbody id="billTable">
+                        {% for date, info in purchaseconfirmdate_dic.items %}
+                        <tr>
+                        <td class=" col-3"></td>
+                        <td class=" col-3">{{date}}</td>
+                        <td class=" col-3"><ul>
+                                        {% for pair in info.bill_pairs %}
+                                            <a href="{% url 'purchaseBill_display' billId=pair.id %}"><input type="hidden" value="{{ pair.id }}"><li>{{ pair.bill }}</li></a>
+                                        {% endfor %}
+                                    </ul></td>
+                        <td class=" col-3"> <ul>
+                                        {% for user in info.users %}
+                                        <li>{{user}}</li>
+                                        {% endfor %}
+                                    </ul></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>
+
+
+
+        </div>
+
+    </div>
+
+
         <!-- Pagination -->
         <div class="pagination-container ">
             <nav>
@@ -62,6 +72,7 @@
             </nav>
         </div>
     </div>
+<div class="bottom-space"></div>
 
     <!-- JavaScript for updating S.No and pagination -->
     <script>
@@ -74,7 +85,7 @@
         }
 
         function paginateTable(pageNumber) {
-            const rowsPerPage = 10;
+            const rowsPerPage = 5;
             const table = document.getElementById('billTable');
             const rows = table.getElementsByTagName('tr');
             const totalPages = Math.ceil(rows.length / rowsPerPage);
