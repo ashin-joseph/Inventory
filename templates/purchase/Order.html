@@ -19,13 +19,13 @@
 <br>
 
 <!-- list -->
-<div class="container d-flex flex-wrap">
+<div class="container-fluid d-flex flex-wrap">
 
     <div class="col-4">
     <h3>Item list</h3>
         <div class=" d-flex flex-wrap itemlist mb-2">
         {% for i in stock_data %}
-        <button type="button" value="{{i.id}}" class=" col-6 itemButton {% if i.st_remainingStock < 10 %}btn-warning{% endif %} " >{{i.st_item.item_name}}</button>
+        <button type="button" value="{{i.id}}" class=" col-6 itemButton {% if i.st_remainingStock < 10 %} itemButtonRed {% endif %}" >{{i.st_item.item_name}}</button>
         {% endfor %}
         </div>
     </div>

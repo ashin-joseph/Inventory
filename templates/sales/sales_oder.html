@@ -20,8 +20,7 @@
         <h3>Item list</h3>
         <div class="d-flex flex-wrap itemlist mb-2">
             {% for i in stock_data %}
-                <button type="button" value="{{i.id}}" class="col-6 itemButton">{{i.st_item.item_name}}</button>
-<!--                <button type="button" value="{{i.id}}" class="col-6 itemButton {% if i.st_remainingStock < 10 %}btn-success{% endif %}">{{i.st_item.item_name}}</button>-->
+                <button type="button" value="{{i.id}}" class="col-6 itemButton {% if i.st_remainingStock < 10 %} itemButtonRed {% endif %}">{{i.st_item.item_name}} </button>
             {% endfor %}
         </div>
     </div>
@@ -113,22 +112,22 @@ $(document).ready(function() {
 
 
         <td class="col-3">
-            <input type="text" name="item_name[]" class="form-pdt" value="${itemName}" readonly>
+            <input type="text" name="item_name[]" class="form-control" value="${itemName}" readonly>
         </td>
         <td class="col-2">
             <input type="number" name="item_quantity[]" class="form-control qty-input" placeholder="Quantity" min="1" required>
         </td>
         <td class="col-2">
-            <input type="number" step="0.01" name="item_price[]" class=" form-pdt price-input" placeholder="Price" min="1" value="${priceInfo ? priceInfo.price : ''}" readonly>
+            <input type="number" step="0.01" name="item_price[]" class="form-control price-input" placeholder="Price" min="1" value="${priceInfo ? priceInfo.price : ''}" readonly>
         </td>
         <td class="col-1">
-            <input type="number" step="0.01" name="item_tax[]" class=" form-pdt tax-input" placeholder="Tax %" min="0" value="${priceInfo ? priceInfo.tax : ''}" readonly>
+            <input type="number" step="0.01" name="item_tax[]" class="form-control tax-input" placeholder="Tax %" min="0" value="${priceInfo ? priceInfo.tax : ''}" readonly>
         </td>
         <td class="col-1">
-            <input type="number" step="0.01" name="item_offer[]" class=" form-pdt offer-input" placeholder="Offer" value="${priceInfo ? priceInfo.offer : ''}" readonly>
+            <input type="number" step="0.01" name="item_offer[]" class="form-control offer-input" placeholder="Offer" value="${priceInfo ? priceInfo.offer : ''}" readonly>
         </td>
         <td class="col-2">
-            <input type="number" step="0.01" name="item_total[]" class="form-pdt total-input" placeholder="Total" readonly>
+            <input type="number" step="0.01" name="item_total[]" class="form-control form-pdt total-input" placeholder="Total" readonly>
         </td>
         <td class="col-1">
             <button class="btn btn-danger delete-item-btn" type="button">X</button>

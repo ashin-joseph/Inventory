@@ -282,7 +282,7 @@ height: 350px;
         }
 
         .btn-info{
-             background-color: #030355 !important;
+             background-color: #3F802D !important;
              color: #ffffff !important;
              border: none !important;
              box-shadow: none !important;
@@ -347,12 +347,12 @@ height: 350px;
         .page-link ::hover, .page-item.active{
             outline: none !important;
             box-shadow: none !important;
-            background-color: #030355 !important; /* Remove the background color */
-            border-color: #030355 !important; /* Remove the border color if needed */
+            background-color: #3F802D !important; /* Remove the background color */
+            border-color: #3F802D !important; /* Remove the border color if needed */
             color: #fff !important; /* Adjust text color as needed */
         }
         .page-link{
-            background-color: #030355 !important;
+            background-color: #3F802D !important;
             color: #ffffff !important;
         }
         input.form-control:focus,
@@ -407,11 +407,16 @@ color: #999999;
 }
 
 .form-pdt{
-border: 1px solid rgba(0, 0, 0, 0) !important;
-background-color: rgba(0, 0, 0, 0) !important;
+border: 1px solid rgba(0, 0, 0, 0);
+background-color: rgba(0, 0, 0, 0);
 
 }
 
+
+input[readonly] {
+    border: 1px solid rgba(0, 0, 0, 0) !important;
+    background-color: rgba(0, 0, 0, 0) !important;
+}
 
 
 
@@ -530,4 +535,8 @@ table-striped tr:nth-of-type(odd) {
 
 .price-tabel{
 width:100% !important;
+}
+
+.itemButtonRed{
+color: red;
 }

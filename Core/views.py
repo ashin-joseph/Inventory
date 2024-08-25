@@ -79,10 +79,10 @@ def staff_pg(request):
             user_data.password = password
             user_data.email = email
             user_data.save()
-            messages.success(request, "Vendor Updated successfully")
+            messages.success(request, "Staff Updated successfully")
         else:
             User.objects.create(username=username, role=role, password=password, email=email)
-            messages.success(request, "Vendor Added Successfully")
+            messages.success(request, "Staff Added Successfully")
         return redirect(staff_pg)
     staff_data = User.objects.all()
     return render(request, "core/staff.html", {'staff_data': staff_data, 'base_template': base_template})

@@ -7,38 +7,43 @@
     <title>Register Administrator</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-     <link href="{% static 'assets/stylex.css' %}" rel="stylesheet">
+     <link href="{% static 'assets/style.css' %}" rel="stylesheet">
 </head>
-<body>
-<div class="container  p-2 col-4">
-    <h2>Register Administrator</h2><br><br>
+<body class="login-body">
+<div class="navheight"></div>
+<br>
+<br>
+
+<div class="container  p-2 col-4  p-5 login-card" >
+    <h2>Create a New Account</h2>
     <form action="/register_admin/" method="POST">
         {% csrf_token %}
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br><br>
+        <label for="username" class="mt-2">Username:</label>
+        <input class="form-control" type="text" id="username" name="username" required>
 
-        <label for="username">Email:</label>
-        <input type="email" id="email" name="email" required><br><br>
+        <label for="username" class="mt-2">Email:</label>
+        <input class="form-control" type="email" id="email" name="email" required>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
+        <label for="password" class="mt-2">Password:</label>
+        <input class="form-control" type="password" id="password" name="password" required>
 
-        <label for="confirm_password">Confirm Password:</label>
-        <input type="password" id="confirm_password" name="confirm_password" required><br><br>
+        <label for="confirm_password" class="mt-2">Confirm Password:</label>
+        <input class="form-control" type="password" id="confirm_password" name="confirm_password" required>
 
-        <label for="role">Role:</label>
-        <select id="role" name="role" required>
-            <option value="Admin">---</option>
-            <option value="staff">Admin</option>
-        </select><br><br>
+        <label style="display:none;" for="role" class="mt-2">Role:</label>
+        <select style="display:none;" class="form-control" id="role" name="role" required>
+            <option>---</option>
+            <option value="Admin" selected>Admin</option>
+        </select>
 
-        <input type="checkbox" id="is_superuser" name="is_superuser">
-        <label for="is_superuser">Administartor</label><br><br>
+        <input style="display:none;" type="checkbox" id="is_superuser" name="is_superuser" class="form-select" checked>
+        <label style="display:none;" for="is_superuser">Administartor</label>
 
-        <input type="checkbox" id="is_staff" name="is_staff">
-        <label for="is_staff">Staff</label><br><br>
+        <input style="display:none;" type="checkbox" id="is_staff" name="is_staff" checked>
+        <label style="display:none;" for="is_staff">Staff</label><br>
 
-        <button type="submit" >Register</button>
+        <button style="width:100%;" class="btn btn-success px-5 "type="submit" >Register</button>
+        <a href="{% url 'logout' %}">Back</a>
     </form>
 </div>
 </body>

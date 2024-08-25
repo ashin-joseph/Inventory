@@ -67,7 +67,6 @@ def purchase_overview():
     products_data = confirmPurchaseItemTable.objects.all()
     purchaseSum = 0
     purchaseNo = set()
-
     for j in products_data:
         if j.cpit_billNum:
             purchaseNo.add(j.cpit_billNum)

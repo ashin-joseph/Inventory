@@ -61,9 +61,11 @@
                         </table>
                         <h5 class="mb-4">Low Stock</h5>
                         {% if low_stock_list %}
+                        <ol class="px-5">
                             {% for i in low_stock_list %}
-                                <ul class="px-5"><li>{{i.0}}</li></ul>
+                                <li>{{i.0}} - {{i.1}}</li>
                             {% endfor %}
+                            </ol>
                         {% else %}
                             <p>No item with Low stock</p>
                         {% endif %}

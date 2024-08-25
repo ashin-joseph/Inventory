@@ -27,7 +27,7 @@ def register_admin(request):
             )
             user.save()
             messages.success(request, "You have registered as an Admin")
-            return redirect(index)
+            return redirect(login_user_inv)
         else:
             messages.error(request, "Your Password does not match..!")
             return redirect(register_admin)
@@ -96,7 +96,7 @@ def index(request):
         'purchaseNo':purchaseNo,
 
         'salesSum': salesSum,
-        'salesNo': purchaseNo,
+        'salesNo': salesNo,
         'salesReturnSum': salesReturnSum,
         'salesReturnNo': salesReturnNo,
 
