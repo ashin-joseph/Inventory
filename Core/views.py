@@ -55,39 +55,14 @@ def company_pg(request):
         messages.success(request, "Company Details Updated Successfully")
         return redirect(company_pg)
 
-    company_data = companyprofileTable.objects.all()
+    company_datas = companyprofileTable.objects.all()
+    company_data = companyprofileTable.objects.get()
     context = {
         'company_data': company_data,
+        'company_datas': company_datas,
         'base_template': base_template,
     }
     return render(request, "core/company.html", context)
-
-@admin_required
-def staff_pgx(request):
-    base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
-    if request.method == "POST":
-        userid = request.POST.get('userid')
-        username = request.POST.get('username')
-        role = request.POST.get('role')
-        password = request.POST.get('password')
-        confirm_password = request.POST.get('confirm_password')
-        email = request.POST.get('email')
-
-        if userid:
-            user_data = User.objects.get(id=userid)
-            user_data.username = username
-            user_data.role = role
-            user_data.password = password
-            user_data.confirm_password = confirm_password
-            user_data.email = email
-            user_data.save()
-            messages.success(request, "Staff Updated successfully")
-        else:
-            User.objects.create(username=username, role=role, password=password, confirm_password=confirm_password, email=email)
-            messages.success(request, "Staff Added Successfully")
-        return redirect(staff_pg)
-    staff_data = User.objects.all()
-    return render(request, "core/staff.html", {'staff_data': staff_data, 'base_template': base_template})
 
 @admin_required
 def deletestaff(request, Did):
@@ -98,6 +73,7 @@ def deletestaff(request, Did):
 @admin_required
 def item_pg(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
+    company_data = companyprofileTable.objects.get()
     if request.method == "POST":
         item_id = request.POST.get('itemid')
         item_name = request.POST.get('itemname')
@@ -116,7 +92,7 @@ def item_pg(request):
             messages.success(request, "Item Added Successfully")
         return redirect(item_pg)
     item_data = itemTable.objects.all()
-    return render(request, "core/item.html", {'item_data': item_data, 'base_template': base_template})
+    return render(request, "core/item.html", {'item_data': item_data, 'base_template': base_template,'company_data':company_data})
 
 @admin_required
 def deleteItem(request, Did):
@@ -127,6 +103,7 @@ def deleteItem(request, Did):
 @admin_required
 def vendor_pg(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
+    company_data = companyprofileTable.objects.get()
     if request.method == "POST":
         vendorid = request.POST.get('vendorid')
         shopname = request.POST.get('shopname')
@@ -157,7 +134,7 @@ def vendor_pg(request):
             messages.success(request, "Vendor Added Successfully")
         return redirect(vendor_pg)
     vendor_data = vendorTable.objects.all()
-    return render(request, "core/vendor.html", {'vendor_data': vendor_data, 'base_template': base_template})
+    return render(request, "core/vendor.html", {'vendor_data': vendor_data, 'base_template': base_template,'company_data':company_data})
 
 @admin_required
 def deleteVendor(request, Did):
@@ -168,6 +145,7 @@ def deleteVendor(request, Did):
 @admin_required
 def price_pg(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
+    company_data = companyprofileTable.objects.get()
     if request.method == "POST":
         tax = request.POST.get('tax')
         offer = request.POST.get('offer')
@@ -175,7 +153,7 @@ def price_pg(request):
         messages.success(request, "Tax/Offer Updated Successfully")
         return redirect(price_pg)
     price_data = priceTable.objects.all()
-    return render(request, "core/price.html", {'price_data': price_data, 'base_template': base_template})
+    return render(request, "core/price.html", {'price_data': price_data, 'base_template': base_template,'company_data':company_data})
 
 @admin_required
 def updatePrice(request):
@@ -296,6 +274,7 @@ def report_text(request):
 @admin_required
 def staff_pg(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
+    company_data = companyprofileTable.objects.get()
 
     if request.method == "POST":
         userid = request.POST.get('userid')
@@ -326,5 +305,5 @@ def staff_pg(request):
         return redirect(staff_pg)
 
     staff_data = User.objects.all()
-    return render(request, "core/staff.html", {'staff_data': staff_data, 'base_template': base_template})
+    return render(request, "core/staff.html", {'staff_data': staff_data, 'base_template': base_template,'company_data':company_data})
 

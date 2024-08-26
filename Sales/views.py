@@ -18,12 +18,14 @@ def sales_order(request):
     item_data = itemTable.objects.all()
     price_data = priceTable.objects.select_related('pt_item').all()
     stock_data = stockTable.objects.all()
+    company_data = companyprofileTable.objects.get()
     # stock_data = stockTable.objects.select_related('st_remainingStock').all()
     context = {
         'item_data': item_data,
         'price_data': price_data,
         'stock_data': stock_data,
         'base_template': base_template,
+        'company_data': company_data,
     }
     return render(request, "sales/sales_oder.html", context)
 
@@ -100,6 +102,7 @@ def sales_order_display(request, orderId):
 def salesreturn(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     salesOrder_data = salesorderTable.objects.all()
+    company_data = companyprofileTable.objects.get()
     salesOrder = None
     salesItems = None
     so_id = None
@@ -114,6 +117,7 @@ def salesreturn(request):
         'salesOrder': salesOrder,
         'salesItems': salesItems,
         'base_template': base_template,
+        'company_data': company_data,
     }
 
     if request.method == "POST":
@@ -173,6 +177,7 @@ def salesReturn_display(request, return_id):
 
 def sales_bill(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
+    company_data = companyprofileTable.objects.get()
     sales_data= sot_backup.objects.all().order_by('sot_b_date')
     salesReturn_data= rst_backup.objects.all().order_by('rst_b_date')
     salesdate_dic={}
@@ -198,6 +203,7 @@ def sales_bill(request):
         'base_template': base_template,
         'salesdate_dic': salesdate_dic,
         'returnsalesdate_dic': returnsalesdate_dic,
+        'company_data': company_data,
     }
     return render(request,"sales/sales_bills.html", context)
 def salesBill_display(request, billId):

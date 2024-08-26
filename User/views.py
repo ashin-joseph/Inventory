@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from User.decorators import admin_required, staff_required, admin_staff_required
+from Core.models import companyprofileTable
 from .utils import product_details, todays_offer, lowstock_list, user_activity, purchase_overview, sales_overview, daily_salesReport, daily_purchaseReport
 User = get_user_model()
 
@@ -71,6 +72,7 @@ def index(request):
     else:
         base_template = 'user/trial_success.html'
 
+    company_data = companyprofileTable.objects.get()
     low_stock_count, item_count, category_count = product_details()
     sorted_items = todays_offer()
     low_stock_list = lowstock_list()
@@ -82,6 +84,8 @@ def index(request):
 
     context ={
         'base_template': base_template,
+
+        'company_data': company_data,
 
         'user': request.user,
 
@@ -105,13 +109,13 @@ def index(request):
         'daily_sales': daily_sales,
         'daily_sales_return': daily_sales_return,
 
-
     }
     return render(request, "user/Index.html", context)
 @login_required()
 @staff_required
 def staff_index(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
+    company_data = companyprofileTable.objects.get()
     low_stock_count, item_count, category_count = product_details()
     sorted_items = todays_offer()
     low_stock_list = lowstock_list()
@@ -126,6 +130,8 @@ def staff_index(request):
         'category_count': category_count,
 
         'sorted_items': sorted_items,
+
+        'company_data': company_data,
     }
     return render(request,"user/staff_index.html", context)
 def trial_success(request):

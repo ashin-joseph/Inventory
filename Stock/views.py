@@ -1,4 +1,6 @@
 from django.shortcuts import render
+
+from Core.models import companyprofileTable
 from Purchase.models import confirmPurchaseTable
 from Sales.models import salesorderTable, returnSalesTable
 from Stock.models import stockTable
@@ -7,13 +9,15 @@ from User.decorators import admin_required, staff_required,admin_staff_required
 @admin_required
 def stock_list(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
+    company_data = companyprofileTable.objects.get()
     st=stockTable.objects.all()
-    return render(request,"stock/stock_list.html",{'st':st, 'base_template':base_template})
+    return render(request,"stock/stock_list.html",{'st':st, 'base_template':base_template,'company_data':company_data})
 @staff_required
 def stock_s_list(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
+    company_data = companyprofileTable.objects.get()
     st=stockTable.objects.all()
-    return render(request,"stock/stock_s_list.html",{'st':st, 'base_template':base_template})
+    return render(request,"stock/stock_s_list.html",{'st':st, 'base_template':base_template,'company_data':company_data})
 
 def bill_details(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'

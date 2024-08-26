@@ -8,6 +8,7 @@ from .models import User
 from Purchase.models import cpit_backup
 from Sales.models import soit_backup, rsit_backup
 from datetime import datetime
+from django.utils import timezone
 from collections import defaultdict
 User = get_user_model()
 
@@ -98,6 +99,33 @@ def sales_overview():
 
     return salesSum, len(salesNo), salesReturnSum, len(salesReturnNo)
 
+
+def sales_weekly():
+    # Get the current week number
+    current_week = timezone.now().isocalendar()[1]
+
+    # Filter sales and sales return data by the current week
+    sales_data = soit_backup.objects.filter(sot_b_timestamp=current_week)
+    salesReturn_data = rsit_backup.objects.filter(sot_b_timestamp=current_week)
+
+    w_salesSum = 0
+    w_salesNo = set()
+    w_salesReturnSum = 0
+    w_salesReturnNo = set()
+
+    for i in sales_data:
+        if i.soit_b_bill_number:
+            w_salesNo.add(i.soit_b_bill_number)
+        if i.soit_b_total:
+            w_salesSum += int(i.soit_b_total)
+
+    for j in salesReturn_data:
+        if j.rsit_b_billNum:
+            w_salesReturnNo.add(j.rsit_b_billNum)
+        if j.rsit_b_refundAmount:
+            w_salesReturnSum += int(j.rsit_b_refundAmount)
+
+    return w_salesSum, len(w_salesNo), w_salesReturnSum, len(w_salesReturnNo)
 
 def daily_salesReport():
     current_date = datetime.now().date()  # Get the current date

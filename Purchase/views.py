@@ -18,6 +18,8 @@ def order(request):
     vendor_data = vendorTable.objects.all()
     item_data = itemTable.objects.all()
     stock_data = stockTable.objects.all()
+    company_data = companyprofileTable.objects.get()
+
     if request.method == "POST":
         user_id = request.POST.get("user_id")
         vendor_id = request.POST.get("vendor_id")
@@ -47,6 +49,7 @@ def order(request):
         'item_data': item_data,
         'stock_data': stock_data,
         'base_template': base_template,
+        'company_data': company_data,
     }
     return render(request, "purchase/Order.html", context)
 
@@ -150,6 +153,7 @@ def confirmpurchase_display(request, confirm_id):
 @admin_required
 def purchase_bill(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
+    company_data = companyprofileTable.objects.get()
     purchaseConfirm_data= cpt_backup.objects.all().order_by('cpt_b_date')
     purchaseconfirmdate_dic={}
 
@@ -164,6 +168,7 @@ def purchase_bill(request):
     context={
         'base_template': base_template,
         'purchaseconfirmdate_dic': purchaseconfirmdate_dic,
+        'company_data': company_data,
     }
     return render(request,"purchase/purchase_bills.html", context)
 @admin_required

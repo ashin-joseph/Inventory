@@ -53,6 +53,10 @@ border-bottom: 1px solid #1C2C1E;
     color: #ffffff !important; /* If needed */
     border-color: #your-border-color !important; /* If needed */
 }
+.bg-successt{
+color: #000000 !important;
+background-color: #d1ecd4 !important;
+}
 
 /* elements */
 body {
@@ -125,8 +129,13 @@ padding: .5rem .5rem;
 /* footer */
 .footer-bottom{
     margin-bottom: 80px;
+
 }
 
+.footer{
+    display: flex;
+    justify-content: space-between;
+}
 /* Default state */
 .btn-success {
     background-color: #3F802D !important;
@@ -540,3 +549,4 @@ width:100% !important;
 .itemButtonRed{
 color: red;
 }
+

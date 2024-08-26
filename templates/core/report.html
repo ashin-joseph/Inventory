@@ -17,66 +17,80 @@
     <br><br>
     <div class="container d-flex justify-content-center" >
         <div class="col-6 Dash-Price-card mt-3">
-            <div id="report-content">
-                <div class="my-3">
-                    <h4>Daily Report :- {{current_date}}</h4>
+            <div id="report-content" class="">
+                <div class="my bg-success p-2" style="display: flex;
+    justify-content: space-between;">
+                    <h4>Daily Report:</h4> <h5>{{current_date}}</h5>
                 </div>
                 <form method="post">
                     {% csrf_token %}
                     <div class="report-content">
-                        <h5 class="mb-4">Income</h5>
-                        <table class="table table-striped">
-                            <tbody>
-                                <tr>
-                                    <td class="col-2">Sales</td>
-                                    <td class="col-8">{{daily_sales}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <h5 class="mb-4">Expense</h5>
-                        <table class="table table-striped">
-                            <tbody>
-                                <tr>
-                                    <td class="col-2"> Purchase</td>
-                                    <td class="col-8">{{daily_purchase}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="col-2">Return</td>
-                                    <td class="col-8">{{daily_sales_return}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="col-2">Damage</td>
-                                    <td class="col-8">{{daily_damage}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <h5 class="mb-4">Profit</h5>
-                        <table class="table table-striped">
-                            <tbody>
-                                <tr>
-                                    <td class="col-2">Amount</td>
-                                    <td class="col-8">{{daily_profit}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <h5 class="mb-4">Low Stock</h5>
-                        {% if low_stock_list %}
-                        <ol class="px-5">
-                            {% for i in low_stock_list %}
-                                <li>{{i.0}} - {{i.1}}</li>
-                            {% endfor %}
-                            </ol>
-                        {% else %}
-                            <p>No item with Low stock</p>
-                        {% endif %}
-                    </div><br>
+                        <table class="table ">
+    <tbody>
+        <!-- Income Section -->
+        <tr class="bg-successt">
+            <td colspan="2"><strong>Income</strong></td>
+        </tr>
+        <tr>
+            <td class="col-2">Sales</td>
+            <td class="col-8">{{daily_sales}}</td>
+        </tr>
+
+        <!-- Expense Section -->
+        <tr class="bg-successt">
+            <td colspan="2"><strong >Expense</strong></td>
+        </tr>
+        <tr>
+            <td class="col-2">Purchase</td>
+            <td class="col-8">{{daily_purchase}}</td>
+        </tr>
+        <tr>
+            <td class="col-2">Return</td>
+            <td class="col-8">{{daily_sales_return}}</td>
+        </tr>
+        <tr>
+            <td class="col-2">Damage</td>
+            <td class="col-8">{{daily_damage}}</td>
+        </tr>
+
+        <!-- Profit Section -->
+        <tr class="bg-successt">
+            <td colspan="2"><strong>Profit</strong></td>
+        </tr>
+        <tr>
+            <td class="col-2">Amount</td>
+            <td class="col-8">{{daily_profit}}</td>
+        </tr>
+
+        <!-- Low Stock Section -->
+        <tr class="bg-successt">
+            <td colspan="2"><strong>Low Stock</strong></td>
+        </tr>
+        {% if low_stock_list %}
+        <tr>
+            <td colspan="2">
+                <ol class="">
+                    {% for i in low_stock_list %}
+                        <li>{{i.0}} - {{i.1}}</li>
+                    {% endfor %}
+                </ol>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="2">No item with Low stock</td>
+        </tr>
+        {% endif %}
+    </tbody>
+</table><br></div>
+                    </div>
                     <div class="col-md-12 text-center">
                         <button type="button" onclick="downloadTextAsPDF()" class="btn btn-success px-5">Download</button>
                         <button type="submit" class="btn btn-success px-5" name="send_pdf">Email</button>
                     </div>
                 </form>
-            </div>
-        </div>
+
+
     </div>
     <div class="bottom-space"></div>
     <br><br>
@@ -85,20 +99,28 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
-        function downloadTextAsPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+ function downloadTextAsPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
 
-            // Get the content from the report div
-            let reportContent = document.getElementById('report-content').innerText;
+    // Get the content from the report div
+    let reportContent = document.getElementById('report-content');
 
-            // Add the text content to the PDF
-            doc.text(reportContent, 10, 10);
-
-            // Trigger the download
+    // Use jsPDF's html method to directly add the HTML content to the PDF
+    doc.html(reportContent, {
+        callback: function (doc) {
             doc.save('daily_report_{{current_date}}.pdf');
-        }
+        },
+        x: 10,
+        y: 10,
+        width: 150, // Adjust the width to fit your content
+        windowWidth: reportContent.scrollWidth, // Use the content's width
+    });
+}
+
+
     </script>
 
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

@@ -17,7 +17,7 @@
 <!-- Nav bar -->
 <nav class="navbar navbar-expand-lg bg-success fixed-top">
 
-    <h3 class="navbar-brand px-2" style="color:FFB533 !important;">StockSmart </h3>
+    <h3 class="navbar-brand px-3" > {{company_data.company_name}}</h3>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
         </button>
@@ -29,7 +29,7 @@
                     <a  class="nav-link" href="{% url 'index' %}">Dashboard</a>
                 </li>
 
-                <li class=" nav-item dropdown">
+                <li id="purchaseBtn" class=" nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarPurchaseDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Purchase</a>
                         <div class="dropdown-menu" aria-labelledby="navbarPurchaseDropdown">
                             <a class="dropdownItem" href="{% url 'order' %}">Place Order</a>
@@ -38,7 +38,7 @@
                         </div>
                 </li>
 
-                <li class="nav-item dropdown">
+                <li id="salesBtn" class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarSalesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sales</a>
                         <div class="dropdown-menu" aria-labelledby="navbarSalesDropdown">
                             <a class="dropdownItem" href="{% url 'sales_order' %}">Sales Order</a>
@@ -54,7 +54,8 @@
                 </li>
             </ul>
 
-                    <ul class="navbar-nav ml-auto">
+                    <ul class="navbar-nav ml-auto ">
+
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user.username }}</a>
                             <div class="dropdown-menu" aria-labelledby="navbarUserDropdown">
@@ -67,45 +68,48 @@
 
 <!-- Nav bar -->
 {% block content %}
-
+<div class="navheight"></div>
+<br>
             <div class="">
                 <div class="banner col-12 ">
                     <div class="container mb-3 p-2 d-flex flex-wrap">
                          <div class="col-12">
                              <br>
-                             <p>Welcome, {{ user.username }} </P>
+                             <p>Welcome, {{ user.username }} {{company_data.company_name}}</P>
                              <H2>Here is your report </h2>
                         </div>
 
                         <div class="top-fig col flex-row  p-4">
 
                             <p>Sales</p> <h4>{{salesNo}}</h4>
-                            <p>Overall Revenue</p> <h3>Rs. {{salesSum}}</h3>
+
                             <hr>
                             <p>Daily Revenue</p>
                             <h1>Rs. {{daily_sales}}</h1>
+                            <span>Total Revenue <b>Rs. {{salesSum}} </b></span>
                         </div>
 
-                        <div class="top-fig col p-4"><br><br>
+                        <div class="top-fig col p-4">
                             <p>Total Items</p>
-                            <h4>{{item_count}}</h4><br>
-                            <hr>
+                            <h4>{{item_count}}</h4>
                             <p>Low Stock Items</p>
                             <h1>{{low_stock_count}}</h1>
+                            <hr>
+                            <span class="mt-2" style="">Total Category <b>{{category_count}} </b></span>
                         </div>
                         <div class="top-fig col p-4">
                             <p>Return Sales</p> <h4>{{salesReturnNo}}</h4>
-                            <p>Overall Return</p> <h3>Rs. {{salesReturnSum}}</h3>
                             <hr>
                             <p> Daily Return </p>
                             <h1>Rs. {{daily_sales_return}}</h1>
+                            <span>Total Return <b>Rs. {{salesReturnSum}} </b></span>
                         </div>
                         <div class="top-fig col  p-4">
                             <p>Purchase</p><h4>{{purchaseNo}}</h4>
-                            <p>Overall Expense</p><h3>Rs. {{purchaseSum}}</h3>
                             <hr>
                             <p>Daily Expense</p>
                             <h1>Rs. {{daily_purchase}}</h1>
+                            <span>Total Expense <b>Rs. {{purchaseSum}} </b></span>
                        </div>
                     </div>
                     <br>
@@ -114,7 +118,7 @@
 
 
                 <div class="cc py-3 pb-4">
-                    <h4 class="container px-4 p-1">Add / Edit</h4>
+                    <h4 class="container px-4 p-1">Manage</h4>
                     <div class="container d-flex">
                     <div class="col btn btn-add"><a href="{% url 'company_pg' %}">Company Profile</a></div>
                     <div class="col btn btn-add"><a href="{% url 'staff_pg' %}">Staff</a></div>
@@ -234,7 +238,8 @@
 <!-- footer -->
 
 <div class="footer bg-success">
-    <p>@ 2024 All Rights Reserved By StockSmart Company</p>
+   <span class="navbar-brand px-3" style="color:#FFB533 !important;"> StockSmart</span>
+    <p style="margin-top:15px; margin-right:20px;" class="py-">&copy; 2024 All Rights Reserved By StockSmart</p>
 </div>
 
 
@@ -247,12 +252,16 @@
 
 let currentPath = window.location.pathname;
 
-if (currentPath === '/index/' || currentPath === '/index') {
+if (currentPath.includes('/index')) {
     document.getElementById('homeBtn').classList.add('activex');
-} else if (currentPath === '/about.html') {
-    document.getElementById('aboutBtn').classList.add('activex');
-} else if (currentPath === '/contact.html') {
-    document.getElementById('contactBtn').classList.add('activex');
+} else if (currentPath.includes('/Purchase')) {
+    document.getElementById('purchaseBtn').classList.add('activex');
+} else if (currentPath.includes('/Sales')) {
+    document.getElementById('salesBtn').classList.add('activex');
+} else if (currentPath.includes('/Damage')) {
+    document.getElementById('navbarDamageDropdown').classList.add('activex');
+} else if (currentPath.includes('/Stock')) {
+    document.getElementById('navbarStockDropdown').classList.add('activex');
 }
 
 </script>
