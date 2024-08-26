@@ -63,13 +63,14 @@ def company_pg(request):
     return render(request, "core/company.html", context)
 
 @admin_required
-def staff_pg(request):
+def staff_pgx(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     if request.method == "POST":
         userid = request.POST.get('userid')
         username = request.POST.get('username')
         role = request.POST.get('role')
         password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
         email = request.POST.get('email')
 
         if userid:
@@ -77,11 +78,12 @@ def staff_pg(request):
             user_data.username = username
             user_data.role = role
             user_data.password = password
+            user_data.confirm_password = confirm_password
             user_data.email = email
             user_data.save()
             messages.success(request, "Staff Updated successfully")
         else:
-            User.objects.create(username=username, role=role, password=password, email=email)
+            User.objects.create(username=username, role=role, password=password, confirm_password=confirm_password, email=email)
             messages.success(request, "Staff Added Successfully")
         return redirect(staff_pg)
     staff_data = User.objects.all()
@@ -290,3 +292,39 @@ def report_text(request):
         return redirect(index)
 
     return render(request, "core/report.html", context)
+
+@admin_required
+def staff_pg(request):
+    base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
+
+    if request.method == "POST":
+        userid = request.POST.get('userid')
+        username = request.POST.get('username')
+        role = request.POST.get('role')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+        email = request.POST.get('email')
+
+        if password == confirm_password:
+            if userid:  # Updating an existing user
+                user_data = User.objects.get(id=userid)
+                user_data.username = username
+                user_data.role = role
+                user_data.email = email
+                if password:  # If password is provided, update it
+                    user_data.set_password(password)
+                user_data.save()
+                messages.success(request, "Staff Updated successfully")
+            else:  # Creating a new user
+                new_user = User(username=username, role=role, email=email)
+                new_user.set_password(password)
+                new_user.save()
+                messages.success(request, "Staff Added Successfully")
+        else:
+            messages.error(request, "Passwords do not match")
+
+        return redirect(staff_pg)
+
+    staff_data = User.objects.all()
+    return render(request, "core/staff.html", {'staff_data': staff_data, 'base_template': base_template})
+

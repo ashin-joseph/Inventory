@@ -18,18 +18,14 @@ class stockTable(models.Model):
 
     def save(self, *args, **kwargs):
         # Calculate the confirmation purchase stock
-        purchase_confirm = confirmPurchaseItemTable.objects.filter(cpit_item=self.st_item)
-        total_confirm_purchase = 0
-        for cp in purchase_confirm:
-            total_confirm_purchase += cp.cpit_qty
-        self.st_purchasesStock = total_confirm_purchase
+        # Ensure st_purchasesStock is only updated when a purchase is made
+        if not self.pk or confirmPurchaseItemTable.objects.filter(cpit_item=self.st_item).exists():
+            purchase_confirm = confirmPurchaseItemTable.objects.filter(cpit_item=self.st_item)
+            total_confirm_purchase = 0
+            for cp in purchase_confirm:
+                total_confirm_purchase += cp.cpit_qty
+            self.st_purchasesStock = total_confirm_purchase
 
-        # # Calculate purchase orders
-        # purchase_orders = purchaseorderitemTable.objects.filter(oit_item=self.st_item)
-        # total_purchased_stock = 0
-        # for i in purchase_orders:
-        #     total_purchased_stock += i.oit_quantity
-        # self.st_purchaseDirectStock = total_purchased_stock
 
         # Calculate sales orders
         sales_orders = salesorderItemTable.objects.filter(soit_item=self.st_item)
@@ -56,3 +52,11 @@ class stockTable(models.Model):
         self.st_remainingStock = max((self.st_purchasesStock - self.st_soldStock - self.st_damageStock + self.st_salesReturnStock ), 0)
         super().save(*args, **kwargs)
 
+
+
+# # Calculate purchase orders
+        # purchase_orders = purchaseorderitemTable.objects.filter(oit_item=self.st_item)
+        # total_purchased_stock = 0
+        # for i in purchase_orders:
+        #     total_purchased_stock += i.oit_quantity
+        # self.st_purchaseDirectStock = total_purchased_stock

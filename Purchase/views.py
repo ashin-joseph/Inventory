@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect, get_object_or_404
 from Core.models import vendorTable, itemTable, companyprofileTable
-from Purchase.models import orderTable, orderitemsTable, confirmPurchaseTable, confirmPurchaseItemTable
+from Purchase.models import orderTable, orderitemsTable, confirmPurchaseTable, confirmPurchaseItemTable, cpt_backup, cpit_backup
 from Stock.models import stockTable
 import datetime
 import random
@@ -24,7 +24,7 @@ def order(request):
         item_names = request.POST.getlist('item_name[]')
         item_quantity = request.POST.getlist('item_quantity[]')
         if vendor_id and item_names:
-            date_str = datetime.datetime.now().strftime("%Y%m%d")
+            date_str = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
             random_number = random.randint(100, 999)
             order_number = f"{date_str}PO{random_number}"
             try:
@@ -72,6 +72,7 @@ def confirmpurchase(request):
     purchaseOrder = None
     purchaseItems = None
     po_id = None
+    # used_random_numbers = set()
     if request.method == "POST":
         po_id = request.POST.get("purchaseOrderNum_id")
         user_id = request.POST.get("user_id")
@@ -89,9 +90,13 @@ def confirmpurchase(request):
         item_tax = request.POST.getlist('item_tax[]')
         item_amount = request.POST.getlist('item_amount[]')
         if purchaseOdrNum_id and item_names:
-            # date_Rstr = datetime.datetime.now().strftime("%Y%m%d")
-            # random_number = random.randint(100, 999)
-            # Confirm_order_number = f"{date_Rstr}PC{random_number}"
+            # date_Rstr = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+            # while True:
+            #         random_number = random.randint(100, 999)
+            #         if random_number not in used_random_numbers:
+            #             used_random_numbers.add(random_number)
+            #             break
+            #          Confirm_order_number = f"{date_Rstr}PC{random_number}"
             confirmOrderNumber = purchaseOrderNum
             try:
                 user_instance = User.objects.get(id=user_id)
@@ -105,6 +110,7 @@ def confirmpurchase(request):
                                                              cpit_item=item_instance_return,
                                                              cpit_qty=iq, cpit_price=ip, cpit_tax=it, cpit_Amount=ia)
                     confirm_items.save()
+
                 orderTable.objects.filter(id=purchaseOdrNum_id).delete()
                 return redirect(confirmpurchase_display, confirm_id=purchase_number.id)
             except orderTable.DoesNotExist:
@@ -136,20 +142,24 @@ def confirmpurchase_display(request, confirm_id):
         'base_template': base_template,
         'company_data': company_data,
     }
-    return render(request, "purchase/confirmPurchase_display.html", context)
+    response = render(request, "purchase/confirmPurchase_display.html", context)
+
+    confirm_order.delete_after_backup()
+
+    return response
 @admin_required
 def purchase_bill(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
-    purchaseConfirm_data= confirmPurchaseTable.objects.all().order_by('cpt_date')
+    purchaseConfirm_data= cpt_backup.objects.all().order_by('cpt_b_date')
     purchaseconfirmdate_dic={}
 
     for item in purchaseConfirm_data:
-        if item.cpt_date not in purchaseconfirmdate_dic:
-            purchaseconfirmdate_dic[item.cpt_date] = {'bill_pairs': [], 'users': []}
-        if item.cpt_billNum and item.id:
-            purchaseconfirmdate_dic[item.cpt_date]['bill_pairs'].append({'bill': item.cpt_billNum, 'id': item.id})
-        if item.cpt_user:
-            purchaseconfirmdate_dic[item.cpt_date]['users'].append(item.cpt_user)
+        if item.cpt_b_date not in purchaseconfirmdate_dic:
+            purchaseconfirmdate_dic[item.cpt_b_date] = {'bill_pairs': [], 'users': []}
+        if item.cpt_b_billNum and item.id:
+            purchaseconfirmdate_dic[item.cpt_b_date]['bill_pairs'].append({'bill': item.cpt_b_billNum, 'id': item.id})
+        if item.cpt_b_user:
+            purchaseconfirmdate_dic[item.cpt_b_date]['users'].append(item.cpt_b_user)
 
     context={
         'base_template': base_template,
@@ -159,12 +169,12 @@ def purchase_bill(request):
 @admin_required
 def purchaseBill_display(request, billId):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
-    pur_ord = get_object_or_404(confirmPurchaseTable, id=billId)
-    pur_itm = confirmPurchaseItemTable.objects.filter(cpit_billNum=pur_ord)
+    pur_ord = get_object_or_404(cpt_backup, id=billId)
+    pur_itm = cpit_backup.objects.filter(cpit_b_billNum=pur_ord)
     company_data = companyprofileTable.objects.get()
     pur_Amount = 0
     for i in pur_itm:
-        pur_Amount += i.cpit_Amount
+        pur_Amount += i.cpit_b_Amount
     context = {
         'base_template': base_template,
         'pur_ord': pur_ord,

@@ -79,32 +79,33 @@
 
                         <div class="top-fig col flex-row  p-4">
 
-                            <p>Sales</p>
-                            <h4>{{salesNo}}</h4>
+                            <p>Sales</p> <h4>{{salesNo}}</h4>
+                            <p>Overall Revenue</p> <h3>Rs. {{salesSum}}</h3>
                             <hr>
-                            <p>Revenue</p>
-                            <h1>Rs. {{salesSum}}</h1>
+                            <p>Daily Revenue</p>
+                            <h1>Rs. {{daily_sales}}</h1>
                         </div>
-                        <div class="top-fig col   p-4">
+
+                        <div class="top-fig col p-4"><br><br>
                             <p>Total Items</p>
-                            <h4>{{item_count}}</h4>
+                            <h4>{{item_count}}</h4><br>
                             <hr>
                             <p>Low Stock Items</p>
                             <h1>{{low_stock_count}}</h1>
                         </div>
                         <div class="top-fig col p-4">
-                            <p>Return Sales</p>
-                            <h4>{{salesReturnNo}}</h4>
+                            <p>Return Sales</p> <h4>{{salesReturnNo}}</h4>
+                            <p>Overall Return</p> <h3>Rs. {{salesReturnSum}}</h3>
                             <hr>
-                            <p>Return Amount</p>
-                            <h1>Rs. {{salesReturnSum}}</h1>
+                            <p> Daily Return </p>
+                            <h1>Rs. {{daily_sales_return}}</h1>
                         </div>
                         <div class="top-fig col  p-4">
-                            <p>Purchase</p>
-                            <h4>{{purchaseNo}}</h4>
+                            <p>Purchase</p><h4>{{purchaseNo}}</h4>
+                            <p>Overall Expense</p><h3>Rs. {{purchaseSum}}</h3>
                             <hr>
-                            <p>Expense</p>
-                            <h1>Rs. {{purchaseSum}}</h1>
+                            <p>Daily Expense</p>
+                            <h1>Rs. {{daily_purchase}}</h1>
                        </div>
                     </div>
                     <br>
@@ -122,7 +123,7 @@
                     <div class="col btn btn-add"><a href="{% url 'price_pg' %}">Price</a></div>
                     <div class="col btn btn-add"><a href="{% url 'report' %}">Report</a></div>
 <!--                    <div class="col btn btn-add"><a href="{% url 'sample' %}">Sample</a></div>-->
-                    <div class="col btn btn-add"><a href="{% url 'myadmin:index' %}">Staff Django</a></div>
+<!--                    <div class="col btn btn-add"><a href="{% url 'myadmin:index' %}">Staff Django</a></div>-->
 <!--                    <div class="col btn btn-add"><a href="{% url 'admin:index' %}">Django admin</a></div>-->
 
 

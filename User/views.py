@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from User.decorators import admin_required, staff_required, admin_staff_required
-from .utils import product_details, todays_offer, lowstock_list, user_activity, purchase_overview, sales_overview
+from .utils import product_details, todays_offer, lowstock_list, user_activity, purchase_overview, sales_overview, daily_salesReport, daily_purchaseReport
 User = get_user_model()
 
 def register_admin(request):
@@ -77,6 +77,8 @@ def index(request):
     active_user_list = user_activity()
     purchaseSum, purchaseNo = purchase_overview()
     salesSum, salesNo, salesReturnSum, salesReturnNo = sales_overview()
+    daily_purchase = daily_purchaseReport()
+    daily_sales, daily_sales_return = daily_salesReport()
 
     context ={
         'base_template': base_template,
@@ -94,11 +96,15 @@ def index(request):
 
         'purchaseSum':purchaseSum,
         'purchaseNo':purchaseNo,
+        'daily_purchase':daily_purchase,
 
         'salesSum': salesSum,
         'salesNo': salesNo,
         'salesReturnSum': salesReturnSum,
         'salesReturnNo': salesReturnNo,
+        'daily_sales': daily_sales,
+        'daily_sales_return': daily_sales_return,
+
 
     }
     return render(request, "user/Index.html", context)

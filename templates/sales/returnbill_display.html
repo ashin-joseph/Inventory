@@ -28,7 +28,7 @@
                         </div>
 
                         <div class="col print-only text-right vendor-details-head">
-                            <p> Return Order Number: <h5> {{ saleret_ord.rst_billNum }}</h5></p>
+                            <p> Return Order Number: <h5> {{ saleret_ord.rst_b_billNum }}</h5></p>
                         </div>
                     </div>
 
@@ -41,7 +41,7 @@
                             <br>
                         </div>
                         <div class="col text-right vendor-details">
-                            <p>Date:<strong> {{ saleret_ord.rst_date }}</strong> </p>
+                            <p>Date:<strong> {{ saleret_ord.rst_b_date }}</strong> </p>
                         </div>
                     </div>
 
@@ -61,13 +61,13 @@
                         <tbody>
                             {% for i in saleret_itm %}
                                 <tr>
-                                    <td>{{ i.rsit_item.item_name }}</td>
-                                    <td>{{i.rsit_reason}}</td>
-                                    <td>{{i.rsit_qty}}</td>
-                                    <td><i>Rs.</i>{{i.rsit_price}}</td>
-                                    <td>{{i.rsit_tax}}<i>%</i></td>
-                                    <td>{{i.rsit_offer}}<i>%</i></td>
-                                    <td><i>Rs.</i>{{i.rsit_refundAmount}}</td>
+                                    <td>{{ i.rsit_b_item}}</td>
+                                    <td>{{i.rsit_b_reason}}</td>
+                                    <td>{{i.rsit_b_qty}}</td>
+                                    <td><i>Rs.</i>{{i.rsit_b_price}}</td>
+                                    <td>{{i.rsit_b_tax}}<i>%</i></td>
+                                    <td>{{i.rsit_b_offer}}<i>%</i></td>
+                                    <td><i>Rs.</i>{{i.rsit_b_refundAmount}}</td>
                                 </tr>
                             {% endfor %}
                         <tr>

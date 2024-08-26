@@ -52,7 +52,7 @@
                     <td><input type="text" name="item_name[]" value="{{ i.soit_item }}" class="form-control" readonly>
                     <input type="hidden" name="item_id[]" value="{{ i.id }}"></td>
                     <td><input style="100%" type="text"  name="item_reason[]" class="form-control" placeholder="Reason for return" required></td>
-                    <td> <input type="number" name="item_quantity[]" value="{{ i.soit_quantity }}" class="form-control" placeholder="Quantity" min="0" max="{{ i.soit_quantity }}" required></td>
+                    <td> <input type="number" name="item_quantity[]" value="{{ i.soit_quantity }}" class="form-control qty-input" placeholder="Quantity" min="0" max="{{ i.soit_quantity }}" required></td>
                     <td><input type="number" step="0.01" name="item_price[]" value="{{ i.soit_price.pt_sellingPrice }}" class="form-pdt form-control  price-input" placeholder="Price" min="1" readonly></td>
                     <td><input type="number" step="0.01" name="item_tax[]" value="{{ i.soit_price.pt_tax }}" class="form-pdt form-control  tax-input" placeholder="Tax %" min="0" readonly></td>
                     <td><input type="number" step="0.01" name="item_offer[]" value="{{ i.soit_price.pt_offer }}" class="form-pdt form-control  tax-input" placeholder="Offer %" min="0" readonly></td>
@@ -100,7 +100,7 @@
         });
 
         // Calculation for total price and tax
-        $(document).on('keyup', '.qty-input, .price-input, .tax-input', function() {
+        $(document).on('input keyup click change', '.qty-input, .price-input, .tax-input', function() {
             var row = $(this).closest('tr');
             calculateTotal(row);
         });

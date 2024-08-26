@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from Core.models import itemTable, priceTable, companyprofileTable
 import datetime
 import random
-from Sales.models import salesorderTable, salesorderItemTable, returnSalesTable, returnsalesItemTable
+from Sales.models import salesorderTable, salesorderItemTable, returnSalesTable, returnsalesItemTable,sot_backup,soit_backup, rst_backup, rsit_backup
 from User.views import index, trial_failed
 from Stock.models import stockTable
 from django.contrib import messages
@@ -49,8 +49,8 @@ def save_sales_order(request):
                 messages.error(request, f"Low stock for items: {', '.join(low_stock_items)}")
                 return redirect(sales_order)
 
-            date_str = datetime.datetime.now().strftime("%Y%m%d")
-            random_str = random.randint(99, 9999)
+            date_str = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+            random_str = random.randint(100, 999)
             order_num = f"{date_str}SO{random_str}"
             user_instance = User.objects.get(id=user_id)
             so_obj = salesorderTable(sot_bill_number=order_num, sot_user=user_instance)
@@ -126,7 +126,7 @@ def salesreturn(request):
         item_offer = request.POST.getlist('item_offer[]')
         item_amount = request.POST.getlist('item_amount[]')
         if salesOdrNum_id and item_names:
-            date_Rstr = datetime.datetime.now().strftime("%Y%m%d")
+            date_Rstr = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
             random_number = random.randint(100, 999)
             Return_order_number = f"{date_Rstr}SR{random_number}"
             try:
@@ -165,30 +165,34 @@ def salesReturn_display(request, return_id):
         'base_template': base_template,
         'company_data': company_data,
     }
-    return render(request, "sales/salesReturn_display.html", context)
+    response = render(request, "sales/salesReturn_display.html", context)
+
+    return_order.delete_after_backup()
+
+    return response
 
 def sales_bill(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
-    sales_data= salesorderTable.objects.all().order_by('sot_date')
-    salesReturn_data= returnSalesTable.objects.all().order_by('rst_date')
+    sales_data= sot_backup.objects.all().order_by('sot_b_date')
+    salesReturn_data= rst_backup.objects.all().order_by('rst_b_date')
     salesdate_dic={}
     returnsalesdate_dic={}
 
     for item in sales_data:
-        if item.sot_date not in salesdate_dic:
-            salesdate_dic[item.sot_date] = {'bills_pairs': [], 'users': []}
-        if item.sot_bill_number and item.id:
-            salesdate_dic[item.sot_date]['bills_pairs'].append({'sbill': item.sot_bill_number, 'sid': item.id})
-        if item.sot_user:
-            salesdate_dic[item.sot_date]['users'].append(item.sot_user)
+        if item.sot_b_date not in salesdate_dic:
+            salesdate_dic[item.sot_b_date] = {'bills_pairs': [], 'users': []}
+        if item.sot_b_bill_number and item.id:
+            salesdate_dic[item.sot_b_date]['bills_pairs'].append({'sbill': item.sot_b_bill_number, 'sid': item.id})
+        if item.sot_b_user:
+            salesdate_dic[item.sot_b_date]['users'].append(item.sot_b_user)
 
     for item in salesReturn_data:
-        if item.rst_date not in returnsalesdate_dic:
-            returnsalesdate_dic[item.rst_date] = {'billsr_pairs': [], 'users': []}
-        if item.rst_billNum and item.id:
-            returnsalesdate_dic[item.rst_date]['billsr_pairs'].append({'srbill': item.rst_billNum, 'srid': item.id})
-        if item.rst_user:
-            returnsalesdate_dic[item.rst_date]['users'].append(item.rst_user)
+        if item.rst_b_date not in returnsalesdate_dic:
+            returnsalesdate_dic[item.rst_b_date] = {'billsr_pairs': [], 'users': []}
+        if item.rst_b_billNum and item.id:
+            returnsalesdate_dic[item.rst_b_date]['billsr_pairs'].append({'srbill': item.rst_b_billNum, 'srid': item.id})
+        if item.rst_b_user:
+            returnsalesdate_dic[item.rst_b_date]['users'].append(item.rst_b_user)
 
     context={
         'base_template': base_template,
@@ -199,11 +203,11 @@ def sales_bill(request):
 def salesBill_display(request, billId):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     company_data = companyprofileTable.objects.get()
-    sale_ord = get_object_or_404(salesorderTable, id=billId)
-    sale_itm = salesorderItemTable.objects.filter(soit_bill_number=sale_ord)
+    sale_ord = get_object_or_404(sot_backup, id=billId)
+    sale_itm = soit_backup.objects.filter(soit_b_bill_number=sale_ord)
     sale_Amount = 0
     for j in sale_itm:
-        sale_Amount += j.soit_total
+        sale_Amount += j.soit_b_total
 
     context = {
         'base_template': base_template,
@@ -217,11 +221,11 @@ def salesBill_display(request, billId):
 def returnBill_display(request, billId):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     company_data = companyprofileTable.objects.get()
-    saleret_ord = get_object_or_404(returnSalesTable, id=billId)
-    saleret_itm = returnsalesItemTable.objects.filter(rsit_billNum=saleret_ord)
+    saleret_ord = get_object_or_404(rst_backup, id=billId)
+    saleret_itm = rsit_backup.objects.filter(rsit_b_billNum=saleret_ord)
     saleret_Amount = 0
     for j in saleret_itm:
-        saleret_Amount += j.rsit_refundAmount
+        saleret_Amount += j.rsit_b_refundAmount
 
     context = {
         'base_template': base_template,

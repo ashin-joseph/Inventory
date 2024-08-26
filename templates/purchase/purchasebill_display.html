@@ -28,7 +28,7 @@
                         </div>
 
                         <div class="col print-only text-right vendor-details-head">
-                            <p>Purchase Order Number: <h5>{{pur_ord.cpt_billNum }}</h5></p>
+                            <p>Purchase Order Number: <h5>{{pur_ord.cpt_b_billNum }}</h5></p>
                         </div>
                     </div>
 
@@ -36,15 +36,15 @@
 
                     <div class="d-flex">
                         <div class="col vendor-details">
-                            <p>Vendor: <strong>{{ pur_ord.cpt_vendor.vendor_shop_name }}</strong> </p>
-                            <p>Address: <strong>{{ pur_ord.cpt_vendor.vendor_location }}</strong> </p>
-                            <p>GISTIN: <strong> {{ pur_ord.cpt_vendor.vendor_GST }}</strong> </p>
+                            <p>Vendor: <strong>{{ pur_ord.cpt_b_vendor }}</strong> </p>
+                            <p>Address: <strong>{{ pur_ord.cpt_b_address }}</strong> </p>
+                            <p>GISTIN: <strong> {{ pur_ord.cpt_b_gst }}</strong> </p>
                             <br>
                         </div>
                         <div class="col text-right vendor-details">
-                            <p>Date:<strong> {{ pur_ord.cpt_date }}</strong> </p>
-                            <p>Contact: <strong>{{ pur_ord.cpt_vendor.vendor_name }}</strong> </p>
-                            <p>Phone: <strong>{{ pur_ord.cpt_vendor.vendor_phone }}</strong> </p>
+                            <p>Date:<strong> {{ pur_ord.cpt_b_date }}</strong> </p>
+                            <p>Contact: <strong>{{ pur_ord.cpt_b_contact }}</strong> </p>
+                            <p>Phone: <strong>{{ pur_ord.cpt_b_phone }}</strong> </p>
                         </div>
                     </div>
 
@@ -62,11 +62,11 @@
                         <tbody>
                             {% for i in pur_itm %}
                                 <tr>
-                                    <td>{{ i.cpit_item }}</td>
-                                    <td>{{i.cpit_qty}}</td>
-                                    <td><i>Rs.</i>{{i.cpit_price}}</td>
-                                    <td>{{i.cpit_tax}}<i>%</i></td>
-                                    <td><i>Rs.</i>{{i.cpit_Amount}}</td>
+                                    <td>{{ i.cpit_b_item }}</td>
+                                    <td>{{i.cpit_b_qty}}</td>
+                                    <td><i>Rs.</i>{{i.cpit_b_price}}</td>
+                                    <td>{{i.cpit_b_tax}}<i>%</i></td>
+                                    <td><i>Rs.</i>{{i.cpit_b_Amount}}</td>
                                 </tr>
                             {% endfor %}
                         <tr>
