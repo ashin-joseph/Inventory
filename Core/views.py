@@ -182,6 +182,7 @@ def render_to_pdf(template_src, context_dict={}):
 @admin_required
 def report(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
+    company_data = companyprofileTable.objects.get()
     company_profile = companyprofileTable.objects.first()  # Adjust this if you have multiple company profiles
     company_email = company_profile.company_email if company_profile else None
     current_date= datetime.datetime.now().strftime("%Y/%m/%d-%H:%M")
@@ -199,6 +200,7 @@ def report(request):
         'daily_purchase': daily_purchase,
         'daily_damage': daily_damage,
         'daily_profit': daily_profit,
+        'company_data': company_data,
     }
 
     if request.method == 'POST' and 'send_pdf' in request.POST:

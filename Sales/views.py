@@ -95,13 +95,17 @@ def sales_order_display(request, orderId):
         'number': number,
         'gst': gst,
     }
-    return render(request, "sales/sales_order_display.html", context)
+    response = render(request, "sales/sales_order_display.html", context)
+
+    # s_order.delete_after_sale_backup()
+
+    return response
 
 
 @admin_staff_required
 def salesreturn(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
-    salesOrder_data = salesorderTable.objects.all()
+    salesOrder_data = sot_backup.objects.all()
     company_data = companyprofileTable.objects.get()
     salesOrder = None
     salesItems = None
@@ -110,8 +114,8 @@ def salesreturn(request):
         so_id = request.POST.get("salesOrderNum_id")
         user_id = request.POST.get("user_id")
     if so_id:
-        salesOrder = get_object_or_404(salesorderTable, id=so_id)
-        salesItems = salesorderItemTable.objects.filter(soit_bill_number=salesOrder)
+        salesOrder = get_object_or_404(sot_backup, id=so_id)
+        salesItems = soit_backup.objects.filter(soit_b_bill_number=salesOrder)
     context = {
         'salesOrder_data': salesOrder_data,
         'salesOrder': salesOrder,
@@ -134,7 +138,7 @@ def salesreturn(request):
             random_number = random.randint(100, 999)
             Return_order_number = f"{date_Rstr}SR{random_number}"
             try:
-                sales_instance = salesorderTable.objects.get(id=salesOdrNum_id)
+                sales_instance = sot_backup.objects.get(id=salesOdrNum_id)
                 user_instance = User.objects.get(id=user_id)
                 sales_return_number = returnSalesTable(rst_billNum=Return_order_number, rst_poNum=sales_instance,
                                                        rst_user=user_instance)
@@ -148,7 +152,7 @@ def salesreturn(request):
                                                         rsit_refundAmount=ia)
                     return_items.save()
                 return redirect(salesReturn_display, return_id=sales_return_number.id)
-            except salesorderTable.DoesNotExist:
+            except sot_backup.DoesNotExist:
                 return redirect(trial_failed)
     return render(request, "sales/sales_return.html", context)
 
@@ -171,7 +175,7 @@ def salesReturn_display(request, return_id):
     }
     response = render(request, "sales/salesReturn_display.html", context)
 
-    return_order.delete_after_backup()
+    # return_order.delete_after_return_backup()
 
     return response
 

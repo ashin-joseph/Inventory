@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth import get_user_model
+from Sales.models import salesorderTable, returnSalesTable
+
 
 class MyAdminSite(admin.AdminSite):
     site_header = "StockSmart"
@@ -46,4 +48,6 @@ class UserAdmin(BaseUserAdmin):
 
 admin.site.register(User, UserAdmin)
 admin_site.register(User, UserAdmin)
+admin_site.register(salesorderTable)
+admin_site.register(returnSalesTable)
 

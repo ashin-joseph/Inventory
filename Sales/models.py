@@ -1,3 +1,4 @@
+#old sales model
 from django.db import models
 from Core.models import itemTable, priceTable
 from User.models import User
@@ -28,6 +29,10 @@ class salesorderTable(models.Model):
             }
         )
         return sot_b_backup
+
+    # def delete_after_sale_backup(self):
+    #     salesorderItemTable.objects.filter(soit_bill_number=self).delete()
+    #     self.delete()
 
 class salesorderItemTable(models.Model):
     soit_bill_number = models.ForeignKey(salesorderTable, on_delete=models.CASCADE)
@@ -72,7 +77,7 @@ class salesorderItemTable(models.Model):
 
 class returnSalesTable(models.Model):
     rst_billNum = models.CharField(max_length=50, unique=True)
-    rst_poNum = models.ForeignKey(salesorderTable, on_delete=models.CASCADE)
+    rst_poNum = models.CharField(max_length=50)
     rst_date = models.DateField(auto_now_add=True)
     rst_user = models.ForeignKey(User, on_delete=models.CASCADE)
     rst_item = models.ManyToManyField(itemTable, through='returnsalesItemTable')
@@ -88,18 +93,16 @@ class returnSalesTable(models.Model):
         rst_b_backup, created = rst_backup.objects.get_or_create(
             rst_b_billNum=self.rst_billNum,
             defaults={
-                'rst_b_poNum': self.rst_poNum.sot_bill_number,
+                'rst_b_poNum': self.rst_poNum,
                 'rst_b_date': self.rst_date,
                 'rst_b_user': self.rst_user.username
             }
         )
         return rst_b_backup
 
-    def delete_after_backup(self):
-        # Delete all related items from confirmPurchaseItemTable
-        returnsalesItemTable.objects.filter(rsit_billNum=self).delete()
-        # Delete the confirmPurchaseTable entry itself
-        self.delete()
+    # def delete_after_return_backup(self):
+    #     returnsalesItemTable.objects.filter(rsit_billNum=self).delete()
+    #     self.delete()
 
 class returnsalesItemTable(models.Model):
     rsit_billNum = models.ForeignKey(returnSalesTable, on_delete=models.CASCADE)

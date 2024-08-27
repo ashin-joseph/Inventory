@@ -49,7 +49,7 @@ class stockTable(models.Model):
         self.st_salesReturnStock = total_return_sales
 
         # Calculate the remaining stock
-        self.st_remainingStock = max((self.st_purchasesStock - self.st_soldStock - self.st_damageStock + self.st_salesReturnStock ), 0)
+        self.st_remainingStock = max((self.st_purchasesStock - self.st_soldStock + self.st_salesReturnStock - self.st_damageStock ), 0)
         super().save(*args, **kwargs)
 
 
