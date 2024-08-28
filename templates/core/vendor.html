@@ -89,7 +89,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable " role="document">
             <div class="modal-content">
                 <div class="modal-header bg-success">
-                    <h5 class="modal-title" id="exampleModalLabel3">Edit Vendor</h5>
+                    <h5 class="modal-title" id="formTitle3">Edit Vendor</h5>
                 </div>
                 <div class="modal-body d-flex flex-wrap">
                     <div class="col">
@@ -164,7 +164,7 @@
     <p style="font-weight:bold; color:#999999;">Shop Name: <br><span id="shopname4" style="color:#000000; font-weight:normal;"></span></p>
     <p style="font-weight:bold; color:#999999;">Vendor Name: <br><span id="vendorname4" style="color:#000000; font-weight:normal;"></span></p>
     <p style="font-weight:bold; color:#999999;">Location: <br><span id="location4" style="color:#000000; font-weight:normal;"></span></p>
-    <p style="font-weight:bold; color:#999999;">Pin: <br><span id="pin4" sstyle="color:#000000; font-weight:normal;"></span></p>
+    <p style="font-weight:bold; color:#999999;">Pin: <br><span id="pin4" style="color:#000000; font-weight:normal;"></span></p>
   </div>
 
   <div class="col-6">
@@ -193,49 +193,7 @@
 
 
         <div class="row">
-            <!-- Form to add vendor -->
-           <!-- <div class="form-container col-md-4">
-                <h2 id="formTitle">Add Vendor</h2>
-                <form id="itemForm5" method="post" action="{% url 'vendor_pg' %}" onsubmit="return validation()" class="footer-bottom">
-                    {% csrf_token %}
-                    <input name="vendorid" type="hidden" id="vendorid">
-                    <div class="form-group">
-                        <label>Shop Name</label>
-                        <input name="shopname" id="shopname" type="text" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Vendor Name</label>
-                        <input name="vendorname" id="vendorname" type="text" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Location</label>
-                        <input name="location" id="location" type="text" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Pin</label>
-                        <input name="pin" id="pin" type="text" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input name="email" id="email" type="email" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Phone number</label>
-                        <input name="phonenumber" id="phonenumber" type="tel" onsubmit="return validation()" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>GST</label>
-                        <input name="gst" id="gst" type="text" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Note</label>
-                        <textarea name="note" id="note" class="form-control" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-info">Submit</button>
-                </form>
-            </div> -->
 
-            <!-- Table to display saved vendors -->
             <div class="col">
 
                 <h2>Vendors</h2>
@@ -303,7 +261,7 @@
             document.getElementById('phonenumber3').value = phonenumber;
             document.getElementById('gst3').value = gst;
             document.getElementById('note3').value = note;
-            document.getElementById('formTitle3').innerText = 'Update Vendor';
+            document.getElementById('formTitle3').innerText = 'Update ' + shopname;
         }
 
         function showVendor(id, shopname, vendorname, location, pin, email, phonenumber, gst, note) {

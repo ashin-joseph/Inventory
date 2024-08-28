@@ -147,7 +147,7 @@ def confirmpurchase_display(request, confirm_id):
     }
     response = render(request, "purchase/confirmPurchase_display.html", context)
 
-    confirm_order.delete_after_backup()
+    # confirm_order.delete_after_backup()
 
     return response
 @admin_required

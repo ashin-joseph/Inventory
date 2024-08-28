@@ -17,9 +17,9 @@ def send_login_alert(sender, request, user, **kwargs):
 
     if company_email:
         send_mail(
-            'User Logged In',
-            f'{user.username} has logged in with role {user.role} has into StockSmart.',
-            'at.stocksmart@gmail.com',  # Default sender
+            "User Logged In",
+            f"{user.username} has logged in with role {user.role} into '{company_profile.company_name}' powered by StockSmart.",
+            "at.stocksmart@gmail.com",  # Default sender
             [company_email],
             fail_silently=False,
         )
@@ -39,9 +39,9 @@ def check_stock_alert(sender, instance, **kwargs):
     if company_email and instance.st_remainingStock < int(company_profile.company_threshold_Stock):
         # Send email alert
         send_mail(
-            'Low Stock Alert',
-            f'The stock for {instance.st_item.item_name} is below the threshold level. Current quantity: {instance.st_remainingStock}.',
-            'at.stocksmart@gmail.com',  # Default sender email
+            "Low Stock Alert",
+            f"Alert message for '{company_profile.company_name}', The stock for {instance.st_item.item_name} is below the threshold level. Current quantity: {instance.st_remainingStock} powered by StockSmart.",
+            "at.stocksmart@gmail.com",  # Default sender email
             [company_email],  # Recipient email in a list
             fail_silently=False,
         )

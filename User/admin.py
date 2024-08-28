@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth import get_user_model
 from Sales.models import salesorderTable, returnSalesTable
+from Purchase.models import confirmPurchaseTable
 
 
 class MyAdminSite(admin.AdminSite):
@@ -50,4 +51,5 @@ admin.site.register(User, UserAdmin)
 admin_site.register(User, UserAdmin)
 admin_site.register(salesorderTable)
 admin_site.register(returnSalesTable)
+admin_site.register(confirmPurchaseTable)
 

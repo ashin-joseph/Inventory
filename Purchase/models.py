@@ -54,11 +54,9 @@ class confirmPurchaseTable(models.Model):
         )
         return cpt_b_backup
 
-    def delete_after_backup(self):
-        # Delete all related items from confirmPurchaseItemTable
-        confirmPurchaseItemTable.objects.filter(cpit_billNum=self).delete()
-        # Delete the confirmPurchaseTable entry itself
-        self.delete()
+    # def delete_after_backup(self):
+    #     confirmPurchaseItemTable.objects.filter(cpit_billNum=self).delete()
+    #     self.delete()
 
 class confirmPurchaseItemTable(models.Model):
     cpit_billNum = models.ForeignKey(confirmPurchaseTable, on_delete=models.CASCADE)
