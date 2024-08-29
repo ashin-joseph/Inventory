@@ -208,7 +208,7 @@ def report(request):
         if pdf:
             email = EmailMessage(
                 'Daily Report',
-                f'Here is the attachment of the Daily Report on {current_date} in PDF.',
+                f"Here is the attachment of the '{company_data.company_name}' Inventory powered by StockSmart. Daily Report on {current_date} in PDF.",
                 settings.DEFAULT_FROM_EMAIL,
                 [company_email],
             )
@@ -280,6 +280,7 @@ def staff_pg(request):
 
     if request.method == "POST":
         userid = request.POST.get('userid')
+        organization = request.POST.get('organization')
         username = request.POST.get('username')
         role = request.POST.get('role')
         password = request.POST.get('password')
@@ -289,6 +290,7 @@ def staff_pg(request):
         if password == confirm_password:
             if userid:  # Updating an existing user
                 user_data = User.objects.get(id=userid)
+                user_data.organization = organization
                 user_data.username = username
                 user_data.role = role
                 user_data.email = email
@@ -297,7 +299,7 @@ def staff_pg(request):
                 user_data.save()
                 messages.success(request, "Staff Updated successfully")
             else:  # Creating a new user
-                new_user = User(username=username, role=role, email=email)
+                new_user = User(organization=organization, username=username, role=role, email=email)
                 new_user.set_password(password)
                 new_user.save()
                 messages.success(request, "Staff Added Successfully")

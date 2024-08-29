@@ -20,12 +20,12 @@ User = get_user_model()
 class UserCreation(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ('username', 'email', 'role')
+        fields = ('username', 'email', 'role','organization')
 
 class UserChange(UserChangeForm):
     class Meta(UserChangeForm.Meta):
         model = User
-        fields = ('username', 'email', 'password', 'role')
+        fields = ('username', 'email', 'password', 'role', 'organization')
 
 class UserAdmin(BaseUserAdmin):
     add_form = UserCreation
@@ -38,12 +38,13 @@ class UserAdmin(BaseUserAdmin):
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
         ('Role', {'fields': ('role',)}),
+        ('Organization', {'fields': ('organization',)}),
     )
 
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'email', 'password1', 'password2', 'role'),
+            'fields': ('username', 'email', 'password1', 'password2', 'role', 'organization'),
         }),
     )
 

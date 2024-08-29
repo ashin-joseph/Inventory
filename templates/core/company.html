@@ -36,8 +36,8 @@
   <div class="col-3">
     <!-- Vendor ID hidden -->
     <p style="font-weight:bold; color:#999999;">Company :</p>
-    <p style="font-weight:bold; color:#999999;">Contact Person:</p>
     <p style="font-weight:bold; color:#999999;">Email</p>
+    <p style="font-weight:bold; color:#999999;">Contact Person:</p>
     <p style="font-weight:bold; color:#999999;">Phone:</p>
     <p style="font-weight:bold; color:#999999;">Address:</p>
     <p style="font-weight:bold; color:#999999;">GST:</p>
@@ -48,12 +48,12 @@
   <div class="col-3">
 
     <p><span  style="color:#000000; font-weight:normal;">{{ i.company_name }}</span></p>
-    <p><span  style="color:#000000; font-weight:normal;">{{ i.company_person }}</span></p>
    <p><span  style="color:#000000; font-weight:normal;">{{ i.company_email }}</span></p>
+   <p><span  style="color:#000000; font-weight:normal;">{{ i.company_person }}</span></p>
     <p><span style="color:#000000; font-weight:normal;">{{ i.company_mobile }}</span></p>
     <p><span style="color:#000000; font-weight:normal;">{{ i.company_address }}</span></p>
     <p><span style="color:#000000; font-weight:normal;">{{ i.company_gst }}</span></p>
-      <p><span style="color:#000000; font-weight:normal;">{{ i.company_threshold_Stock }}</span></p>
+    <p><span style="color:#000000; font-weight:normal;">{{ i.company_threshold_Stock }}</span></p>
 
   </div>
     </div>
@@ -86,17 +86,17 @@
 
                     <div class="form-group">
                     <label>Company Name</label>
-                    <input name="company_name" id="company_name" type="text" class="form-control" required>
+                    <input name="company_name" id="company_name" type="text" class="form-control" readonly>
+                    </div>
+
+                    <div class="form-group">
+                    <label>Email</label>
+                    <input name="company_email" id="company_email" type="email" class="form-control" readonly>
                     </div>
 
                     <div class="form-group">
                     <label>Contact Name</label>
                     <input name="company_person" id="company_person" type="text" class="form-control" required>
-                    </div>
-
-                    <div class="form-group">
-                    <label>Email</label>
-                    <input name="company_email" id="company_email" type="email" class="form-control" required>
                     </div>
 
                     <div class="form-group">

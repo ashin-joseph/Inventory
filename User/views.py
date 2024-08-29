@@ -4,37 +4,81 @@ from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from User.decorators import admin_required, staff_required, admin_staff_required
 from Core.models import companyprofileTable
-from .utils import product_details, todays_offer, lowstock_list, user_activity, purchase_overview, sales_overview, daily_salesReport, daily_purchaseReport
+from .utils import (product_details, todays_offer, lowstock_list, user_activity,
+                    purchase_overview, sales_overview, daily_salesReport, daily_purchaseReport)
+
+import random
+from django.core.mail import EmailMessage
+from InventorySystem import settings
+
+
 User = get_user_model()
 
 def register_admin(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        confirm_password = request.POST['confirm_password']
-        email = request.POST['email']
-        role = request.POST['role']
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+        email = request.POST.get('email')
+        role = request.POST.get('role')
+        organization = request.POST.get('organization')
+        otp = request.POST.get('otp')  # Make sure to handle OTP validation
         is_superuser = 'is_superuser' in request.POST
         is_staff = 'is_staff' in request.POST
 
-        if password == confirm_password:
-            user = User.objects.create_user(
-                username=username,
-                password=password,
-                email=email,
-                role=role,
-                is_superuser=is_superuser,
-                is_staff=is_staff
-            )
-            user.save()
-            messages.success(request, "You have registered as an Admin")
-            return redirect(login_user_inv)
-        else:
-            messages.error(request, "Your Password does not match..!")
+        if otp != str(request.session.get('otp')):
+            messages.error(request, "Invalid OTP.")
             return redirect(register_admin)
+
+        if password != confirm_password:
+            messages.error(request, "Your passwords do not match.")
+            return redirect(register_admin)  # Ensure the URL name matches your URL configuration
+
+        # if User.objects.filter(username=username).exists():
+        #     messages.error(request, "Username already exists.")
+        #     return redirect(register_admin)
+
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "Email already exists.")
+            return redirect(register_admin)
+
+        # Here, add OTP validation if necessary
+
+        user = User.objects.create_user(
+            username=username,
+            password=password,
+            email=email,
+            role=role,
+            organization=organization,
+            is_superuser=is_superuser,
+            is_staff=is_staff
+        )
+        user.save()
+        messages.success(request, "You have registered as an Admin")
+        return redirect(login_user_inv)
 
     return render(request, 'user/register_admin.html')
 
+
+def sample(request):
+    otp_num = random.randint(999, 9999)
+    if request.method == "POST" and "otp_email" in request.POST:
+        otp_email = request.POST.get("otp_email")
+        email = EmailMessage(
+            'OTP',
+            f'An OTP is received from StockSmart OTP:{otp_num}.',
+            settings.DEFAULT_FROM_EMAIL,
+            [otp_email],
+
+        )
+        email.send()
+        # Store OTP in session
+        request.session['otp'] = otp_num
+
+        messages.success(request, "Please check your inbox for the OTP")
+        return redirect(register_admin)
+
+    return render(request, "user/sample.html")
 
 def login_user_inv(request):
     if request.method == 'POST':
@@ -142,8 +186,11 @@ def trial_failed(request):
     return render(request,"user/trial_failed.html", {'base_template':base_template})
 
 
-def sample(request):
-    return render(request,"user/sample.html")
+
+
+
+
+
 
 
 # def loginuser1(request):

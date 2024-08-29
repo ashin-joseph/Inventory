@@ -20,7 +20,7 @@ class orderitemsTable(models.Model):
     oit_quantities = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
-        return f"{self.oit_purchase_order.ot_order_number} + {self.oit_item.item_name}"
+        return f"{self.oit_orderNum.ot_order_number} + {self.oit_items.item_name}"
 
 
 class confirmPurchaseTable(models.Model):

@@ -18,29 +18,35 @@
     <h2>Create a New Account</h2>
     <form action="/register_admin/" method="POST">
         {% csrf_token %}
-        <label for="username" class="mt-2">Username:</label>
+        <label class="mt-2">Organization name:</label>
+        <input class="form-control" placeholder="Organization name cannot be Edit later*" type="text" id="organization" name="organization" required>
+
+        <label class="mt-2">Username:</label>
         <input class="form-control" type="text" id="username" name="username" required>
 
-        <label for="username" class="mt-2">Email:</label>
-        <input class="form-control" type="email" id="email" name="email" required>
+        <label class="mt-2">Email:</label>
+        <input placeholder="Organization Email-Id cannot be Edit later*" class="form-control" type="email" id="email" name="email" required>
 
-        <label for="password" class="mt-2">Password:</label>
+        <label class="mt-2">Password:</label>
         <input class="form-control" type="password" id="password" name="password" required>
 
-        <label for="confirm_password" class="mt-2">Confirm Password:</label>
+        <label class="mt-2">Confirm Password:</label>
         <input class="form-control" type="password" id="confirm_password" name="confirm_password" required>
 
-        <label style="display:none;" for="role" class="mt-2">Role:</label>
+        <label class="mt-2">OTP:</label>
+        <input class="form-control" type="text" id="otp" name="otp" required>
+
+        <label style="display:none;" class="mt-2">Role:</label>
         <select style="display:none;" class="form-control" id="role" name="role" required>
             <option>---</option>
             <option value="Admin" selected>Admin</option>
         </select>
 
         <input style="display:none;" type="checkbox" id="is_superuser" name="is_superuser" class="form-select" checked>
-        <label style="display:none;" for="is_superuser">Administartor</label>
+        <label style="display:none;" >Administartor</label>
 
         <input style="display:none;" type="checkbox" id="is_staff" name="is_staff" checked>
-        <label style="display:none;" for="is_staff">Staff</label><br>
+        <label style="display:none;" >Staff</label><br>
 
         <button style="width:100%;" class="btn btn-success px-5 "type="submit" >Register</button>
         <a href="{% url 'login' %}" class=" d-flex justify-content-center my-3">Back</a>
@@ -48,5 +54,27 @@
     </form>
 
 </div>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+{% if messages %}
+{% for i in messages %}
+{% if i.tags == 'warning' %}
+            <script>
+              swal('{{i}}', '', 'warning');
+            </script>
+        {% elif i.tags == 'error' %}
+            <script>
+              swal('{{i}}', '', 'error');
+            </script>
+        {% elif i.tags == 'info' %}
+            <script>
+              swal('{{i}}', '', 'info');
+            </script>
+        {% else %}
+            <script>
+              swal('{{i}}', '', 'success');
+            </script>
+        {% endif %}
+    {% endfor %}
+{% endif %}
 </body>
 </html>
