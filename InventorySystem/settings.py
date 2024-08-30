@@ -146,3 +146,4 @@ EMAIL_HOST_PASSWORD = 'histiurpqlhkesfe'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # DEFAULT_FROM_EMAIL = 'at.stocksmart@gmail.com'
 # ADMIN_EMAIL = 'at.stocksmart@gmail.com' # The email where alerts should be sent
+
