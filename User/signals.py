@@ -17,8 +17,8 @@ def send_login_alert(sender, request, user, **kwargs):
 
     if company_email:
         send_mail(
-            "User Logged In",
-            f"{user.username} has logged in with role {user.role} into '{company_profile.company_name}'Inventory, powered by StockSmart.",
+            f"User Logged In: {user.username} ",
+            f"User {user.username}({user.role}) has logged into {company_profile.company_name}'s StockSmart account.",
             "at.stocksmart@gmail.com",  # Default sender
             [company_email],
             fail_silently=False,
@@ -40,7 +40,7 @@ def check_stock_alert(sender, instance, **kwargs):
         # Send email alert
         send_mail(
             "Low Stock Alert",
-            f"Alert message from '{company_profile.company_name}'Inventory, The stock for {instance.st_item.item_name} is below the threshold level. Current quantity: {instance.st_remainingStock} powered by StockSmart.",
+            f"Dear {company_profile.company_person},\n\n Alert from '{company_profile.company_name}' Inventory: The stock for {instance.st_item.item_name} has fallen below the threshold level. \n {instance.st_item.item_name} : {instance.st_remainingStock}. \n\n Best regards, \n {company_profile.company_name}",
             "at.stocksmart@gmail.com",  # Default sender email
             [company_email],  # Recipient email in a list
             fail_silently=False,

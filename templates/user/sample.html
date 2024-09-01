@@ -26,15 +26,38 @@
 
         <div class=" my-4 d-flex row justify-content-around">
             <div class="col-12 ">
-            <a class="mt-2 mx-2" href=""><img src="{% static 'images/google.png' %}" alt="google" height="100px;" width="100px;"></a>
-            <a class="mt-2 " href=""><img src="{% static 'images/Linkedin.png' %}" alt="google" height="50px;" width="100px;"></a>
-            <a class="mt-2" href=""><img src="{% static 'images/Outlook.png' %}" alt="google" height="65px;" width="100px;"></a>
-            <a class="mt-2" href=""><img src="{% static 'images/Yahoo.png' %}" alt="google" height="90px;" width="100px;"></a>
+<!--            <a class="mt-2 mx-2" href=""><img src="{% static 'images/google.png' %}" alt="google" height="100px;" width="100px;"></a>-->
+<!--            <a class="mt-2 " href=""><img src="{% static 'images/Linkedin.png' %}" alt="google" height="50px;" width="100px;"></a>-->
+<!--            <a class="mt-2" href=""><img src="{% static 'images/Outlook.png' %}" alt="google" height="65px;" width="100px;"></a>-->
+<!--            <a class="mt-2" href=""><img src="{% static 'images/Yahoo.png' %}" alt="google" height="90px;" width="100px;"></a>-->
         </div>
         </div>
     </form>
      <a href="{% url 'login' %}" style="color: red;" class=" d-flex justify-content-center my-3">Back</a>
 
 </div>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+{% if messages %}
+{% for i in messages %}
+{% if i.tags == 'warning' %}
+            <script>
+              swal('{{i}}', '', 'warning');
+            </script>
+        {% elif i.tags == 'error' %}
+            <script>
+              swal('{{i}}', '', 'error');
+            </script>
+        {% elif i.tags == 'info' %}
+            <script>
+              swal('{{i}}', '', 'info');
+            </script>
+        {% else %}
+            <script>
+              swal('{{i}}', '', 'success');
+            </script>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
 </body>
 </html>

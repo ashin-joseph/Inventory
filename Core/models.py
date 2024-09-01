@@ -37,6 +37,7 @@ class itemTable(models.Model):
         ('Vegetables', 'Veg'),
         ('Fruits', 'Fru'),
     ]
+    item_code = models.CharField(max_length=50, unique=True)
     item_name = models.CharField(max_length=50, null=True, blank=True, unique=True)
     item_category = models.CharField(max_length=50, choices=CATEGORY_CHOICE)
     item_unit = models.CharField(max_length=15, choices=UNIT_CHOICES)

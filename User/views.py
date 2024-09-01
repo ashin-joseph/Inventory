@@ -39,7 +39,7 @@ def register_admin(request):
         #     return redirect(register_admin)
 
         if User.objects.filter(email=email).exists():
-            messages.error(request, "Email already exists.")
+            messages.error(request, "You have already registered using this Mail-Id.")
             return redirect(register_admin)
 
         # Here, add OTP validation if necessary
@@ -54,29 +54,39 @@ def register_admin(request):
             is_staff=is_staff
         )
         user.save()
-        messages.success(request, "You have registered as an Admin")
+        messages.success(request, "Welcome to StockSmart! Your account has been successfully created. Please log in to continue.")
         return redirect(login_user_inv)
 
     return render(request, 'user/register_admin.html')
 
 
 def sample(request):
-    otp_num = random.randint(999, 9999)
+    otp_num = random.randint(1000, 9999)  # Fixed the range for OTP
+
     if request.method == "POST" and "otp_email" in request.POST:
         otp_email = request.POST.get("otp_email")
-        email = EmailMessage(
-            'OTP',
-            f'An OTP is received from StockSmart OTP:{otp_num}.',
-            settings.DEFAULT_FROM_EMAIL,
-            [otp_email],
 
-        )
-        email.send()
-        # Store OTP in session
-        request.session['otp'] = otp_num
+        # Check if the email exists in the company profile database
+        if companyprofileTable.objects.filter(company_email=otp_email).exists():
+            messages.error(request, "Email-Id already exists")
+        else:
+            email = EmailMessage(
+                'Your OTP for Creating the Account on StockSmart',
+                f'Dear User,<br><br>'
+                f'Welcome to StockSmart! Your One-Time Password (OTP) for creating an account is <strong>{otp_num}</strong>. '
+                f'Please enter this code on the registration page to complete your sign-up process.<br><br>'
+                f'Thank you for choosing StockSmart!',
+                settings.DEFAULT_FROM_EMAIL,
+                [otp_email],
+            )
+            email.content_subtype = "html"  # Set the content type to HTML
+            email.send()
 
-        messages.success(request, "Please check your inbox for the OTP")
-        return redirect(register_admin)
+            # Store OTP in session
+            request.session['otp'] = otp_num
+
+            messages.success(request, "Kindly check your inbox for the OTP to register your company in StockSmart")
+            return redirect('register_admin')  # Ensure 'register_admin' is the name of the view or URL name
 
     return render(request, "user/sample.html")
 

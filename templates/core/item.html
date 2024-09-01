@@ -27,6 +27,10 @@
                     <form id="itemForm" method="post" action="{% url 'item_pg' %}" class="footer-bottom">
                         {% csrf_token %}
                         <input type="hidden" name="itemid" id="itemId">
+                         <div class="form-group">
+                            <label for="itemCode">Item Code</label>
+                            <input name="itemcode" type="text" class="form-control" id="itemCode" required>
+                        </div>
                         <div class="form-group">
                             <label for="itemName">Item Name</label>
                             <input name="itemname" type="text" class="form-control" id="itemName" required>
@@ -70,6 +74,10 @@
                     <form id="itemForm2" method="post" action="{% url 'item_pg' %}" class="footer-bottom">
                         {% csrf_token %}
                         <input type="hidden" name="itemid" id="itemId2">
+                         <div class="form-group">
+                            <label for="itemCode">Item Name</label>
+                            <input name="itemcode" type="text" class="form-control" id="itemCode2" required>
+                        </div>
                         <div class="form-group">
                             <label for="itemName">Item Name</label>
                             <input name="itemname" type="text" class="form-control" id="itemName2" required>
@@ -115,8 +123,9 @@
             <table class="table table-hover ">
                 <thead class="">
                     <tr>
+                        <th class="headerx col-2" scope="col">Item Code</th>
                         <th class="headerx col-4" scope="col">Item Name</th>
-                        <th class="headerx col-4" scope="col">Item Category</th>
+                        <th class="headerx col-2" scope="col">Item Category</th>
                         <th class="headerx col-2" scope="col">Item Unit</th>
                         <th class="headerx col-2" scope="col">Action</th>
                     </tr>
@@ -129,11 +138,12 @@
                     <tbody id="itemTable">
                 {% for i in item_data %}
                 <tr>
+                    <td class="col-2" style="padding-left: 25px;">{{ i.item_code }}</td>
                     <td class="col-4" style="padding-left: 25px;">{{ i.item_name }}</td>
-                    <td class="col-4" style="padding-left: 25px;">{{ i.item_category }}</td>
+                    <td class="col-2" style="padding-left: 25px;">{{ i.item_category }}</td>
                     <td class="col-2" style="padding-left: 25px;">{{ i.item_unit }}</td>
                     <td class="col-2" style="padding-left: 25px;">
-                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal22" onclick="editItem('{{ i.id }}', '{{ i.item_name }}', '{{ i.item_category }}', '{{ i.item_unit }}')">
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal22" onclick="editItem('{{ i.id }}', '{{ i.item_code }}', '{{ i.item_name }}', '{{ i.item_category }}', '{{ i.item_unit }}')">
                             Edit
                         </button>
                         <a href="{% url 'deleteItem' Did=i.id %}">
@@ -158,8 +168,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 
 <script>
-    function editItem(id, name, category, unit) {
+    function editItem(id, code, name, category, unit) {
         document.getElementById('itemId2').value = id;
+        document.getElementById('itemCode2').value = code;
         document.getElementById('itemName2').value = name;
         document.getElementById('itemCategory2').value = category;
         document.getElementById('itemUnit2').value = unit;

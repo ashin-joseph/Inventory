@@ -76,19 +76,21 @@ def item_pg(request):
     company_data = companyprofileTable.objects.get()
     if request.method == "POST":
         item_id = request.POST.get('itemid')
+        item_code = request.POST.get('itemcode')
         item_name = request.POST.get('itemname')
         item_category = request.POST.get('itmecategory')
         item_unit = request.POST.get('itemunit')
 
         if item_id:
             item = itemTable.objects.get(id=item_id)
+            item.item_code = item_code
             item.item_name = item_name
             item.item_category = item_category
             item.item_unit = item_unit
             item.save()
             messages.success(request, "Item Updated successfully")
         else:
-            itemTable.objects.create(item_name=item_name, item_category=item_category, item_unit=item_unit)
+            itemTable.objects.create(item_code=item_code, item_name=item_name, item_category=item_category, item_unit=item_unit)
             messages.success(request, "Item Added Successfully")
         return redirect(item_pg)
     item_data = itemTable.objects.all()
@@ -207,14 +209,14 @@ def report(request):
         pdf = render_to_pdf('core/report.html', context)
         if pdf:
             email = EmailMessage(
-                'Daily Report',
-                f"Here is the attachment of the '{company_data.company_name}' Inventory powered by StockSmart. Daily Report on {current_date} in PDF.",
+                f'Daily Inventory Report for {company_data.company_name} - {current_date}',
+                f"Dear {company_data.company_person},\n\n Please find attached the daily inventory report for {company_data.company_name} as of {current_date} in PDF format.\n\n Thank you for your attention to this matter. \n\n Best regards, \n {company_data.company_name}",
                 settings.DEFAULT_FROM_EMAIL,
                 [company_email],
             )
             email.attach(f'daily_report{current_date}.pdf', pdf.getvalue(), 'application/pdf')
             email.send()
-            messages.success(request, "Please check your inbox for the report")
+            messages.success(request, "Report has been sent to your inbox. Please check your email to access the latest document.")
             return redirect(report)
         return redirect(trial_failed)
 
