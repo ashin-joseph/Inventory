@@ -19,7 +19,7 @@
 <!-- vendor details -->
 
     <div class="col-12">
-        <h4 class="mt-1">Confirmed Purchase Order</h4>
+        <h3 class="mt-1">Confirmed Purchase Order</h3>
 
         <input class="form-control" name="purchaseOrderNum" type="text" id="orderSearch" placeholder="Search for Order Number" value="{% if purchaseOrder %}{{ purchaseOrder.pot_order_number }}{% endif %}" required>
 
@@ -28,10 +28,10 @@
             <div class="col-3 shop-details-header mt-4 " style="height:160px;">
                 <b>Purchase Order Number:</b></br>
                 <b>Date of purchase:</b></br>
-                <b>Vendor shop</b></br>
+                <b>Vendor Name:</b></br>
                 <b>Contact Person:</b></br>
                 <b>Address:</b></br>
-                <b>Phone Number:</b>
+                <b>Phone:</b>
             </div>
 
             <div id="shopDetails" class="shop-details container col-9 mt-4 " style="height:160px;">
@@ -68,7 +68,7 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th class="headerx" scope="col">Item Name</th>
+                    <th class="headerx" scope="col">Item</th>
                     <th class="headerx" scope="col">Quantity</th>
                     <th class="headerx" scope="col">Price</th>
                     <th class="headerx" scope="col">Tax</th>
@@ -97,7 +97,7 @@
 
         </div>
         <hr>
-        <p class="mt-1"><i>Customize your purchase and hit 'Confirm'.</i></p>
+<!--        <p class="mt-1"><i>Customize your purchase and hit 'Confirm'.</i></p>-->
         <div class="d-flex justify-content-end mb-3">
             <button class="btn btn-success mr-2 px-5" type="submit" id="orderButton" >Confirm</button>
         </div>
@@ -109,7 +109,7 @@
 
 
         <div class="col-12">
-        <h4>Unconfirmed Order List</h4>
+        <h3>Unconfirmed Order List</h3>
         <hr>
         <div class=" d-flex flex-wrap">
             {% for i in purchaseOrder_data %}
@@ -126,6 +126,7 @@
 
     </div>
 </div>
+<div class="bottom-space"></div><br>
 <div class="bottom-space"></div><br>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

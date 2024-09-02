@@ -1,10 +1,13 @@
 from django.db import models
 from Core.models import itemTable
+from User.models import User
 
 
 class damageTable(models.Model):
     dpt_item = models.ForeignKey(itemTable, on_delete=models.CASCADE)
     dpt_damage_qty = models.PositiveIntegerField(null=True, blank=True)
+    dpt_reason = models.CharField(max_length=200, null=True, blank=True)
+    dpt_user = models.ForeignKey(User, on_delete=models.CASCADE)
     dpt_timestamp = models.DateField(auto_now_add=True)
 
     def __str__(self):

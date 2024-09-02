@@ -17,5 +17,5 @@ class User(AbstractUser):
 
             companyprofileTable.objects.get_or_create(
                 company_name=self.organization,
-                defaults={'company_email': self.email}
+                defaults={'company_email': self.email, 'company_person': self.username}
             )

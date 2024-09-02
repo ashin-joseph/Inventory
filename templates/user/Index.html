@@ -39,7 +39,7 @@
                 </li>
 
                 <li id="salesBtn" class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarSalesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sales</a>
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarSalesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sale</a>
                         <div class="dropdown-menu" aria-labelledby="navbarSalesDropdown">
 <!--                            <a class="dropdownItem" href="{% url 'sales_order' %}">Sales Order</a>-->
 <!--                            <a class="dropdownItem" href="{% url 'salesreturn' %}">Sales Return</a>-->
@@ -75,8 +75,8 @@
                     <div class="container mb-3 p-2 d-flex flex-wrap">
                          <div class="col-12">
                              <br>
-                             <p>Welcome, {{ user.username }} {{company_data.company_name}}</P>
-                             <H2>Here is your report </h2>
+                             <p>Welcome, {{ user.username }}</P>
+                             <H3>Here is your report as of  {{date}} </h2>
                         </div>
 
                         <div class="top-fig col flex-row  p-4">
@@ -92,9 +92,9 @@
                         <div class="top-fig col p-4">
                             <p>Total Items</p>
                             <h4>{{item_count}}</h4>
+                            <hr>
                             <p>Low Stock Items</p>
                             <h1>{{low_stock_count}}</h1>
-                            <hr>
                             <span class="mt-2" style="">Total Category <b>{{category_count}} </b></span>
                         </div>
                         <div class="top-fig col p-4">
@@ -209,7 +209,7 @@
                  <th class="headerx  col-2" scope="col">Name</th>
                 <th class="headerx col-2" scope="col">Role</th>
                 <th class="headerx col-5" scope="col">Email</th>
-                 <th class="headerx col-3" scope="col">Last Login</th>
+                 <th class="headerx col-3" scope="col">Login History</th>
 
                  </tr></table>
                 <div class="" style="height: 250px; overflow: auto;">

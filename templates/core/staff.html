@@ -22,18 +22,18 @@
             <div class="modal-header bg-success">
                 <h5 class="modal-title" id="exampleModalLabel">Add Staff</h5>
             </div>
-            <div class="modal-body d-flex flex-wrap">
+            <div class="modal-body d-flex flex-wrap ">
                 <div class="col">
-                    <form id="staffForm" method="post" action="{% url 'staff_pg' %}" class="footer-bottom">
+                    <form id="staffForm" method="post" action="{% url 'staff_pg' %}" class="">
                         {% csrf_token %}
                             <input name="userid" type="hidden" id="userid">
-                                <div class="form-group">
-                                    <label>Organization</label>
-                                    <input name="organization" value="{{company_data.company_name}}" id="organization" type="text" class="form-control" readonly>
-                                </div>
+<!--                                <div class="form-group">-->
+<!--                                    <label>Organization</label>-->
+<!--                                    <input name="organization" value="{{company_data.company_name}}" id="organization" type="text" class="form-control" readonly>-->
+<!--                                </div>-->
 
                                 <div class="form-group">
-                                    <label>User Name</label>
+                                    <label>Name</label>
                                     <input name="username" id="username" type="text" class="form-control" required>
                                 </div>
                                 <div class="form-group">
@@ -55,14 +55,12 @@
                                     <label>Email</label>
                                     <input name="email" id="email" type="email" class="form-control" required>
                                 </div>
-                        <div class="modal-footer">
+                        </div>
+                    </div>
+                        <div class="modal-footer ">
                             <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-success px-5">Submit</button>
                         </div>
-                        </div>
-                        </div>
-                    </div>
-
             </form>
         </div>
     </div>
@@ -73,20 +71,20 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header bg-success">
-                <h5 class="modal-title" id="exampleModalLabel2">Edit Staff</h5>
+                <h5 class="modal-title" id="exampleModalLabel2">Edit Staff Details</h5>
             </div>
             <div class="modal-body d-flex flex-wrap">
                 <div class="col">
-                    <form id="staffFormedit" method="post" action="{% url 'staff_pg' %}" class="footer-bottom">
+                    <form id="staffFormedit" method="post" action="{% url 'staff_pg' %}" class=" s">
                         {% csrf_token %}
                         <input name="userid" type="hidden" id="userid2">
-                        <div class="form-group">
-                                    <label>Organization</label>
-                                    <input name="organization" value="{{company_data.company_name}}" id="organization2" type="text" class="form-control" readonly>
-                                </div>
+<!--                        <div class="form-group">-->
+<!--                                    <label>Organization</label>-->
+<!--                                    <input name="organization" value="{{company_data.company_name}}" id="organization2" type="text" class="form-control" readonly>-->
+<!--                                </div>-->
 
                                 <div class="form-group">
-                                    <label>User Name</label>
+                                    <label>Name</label>
                                     <input name="username" id="username2" type="text" class="form-control" required>
                                 </div>
                                 <div class="form-group">
@@ -126,7 +124,7 @@
         <div class="col">
         <div class="col">
             <h2>Staff</h2>
-            <br>
+
             <div class="col-12" style="text-align: right;">
                 <button type="button" class="btn btn-success px-5" data-toggle="modal" data-target="#myModalnew" style="margin-bottom: 20px;">
                     Add a New Staff
@@ -135,10 +133,10 @@
             <table class="table table-hover ">
                 <thead class="">
                     <tr>
-                        <th class="headerx col-4" scope="col">Staff Name</th>
-                        <th class="headerx col-4" scope="col">Role</th>
-                        <th class="headerx col-2" scope="col">Email</th>
-                        <th class="headerx col-2" scope="col">Action</th>
+                        <th class="headerx col-4" scope="col">Name</th>
+                        <th class="headerx col-2" scope="col">Role</th>
+                        <th class="headerx col-4" scope="col">Email</th>
+                        <th class="headerx col-3" scope="col">Action</th>
                     </tr>
                 </thead>
 
@@ -150,10 +148,10 @@
                 {% for i in staff_data %}
                 <tr>
                     <td class="col-4" style="padding-left: 25px;">{{ i.username }}</td>
-                    <td class="col-4" style="padding-left: 25px;">{{ i.role }}</td>
-                    <td class="col-2" style="padding-left: 25px;">{{ i.email }}</td>
-                    <td class="col-2" style="padding-left: 25px;">
-                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal22" onclick="editStaff('{{ i.id }}', '{{company_data.company_name}}', '{{ i.username }}', '{{ i.role }}', '{{ i.password }}', '{{ i.email }}')">
+                    <td class="col-2" style="padding-left: 25px;">{{ i.role }}</td>
+                    <td class="col-4" style="padding-left: 25px;">{{ i.email }}</td>
+                    <td class="col-3" style="padding-left: 25px;">
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal22" onclick="editStaff('{{ i.id }}', '{{ i.username }}', '{{ i.role }}', '{{ i.password }}', '{{ i.email }}')">
                             Edit
                         </button>
                         <a href="{% url 'deletestaff' Did=i.id %}">
@@ -170,20 +168,20 @@
     </div>
 </div>
 <div class="bottom-space"></div>
+        <div class="bottom-space"></div>
 
 <!-- Bootstrap JS and dependencies -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 
 <script>
-    function editStaff(id, organization, username, role, password, email) {
+    function editStaff(id, username, role, password, email) {
     document.getElementById('userid2').value = id;
     document.getElementById('username2').value = username;
-    document.getElementById('organization2').value = organization;
     document.getElementById('role2').value = role;
     document.getElementById('password2').value = password;
     document.getElementById('email2').value = email;
-    document.getElementById('exampleModalLabel2').innerText = 'Update ' + username;
+    document.getElementById('exampleModalLabel2').innerText = 'Update ' + username +'`s ' + ' Details';
 }
 
     function updateSerialNumbers() {

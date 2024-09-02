@@ -49,10 +49,11 @@
 <table class="table table-bordered table-striped">
 <thead class="">
     <tr>
-        <th class="headerx  col-6">Item Name</th>
-    <th class="headerx  col-2">Selling Price (Rs.)</th>
+        <th class="headerx  col-3">Item</th>
+    <th class="headerx  col-2">Price (Rs.)</th>
     <th class="headerx  col-2">Tax (%) </th>
     <th class="headerx  col-2">Offer (%)</th>
+    <th class="headerx  col-3">Selling Price (Rs.) </th>
     </tr>
 </thead>
 </table>
@@ -61,54 +62,16 @@
                         {% for i in price_data %}
                         <tr>
                             <input name="id[]" type="hidden" class="form-control" value="{{i.id}}" readonly>
-                            <td class=" col-6" style="padding-left: 25px;"><input name="itemname[]" type="text" class="form-control" value="{{i.pt_item.item_name}}" readonly></td>
+                            <td class=" col-3" style="padding-left: 25px;"><input name="itemname[]" type="text" class="form-control" value="{{i.pt_item.item_name}}" readonly></td>
                             <td class=" col-2 " style="padding-left: 25px;"><input name="sellingprice[]" type="text" class="price-tabel form-control" value="{{i.pt_sellingPrice}}"></td>
                             <td class=" col-2 " style="padding-left: 25px;"><input name="tax[]" type="text" class="price-tabel form-control" value="{{i.pt_tax}}"></td>
                             <td class=" col-2 " style="padding-left: 25px;"><input name="offer[]" type="text" class="price-tabel form-control" value="{{i.pt_offer}}"></td>
+                            <td class=" col-3 " style="padding-left: 25px;"><input type="text" class=" form-control" readonly></td>
                         </tr>
                         {% endfor %}
                     </table>
                 </div>
     <br>
-
-
-<!-- <table>
-
-<div class="" style="height: 300px; overflow: auto;">
-<table class="table table-hover" >
-{% for i in sorted_items %}
-<tr>
-<td><input name="id[]" type="hidden" value="{{i.id}}">
-<input name="itemname[]" type="text" class="" value="{{i.pt_item.item_name}}" readonly></td>
-<td style="text-align: center;"><input name="sellingprice[]" type="text" class=" small-input" value="{{i.pt_sellingPrice}}"></td>
-<td style="text-align: center;"><input name="tax[]" type="text" class="small-input x" value="{{i.pt_tax}}"></td>
-<td style="text-align: center;"><input name="offer[]" type="text" class="small-input x" value="{{i.pt_offer}}"></td>
-</tr>
-{% endfor %}
-</table>
-</div> -->
-
-
-
-<!-- <tbody id="itemsTableBody">
-<div class="x" style="height: 300px; overflow: auto;">
-{% for i in price_data %}
-<tr>
-<td><input name="id[]" type="hidden" value="{{i.id}}">
-<input name="itemname[]" type="text" class="form-control" value="{{i.pt_item.item_name}}" readonly></td>
-<td style="text-align: center;"><input name="sellingprice[]" type="text" class="form-control small-input" value="{{i.pt_sellingPrice}}"></td>
-<td style="text-align: center;"><input name="tax[]" type="text" class="form-control small-input x" value="{{i.pt_tax}}"></td>
-<td style="text-align: center;"><input name="offer[]" type="text" class="form-control small-input x" value="{{i.pt_offer}}"></td>
-</tr>
-{% endfor %}
-<tbody>
-Rows will be added dynamically here
-</div>
-</tbody>
-
-
-</table> -->
-
 
                     <div style="text-align: right;"><button type="submit" class="btn btn-success px-5">Submit</button></div>
                 </form>
@@ -118,6 +81,7 @@ Rows will be added dynamically here
 </div>
 
 
+<div class="bottom-space"></div>
 <div class="bottom-space"></div>
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

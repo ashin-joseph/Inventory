@@ -15,7 +15,7 @@
 <br>
 <br>
 <div class="container d-flex flex-wrap">
-<h4 class="mt-1">Sales Order Number</h4>
+<h3 class="mt-1">Sales Order Number</h3>
 
     <input class="form-control " name="salesOrderNum" type="text" id="orderSearch" placeholder="Search for Order Number" value="{% if salesOrder %}{{ salesOrder.sot_b_bill_number }}{% endif %}" required>
     <div id="orderDetails" class="d-flex justify-content-end container mt-1">
@@ -36,7 +36,7 @@
         <table class="table" >
             <thead >
                 <tr>
-                    <th class="headerx" scope="col">Item Name</th>
+                    <th class="headerx" scope="col">Item</th>
                     <th class="headerx" scope="col">Reason</th>
                     <th class="headerx" scope="col">Quantity</th>
                     <th class="headerx" scope="col">Price</th>
@@ -64,13 +64,15 @@
         </table>
         {% endif %}
 
-        <p class="mt-1"><i>Customize your return sales and hit 'Return'.</i></p>
+<!--        <p class="mt-1"><i>Customize your return sales and hit 'Return'.</i></p>-->
         <div class="d-flex justify-content-end mb-3">
              <button class="btn btn-success mr-2 px-5" type="submit" id="orderButton">Return</button>
         </div>
     </div>
 </form>
 </div>
+<div class="bottom-space"></div>
+<div class="bottom-space"></div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>

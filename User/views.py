@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout, get_user_model
@@ -14,81 +16,86 @@ from InventorySystem import settings
 
 User = get_user_model()
 
+
 def register_admin(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
-        email = request.POST.get('email')
+        otp_email = request.POST.get('email')
         role = request.POST.get('role')
         organization = request.POST.get('organization')
-        otp = request.POST.get('otp')  # Make sure to handle OTP validation
         is_superuser = 'is_superuser' in request.POST
         is_staff = 'is_staff' in request.POST
-
-        if otp != str(request.session.get('otp')):
-            messages.error(request, "Invalid OTP.")
-            return redirect(register_admin)
 
         if password != confirm_password:
             messages.error(request, "Your passwords do not match.")
             return redirect(register_admin)  # Ensure the URL name matches your URL configuration
 
-        # if User.objects.filter(username=username).exists():
-        #     messages.error(request, "Username already exists.")
-        #     return redirect(register_admin)
-
-        if User.objects.filter(email=email).exists():
-            messages.error(request, "You have already registered using this Mail-Id.")
+        if User.objects.filter(email=otp_email).exists():
+            messages.error(request, "You have already registered using this email.")
             return redirect(register_admin)
 
-        # Here, add OTP validation if necessary
+        # Generate OTP
+        otp_num = random.randint(1000, 9999)  # Generate a 4-digit OTP
 
-        user = User.objects.create_user(
-            username=username,
-            password=password,
-            email=email,
-            role=role,
-            organization=organization,
-            is_superuser=is_superuser,
-            is_staff=is_staff
+        # Store user details and OTP in the session
+        request.session['username'] = username
+        request.session['password'] = password
+        request.session['otp_email'] = otp_email
+        request.session['role'] = role
+        request.session['organization'] = organization
+        request.session['is_superuser'] = is_superuser
+        request.session['is_staff'] = is_staff
+        request.session['otp'] = str(otp_num)
+
+        # Send OTP via email
+        email = EmailMessage(
+            'Your OTP for Creating the Account on StockSmart',
+            f'Dear User,<br><br>'
+            f'Welcome to StockSmart! Your One-Time Password (OTP) for creating an account is <strong>{otp_num}</strong>. '
+            f'Please enter this code on the registration page to complete your sign-up process.<br><br>'
+            f'Thank you for choosing StockSmart!',
+            settings.DEFAULT_FROM_EMAIL,
+            [otp_email],
         )
-        user.save()
-        messages.success(request, "Welcome to StockSmart! Your account has been successfully created. Please log in to continue.")
-        return redirect(login_user_inv)
+        email.content_subtype = "html"  # Set the content type to HTML
+        email.send()
+
+        messages.success(request, "An OTP has been sent to your email. Please enter it to complete your registration.")
+        return redirect(sample)  # Redirect to the OTP validation page
 
     return render(request, 'user/register_admin.html')
 
 
 def sample(request):
-    otp_num = random.randint(1000, 9999)  # Fixed the range for OTP
+    if request.method == "POST":
+        otp = request.POST.get('otp')
+        if otp != request.session.get('otp'):
+            messages.error(request, "Invalid OTP. Please try again.")
+            return redirect(register_admin)  # Redirect back to the registration page if OTP is incorrect
 
-    if request.method == "POST" and "otp_email" in request.POST:
-        otp_email = request.POST.get("otp_email")
+        # If OTP is correct, create the user
+        user = User.objects.create_user(
+            username=request.session['username'],
+            password=request.session['password'],
+            email=request.session['otp_email'],
+            role=request.session['role'],
+            organization=request.session['organization'],
+            is_superuser=request.session.get('is_superuser', False),
+            is_staff=request.session.get('is_staff', False),
+        )
+        user.save()
 
-        # Check if the email exists in the company profile database
-        if companyprofileTable.objects.filter(company_email=otp_email).exists():
-            messages.error(request, "Email-Id already exists")
-        else:
-            email = EmailMessage(
-                'Your OTP for Creating the Account on StockSmart',
-                f'Dear User,<br><br>'
-                f'Welcome to StockSmart! Your One-Time Password (OTP) for creating an account is <strong>{otp_num}</strong>. '
-                f'Please enter this code on the registration page to complete your sign-up process.<br><br>'
-                f'Thank you for choosing StockSmart!',
-                settings.DEFAULT_FROM_EMAIL,
-                [otp_email],
-            )
-            email.content_subtype = "html"  # Set the content type to HTML
-            email.send()
+        # Clear the session data
+        request.session.flush()
 
-            # Store OTP in session
-            request.session['otp'] = otp_num
-
-            messages.success(request, "Kindly check your inbox for the OTP to register your company in StockSmart")
-            return redirect('register_admin')  # Ensure 'register_admin' is the name of the view or URL name
+        messages.success(request, "Your account has been successfully created. Please log in to continue.")
+        return redirect(login_user_inv)  # Redirect to the login page
 
     return render(request, "user/sample.html")
+
+
 
 def login_user_inv(request):
     if request.method == 'POST':
@@ -135,6 +142,7 @@ def index(request):
     salesSum, salesNo, salesReturnSum, salesReturnNo = sales_overview()
     daily_purchase = daily_purchaseReport()
     daily_sales, daily_sales_return = daily_salesReport()
+    date = datetime.datetime.now().strftime("%d/%m/%Y at %H:%M")
 
     context ={
         'base_template': base_template,
@@ -163,6 +171,8 @@ def index(request):
         'daily_sales': daily_sales,
         'daily_sales_return': daily_sales_return,
 
+        'date': date,
+
     }
     return render(request, "user/Index.html", context)
 @login_required()
@@ -173,6 +183,7 @@ def staff_index(request):
     low_stock_count, item_count, category_count = product_details()
     sorted_items = todays_offer()
     low_stock_list = lowstock_list()
+    date = datetime.datetime.now().strftime("%d/%m/%Y at %H:%M")
     context = {
         'base_template': base_template,
 
@@ -186,6 +197,7 @@ def staff_index(request):
         'sorted_items': sorted_items,
 
         'company_data': company_data,
+        'date': date,
     }
     return render(request,"user/staff_index.html", context)
 def trial_success(request):
@@ -216,6 +228,80 @@ def trial_failed(request):
 #     else:
 #         return render(request, "user/Login.html")
 
+# def register_admin(request):
+#     if request.method == 'POST':
+#         username = request.POST.get('username')
+#         password = request.POST.get('password')
+#         confirm_password = request.POST.get('confirm_password')
+#         email = request.POST.get('email')
+#         role = request.POST.get('role')
+#         organization = request.POST.get('organization')
+#         otp = request.POST.get('otp')  # Make sure to handle OTP validation
+#         is_superuser = 'is_superuser' in request.POST
+#         is_staff = 'is_staff' in request.POST
+#
+#         if otp != str(request.session.get('otp')):
+#             messages.error(request, "Invalid OTP.")
+#             return redirect(register_admin)
+#
+#         if password != confirm_password:
+#             messages.error(request, "Your passwords do not match.")
+#             return redirect(register_admin)  # Ensure the URL name matches your URL configuration
+#
+#         # if User.objects.filter(username=username).exists():
+#         #     messages.error(request, "Username already exists.")
+#         #     return redirect(register_admin)
+#
+#         if User.objects.filter(email=email).exists():
+#             messages.error(request, "You have already registered using this Mail-Id.")
+#             return redirect(register_admin)
+#
+#         # Here, add OTP validation if necessary
+#
+#         user = User.objects.create_user(
+#             username=username,
+#             password=password,
+#             email=email,
+#             role=role,
+#             organization=organization,
+#             is_superuser=is_superuser,
+#             is_staff=is_staff
+#         )
+#         user.save()
+#         messages.success(request, "Welcome to StockSmart! Your account has been successfully created. Please log in to continue.")
+#         return redirect(login_user_inv)
+#
+#     return render(request, 'user/register_admin.html')
 
+
+# def sample(request):
+#     otp_num = random.randint(1000, 9999)  # Fixed the range for OTP
+#
+#     if request.method == "POST" and "otp_email" in request.POST:
+#         otp_email = request.POST.get("otp_email")
+#
+#         # Check if the email exists in the company profile database
+#         if companyprofileTable.objects.filter(company_email=otp_email).exists():
+#             messages.error(request, "Email-Id already exists")
+#         else:
+#             email = EmailMessage(
+#                 'Your OTP for Creating the Account on StockSmart',
+#                 f'Dear User,<br><br>'
+#                 f'Welcome to StockSmart! Your One-Time Password (OTP) for creating an account is <strong>{otp_num}</strong>. '
+#                 f'Please enter this code on the registration page to complete your sign-up process.<br><br>'
+#                 f'Thank you for choosing StockSmart!',
+#                 settings.DEFAULT_FROM_EMAIL,
+#                 [otp_email],
+#             )
+#             email.content_subtype = "html"  # Set the content type to HTML
+#             email.send()
+#
+#             # Store OTP in session
+#             request.session['otp'] = otp_num
+#
+#             messages.success(request, "Kindly check your inbox for the OTP.")
+#             return redirect('register_admin')  # Ensure 'register_admin' is the name of the view or URL name
+#
+#     return render(request, "user/sample.html")
 
 

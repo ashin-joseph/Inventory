@@ -3,10 +3,10 @@ from django.db import models
 
 class companyprofileTable(models.Model):
     company_name = models.CharField(max_length=50, unique=True)
-    company_person = models.CharField(max_length=50, null=True, blank=True)
+    company_person = models.CharField(max_length=50, blank=True)
     company_email = models.EmailField(max_length=100, unique=True)
-    company_mobile = models.CharField(max_length=10, null=True, blank=True)
-    company_address = models.CharField(max_length=100, null=True, blank=True)
+    company_mobile = models.CharField(max_length=10, blank=True)
+    company_address = models.CharField(max_length=100, blank=True)
     company_gst = models.CharField(max_length=20)
     company_threshold_Stock = models.PositiveIntegerField(default=0)
 

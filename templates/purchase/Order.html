@@ -22,7 +22,7 @@
 <div class="container-fluid d-flex flex-wrap">
 
     <div class="col-4">
-    <h3>Item list</h3>
+    <h3>Items</h3>
         <div class=" d-flex flex-wrap itemlist mb-2">
         {% for i in stock_data %}
         <button type="button" value="{{i.id}}" class=" col-6 itemButton {% if i.st_remainingStock < 10 %} itemButtonRed {% endif %}" >{{i.st_item.item_name}}</button>
@@ -31,7 +31,7 @@
     </div>
 
     <div class="col-8">
-        <h4 class="">Add Vendor</h4>
+        <h3 class="">Add Vendor</h3>
         <form method="post" action="{% url 'order' %}" class="">
         {% csrf_token %}
         <input name="vendor" type="text" id="shopSearch" placeholder="Search for a shop" class="form-control" required>
@@ -42,9 +42,9 @@
 
         <div class="d-flex">
         <div class="col-3 shop-details-header mt-4">
-            <b>Shop Name:</b></br>
+            <b>Vendor Name:</b></br>
             <b>Contact Person:</b></br>
-            <b>Contact Number:</b></br>
+            <b>Phone:</b></br>
             <b>Address:</b>
         </div>
         <div id="shopDetails" class="shop-details container col-9 mt-4">
@@ -55,7 +55,7 @@
 
 
     <hr>
-    <h4 class="mt-1">Select Items</h4>
+    <h3 class="mt-1">Select Items</h3>
 
     <div class="mt-1">
     <div class="">
@@ -72,7 +72,7 @@
             <tr >
             <th class="headerx col-6" scope="col">Item</th>
             <th class="headerx col-4" scope="col">Quantity</th>
-            <th class="headerx col-2" scope="col">Delete</th>
+            <th class="headerx col-2" scope="col">Action</th>
             </tr>
             </table>
     <!-- Input fields for selected items will be dynamically added here -->
@@ -88,6 +88,7 @@
 
     </div>
 </div>
+<div class="bottom-space"></div>
 <div class="bottom-space"></div>
 
 

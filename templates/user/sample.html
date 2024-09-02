@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'images/SSmartlogo.svg' %}" type="image/x-icon">
     <title>Register Administrator</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -15,12 +16,12 @@
 <br>
 
 <div class="container  p-2 col-4 mt-5 p-5 login-card" >
-    <h2>Register Company</h2>
+    <h2>Register your business</h2>
     <form action="/sample/" method="POST">
         {% csrf_token %}
-        <label class="mt-2"></label>
-        <input placeholder="username@domain.com"  class="form-control" type="email" name="otp_email" required><br>
-        <button style="width:100%;" class="btn btn-success px-5 "type="submit" >Generate OTP</button>
+        <label class="mt-2">Please enter your OTP.</label>
+        <input class="form-control" type="text" name="otp" required><br>
+        <button style="width:100%;" class="btn btn-success px-5 "type="submit" >Continue</button>
 
 
 
@@ -33,7 +34,7 @@
         </div>
         </div>
     </form>
-     <a href="{% url 'login' %}" style="color: red;" class=" d-flex justify-content-center my-3">Back</a>
+     <a href="{% url 'login' %}" class=" d-flex justify-content-center my-3">Back</a>
 
 </div>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

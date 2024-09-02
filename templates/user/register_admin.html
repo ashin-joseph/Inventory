@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'images/SSmartlogo.svg' %}" type="image/x-icon">
     <title>Register Administrator</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -19,13 +20,14 @@
     <form action="/register_admin/" method="POST">
         {% csrf_token %}
         <label class="mt-2">Organization name:</label>
-        <input class="form-control" placeholder="Organization name cannot be Edit later*" type="text" id="organization" name="organization" required>
+        <input class="form-control" type="text" id="organization" name="organization" required>
 
         <label class="mt-2">Username:</label>
         <input class="form-control" type="text" id="username" name="username" required>
 
         <label class="mt-2">Email:</label>
-        <input placeholder="Organization Email-Id cannot be Edit later*" class="form-control" type="email" id="email" name="email" required>
+        <input class="form-control" type="email" id="email" name="email" required>
+        <span style="color:red; font-size:.8rem;"><i>This email-id cannot be modified</i></span><br>
 
         <label class="mt-2">Password:</label>
         <input class="form-control" type="password" id="password" name="password" required>
@@ -33,8 +35,8 @@
         <label class="mt-2">Confirm Password:</label>
         <input class="form-control" type="password" id="confirm_password" name="confirm_password" required>
 
-        <label class="mt-2">OTP:</label>
-        <input class="form-control" type="text" id="otp" name="otp" required>
+<!--        <label class="mt-2">OTP:</label>-->
+<!--        <input class="form-control" type="text" id="otp" name="otp" required>-->
 
         <label style="display:none;" class="mt-2">Role:</label>
         <select style="display:none;" class="form-control" id="role" name="role" required>
@@ -54,6 +56,7 @@
     </form>
 
 </div>
+<div class="bottom-space"></div>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 {% if messages %}
 {% for i in messages %}

@@ -35,7 +35,7 @@
                         <input name="shopname" id="shopname" type="text" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label>Contact Name</label>
+                        <label>Contact Person</label>
                         <input name="vendorname" id="vendorname" type="text" class="form-control" required>
                     </div>
                     <div class="form-group">
@@ -43,7 +43,7 @@
                         <input name="location" id="location" type="text" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label>Pin</label>
+                        <label>PIN</label>
                         <input name="pin" id="pin" type="text" class="form-control" required>
                     </div>
                         </div>
@@ -54,7 +54,7 @@
                         <input name="email" id="email" type="email" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label>Phone number</label>
+                        <label>Phone</label>
                         <input name="phonenumber" id="phonenumber" type="tel" onsubmit="return validation()" class="form-control" required>
                     </div>
                     <div class="form-group">
@@ -101,7 +101,7 @@
                         <input name="shopname" id="shopname3" type="text" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label>Contact Name</label>
+                        <label>Contact Person</label>
                         <input name="vendorname" id="vendorname3" type="text" class="form-control" required>
                     </div>
                     <div class="form-group">
@@ -109,7 +109,7 @@
                         <input name="location" id="location3" type="text" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label>Pin</label>
+                        <label>PIN</label>
                         <input name="pin" id="pin3" type="text" class="form-control" required>
                     </div>
                         </div>
@@ -120,7 +120,7 @@
                         <input name="email" id="email3" type="email" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label>Phone number</label>
+                        <label>Phone</label>
                         <input name="phonenumber" id="phonenumber3" type="tel" onsubmit="return validationedit()" class="form-control" required>
                     </div>
                     <div class="form-group">
@@ -161,15 +161,15 @@
   <div class="col-6">
     <!-- Vendor ID hidden -->
     <p style="display: none;">Vendor ID: <br><span id="vendorid4"></span></p>
-    <p style="font-weight:bold; color:#999999;">Shop Name: <br><span id="shopname4" style="color:#000000; font-weight:normal;"></span></p>
-    <p style="font-weight:bold; color:#999999;">Vendor Name: <br><span id="vendorname4" style="color:#000000; font-weight:normal;"></span></p>
-    <p style="font-weight:bold; color:#999999;">Location: <br><span id="location4" style="color:#000000; font-weight:normal;"></span></p>
-    <p style="font-weight:bold; color:#999999;">Pin: <br><span id="pin4" style="color:#000000; font-weight:normal;"></span></p>
+    <p style="font-weight:bold; color:#999999;">Vendor Name: <br><span id="shopname4" style="color:#000000; font-weight:normal;"></span></p>
+    <p style="font-weight:bold; color:#999999;">Contact Person: <br><span id="vendorname4" style="color:#000000; font-weight:normal;"></span></p>
+    <p style="font-weight:bold; color:#999999;">Address: <br><span id="location4" style="color:#000000; font-weight:normal;"></span></p>
+    <p style="font-weight:bold; color:#999999;">PIN: <br><span id="pin4" style="color:#000000; font-weight:normal;"></span></p>
   </div>
 
   <div class="col-6">
     <p style="font-weight:bold; color:#999999;">Email: <br><span id="email4" style="color:#000000; font-weight:normal;"></span></p>
-    <p style="font-weight:bold; color:#999999;">Phone Number: <br><span id="phonenumber4" style="color:#000000; font-weight:normal;"></span></p>
+    <p style="font-weight:bold; color:#999999;">Phone: <br><span id="phonenumber4" style="color:#000000; font-weight:normal;"></span></p>
     <p style="font-weight:bold; color:#999999;">GST: <br><span id="gst4" style="color:#000000; font-weight:normal;"></span></p>
   </div>
   <div class="col-12">
@@ -207,8 +207,8 @@
                     <thead class="">
                         <tr >
 
-                            <th class="headerx col-4" scope="col">Vendor</th>
-                            <th class="headerx col-2" scope="col">location</th>
+                            <th class="headerx col-3" scope="col">Vendor</th>
+                            <th class="headerx col-3" scope="col">Address</th>
                             <th class="headerx col-2" scope="col">Contact</th>
                             <th class="headerx col-2" scope="col">Phone</th>
                             <th class="headerx col-2" scope="col">Action</th>
@@ -218,13 +218,13 @@
                     <tbody id="itemsTableBody">
                     {% for i in vendor_data %}
                     <tr>
-                            <td class=" col-4">
+                            <td class=" col-2">
                             <a type="button" data-toggle="modal" data-target="#myModal4" class="modallink"
                             onclick="showVendor('{{ i.vendor_id }}', '{{ i.vendor_shop_name }}', '{{ i.vendor_name }}', '{{ i.vendor_location }}', '{{ i.vendor_pin }}', '{{ i.vendor_email }}', '{{ i.vendor_phone }}', '{{ i.vendor_GST }}', '{{ i.vendor_note }}')">
                             {{ i.vendor_shop_name }}
                             </a>
 
-                            <td class=" col-2" style="padding-left: 25px;">{{ i.vendor_location }}</td>
+                            <td class=" col-3" style="padding-left: 25px;">{{ i.vendor_location }}</td>
                             <td class=" col-2" style="padding-left: 20px;">{{ i.vendor_name }}</td>
                             <td class=" col-2" style="padding-left: 25px;">{{ i.vendor_phone }}</td>
                             <td class=" col-2" style="padding-left: 25px;">
@@ -244,6 +244,8 @@
             </div>
         </div>
     </div>
+<div class="bottom-space"></div>
+<div class="bottom-space"></div>
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

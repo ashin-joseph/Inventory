@@ -24,31 +24,31 @@
             </div>
             <div class="modal-body d-flex flex-wrap">
                 <div class="col">
-                    <form id="itemForm" method="post" action="{% url 'item_pg' %}" class="footer-bottom">
+                    <form id="itemForm" method="post" action="{% url 'item_pg' %}" class="">
                         {% csrf_token %}
                         <input type="hidden" name="itemid" id="itemId">
                          <div class="form-group">
-                            <label for="itemCode">Item Code</label>
+                            <label for="itemCode">Code</label>
                             <input name="itemcode" type="text" class="form-control" id="itemCode" required>
                         </div>
                         <div class="form-group">
-                            <label for="itemName">Item Name</label>
+                            <label for="itemName">Name</label>
                             <input name="itemname" type="text" class="form-control" id="itemName" required>
                         </div>
                         <div class="form-group">
-                            <label for="itemCategory">Item Category</label>
+                            <label for="itemCategory">Category</label>
                             <select name="itmecategory" class="form-control" id="itemCategory" required>
                                 <option value="">-----</option>
-                                <option value="Vegetables">Veg</option>
-                                <option value="Fruits">Fru</option>
+                                <option value="Vegetables">Vegetables</option>
+                                <option value="Fruits">Fruits</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="itemUnit">Item Unit</label>
+                            <label for="itemUnit">Unit</label>
                             <select name="itemunit" class="form-control" id="itemUnit" required>
                                 <option value="">-----</option>
-                                <option value="Kilogram">Kg</option>
-                                <option value="Pieces">Pcs</option>
+                                <option value="Kilogram">Kilogram</option>
+                                <option value="Pieces">Pieces</option>
                             </select>
                         </div>
                         </div>
@@ -71,31 +71,31 @@
             </div>
             <div class="modal-body d-flex flex-wrap">
                 <div class="col">
-                    <form id="itemForm2" method="post" action="{% url 'item_pg' %}" class="footer-bottom">
+                    <form id="itemForm2" method="post" action="{% url 'item_pg' %}" class="">
                         {% csrf_token %}
                         <input type="hidden" name="itemid" id="itemId2">
                          <div class="form-group">
-                            <label for="itemCode">Item Name</label>
+                            <label for="itemCode">Code</label>
                             <input name="itemcode" type="text" class="form-control" id="itemCode2" required>
                         </div>
                         <div class="form-group">
-                            <label for="itemName">Item Name</label>
+                            <label for="itemName">Name</label>
                             <input name="itemname" type="text" class="form-control" id="itemName2" required>
                         </div>
                         <div class="form-group">
-                            <label for="itemCategory">Item Category</label>
+                            <label for="itemCategory">Category</label>
                             <select name="itmecategory" class="form-control" id="itemCategory2" required>
                                 <option value="">-----</option>
-                                <option value="Vegetables">Veg</option>
-                                <option value="Fruits">Fru</option>
+                                <option value="Vegetables">Vegetables</option>
+                                <option value="Fruits">Fruits</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="itemUnit">Item Unit</label>
+                            <label for="itemUnit">Unit</label>
                             <select name="itemunit" class="form-control" id="itemUnit2" required>
                                 <option value="">-----</option>
-                                <option value="Kilogram">Kg</option>
-                                <option value="Pieces">Pcs</option>
+                                <option value="Kilogram">Kilogram</option>
+                                <option value="Pieces">Pieces</option>
                             </select>
                         </div>
                 </div>
@@ -123,10 +123,10 @@
             <table class="table table-hover ">
                 <thead class="">
                     <tr>
-                        <th class="headerx col-2" scope="col">Item Code</th>
-                        <th class="headerx col-4" scope="col">Item Name</th>
-                        <th class="headerx col-2" scope="col">Item Category</th>
-                        <th class="headerx col-2" scope="col">Item Unit</th>
+                        <th class="headerx col-2" scope="col">Code</th>
+                        <th class="headerx col-4" scope="col">Name</th>
+                        <th class="headerx col-2" scope="col">Category</th>
+                        <th class="headerx col-2" scope="col">Unit</th>
                         <th class="headerx col-2" scope="col">Action</th>
                     </tr>
                 </thead>
@@ -160,6 +160,7 @@
     </div>
 </div>
     </div>
+<div class="bottom-space"></div>
 <div class="bottom-space"></div>
 
 

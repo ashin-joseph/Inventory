@@ -25,11 +25,18 @@
         <form id="itemForm" method="post" action="{% url 'damage' %}">
                     {% csrf_token %}
                     <div>
-                        <input placeholder="Product Name" class="form-control" name="itemname" type="text" id="itemName" required>
+                        <label>Item</label>
+                        <input class="form-control" name="itemname" type="text" id="itemName" required>
                         <input name="item_id" type="hidden" id="item_id" value="{{item_data.id}}" readonly>
+                        <input name="userid" type="hidden" id="userid" value="{{user.id}}" readonly>
                     </div><br>
                     <div>
-                        <input placeholder="Kg/Pcs" class="form-control" name="damageqty" type="number" id="damageQty" required>
+                        <label>Reason</label>
+                            <textarea name="reason" id="note" class="form-control" required></textarea>
+                            </div><br>
+                    <div>
+                        <label>Quantity</label>
+                        <input placeholder="Kg/Pics" class="form-control" name="damageqty" type="number" id="damageQty" required>
                     </div><br>
 
                     <button class="btn btn-success mr-2 px-5" type="submit" >Submit</button>
@@ -45,25 +52,29 @@
     <div class="">
             <table class="table" >
             <tr>
-            <th class="headerx col-6" scope="col">Item</th>
-            <th class="headerx col-4" scope="col">Quantity</th>
+            <th class="headerx col-4" scope="col">Item</th>
+            <th class="headerx col-2" scope="col">Quantity</th>
+            <th class="headerx col-4" scope="col">Reason</th>
             <th class="headerx col-2" scope="col">Date</th>
             </tr></table>
-                <div class="" style="height: 300px; overflow: auto;">
+                <div class="" style="height: 250px; overflow: auto;">
             <table class="table table-hover" >
                  {% for i in damage_data %}
                 <tr>
-                    <td  class="col-6"> {{i.dpt_item.item_name}}</td>
-                    <td  class="col-4" style="padding-left: 25px;"> {{ i.dpt_damage_qty }}</td>
+                    <td  class="col-4"> {{i.dpt_item.item_name}}</td>
+                    <td  class="col-2" style="padding-left: 25px;"> {{ i.dpt_damage_qty }}</td>
+                    <td  class="col-4" style="padding-left: 25px;"> {{ i.dpt_reason }}</td>
                     <td  class="col-2" style="padding-left: 25px;"> {{ i.dpt_timestamp }} </td>
                 </tr>
                 {% endfor %}
             </table>
     <!-- Input fields for selected items will be dynamically added here -->
+                    <div class="bottom-space"></div><br>
+                    <div class="bottom-space"></div>
     </div>
     </div>
 </div>
-<div class="bottom-space"></div>
+<div class="bottom-space"></div><br>
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

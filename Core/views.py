@@ -210,7 +210,11 @@ def report(request):
         if pdf:
             email = EmailMessage(
                 f'Daily Inventory Report for {company_data.company_name} - {current_date}',
-                f"Dear {company_data.company_person},\n\n Please find attached the daily inventory report for {company_data.company_name} as of {current_date} in PDF format.\n\n Thank you for your attention to this matter. \n\n Best regards, \n {company_data.company_name}",
+                f"Dear {company_data.company_person},\n\n "
+                f"Please find attached the daily inventory report for {company_data.company_name} as of {current_date} in PDF format.\n\n "
+                f"Thank you for your attention to this matter. \n\n "
+                f"Best regards, \n "
+                f"{company_data.company_name}.",
                 settings.DEFAULT_FROM_EMAIL,
                 [company_email],
             )

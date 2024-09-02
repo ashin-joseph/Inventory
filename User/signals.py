@@ -18,7 +18,11 @@ def send_login_alert(sender, request, user, **kwargs):
     if company_email:
         send_mail(
             f"User Logged In: {user.username} ",
-            f"User {user.username}({user.role}) has logged into {company_profile.company_name}'s StockSmart account.",
+            f"Dear {company_profile.company_person},\n\n"
+            f"Welcome to StockSmart! \n"
+            f"User {user.username}({user.role}) has logged into {company_profile.company_name}'s StockSmart account.\n\n"
+            f"Best regards,\n" 
+            f"{company_profile.company_name}.",
             "at.stocksmart@gmail.com",  # Default sender
             [company_email],
             fail_silently=False,
@@ -40,7 +44,11 @@ def check_stock_alert(sender, instance, **kwargs):
         # Send email alert
         send_mail(
             "Low Stock Alert",
-            f"Dear {company_profile.company_person},\n\n Alert from '{company_profile.company_name}' Inventory: The stock for {instance.st_item.item_name} has fallen below the threshold level. \n {instance.st_item.item_name} : {instance.st_remainingStock}. \n\n Best regards, \n {company_profile.company_name}",
+            f"Dear {company_profile.company_person},\n\n"
+            f"Welcome to StockSmart! \n"
+            f"Alert from '{company_profile.company_name}' Inventory: The stock for {instance.st_item.item_name} has fallen below the threshold level. \n {instance.st_item.item_name} : {instance.st_remainingStock}.\n\n"
+            f"Best regards,  \n" 
+            f"{company_profile.company_name}.",
             "at.stocksmart@gmail.com",  # Default sender email
             [company_email],  # Recipient email in a list
             fail_silently=False,
