@@ -90,9 +90,8 @@ class confirmPurchaseItemTable(models.Model):
         price = confirmPurchaseItemTable.objects.filter(cpit_item=self.cpit_item).aggregate(max_price=models.Max('cpit_price'))['max_price']
         price_tax_per = confirmPurchaseItemTable.objects.filter(cpit_item=self.cpit_item).aggregate(max_tax=models.Max('cpit_tax'))['max_tax']
         price_tax = (Decimal(price_tax_per)/Decimal(100) * Decimal(price))
-        price_margin = (Decimal(8)/Decimal(100) * Decimal(price))
         item_price, created = priceTable.objects.get_or_create(pt_item=self.cpit_item)
-        item_price.pt_sellingPrice = price + price_tax + price_margin
+        item_price.pt_averagePrice = price + price_tax
         item_price.save()
 
     def backup_purchase_item_data(self):

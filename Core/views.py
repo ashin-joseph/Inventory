@@ -151,8 +151,9 @@ def price_pg(request):
     if request.method == "POST":
         tax = request.POST.get('tax')
         offer = request.POST.get('offer')
-        priceTable.objects.all().update(pt_tax=tax, pt_offer=offer)
-        messages.success(request, "Tax/Offer Updated Successfully")
+        margin = request.POST.get('margin')
+        priceTable.objects.all().update(pt_tax=tax, pt_offer=offer, pt_margin=margin)
+        messages.success(request, "Default Tax/Offer/Margin Updated Successfully")
         return redirect(price_pg)
     price_data = priceTable.objects.all()
     return render(request, "core/price.html", {'price_data': price_data, 'base_template': base_template,'company_data':company_data})
@@ -161,14 +162,16 @@ def price_pg(request):
 def updatePrice(request):
     if request.method == "POST":
         item_ids = request.POST.getlist('id[]')
+        average_price = request.POST.getlist('averageprice[]')
+        margin_price = request.POST.getlist('marginprice[]')
         selling_prices = request.POST.getlist('sellingprice[]')
         taxes = request.POST.getlist('tax[]')
         offers = request.POST.getlist('offer[]')
 
         if item_ids:
-            for ii, sp, ta, of in zip(item_ids, selling_prices, taxes, offers):
-                priceTable.objects.filter(id=ii).update(pt_sellingPrice=sp, pt_tax=ta, pt_offer=of)
-                messages.success(request, "Updated Price/Tax/Offer Successfully")
+            for ii, ap, mp, sp, ta, of in zip(item_ids, average_price, margin_price, selling_prices, taxes, offers):
+                priceTable.objects.filter(id=ii).update(pt_averagePrice=ap, pt_margin=mp, pt_sellingPrice=sp, pt_tax=ta, pt_offer=of)
+                messages.success(request, "Updated Price Successfully")
         return redirect(price_pg)
     return redirect(index)
 
@@ -187,7 +190,7 @@ def report(request):
     company_data = companyprofileTable.objects.get()
     company_profile = companyprofileTable.objects.first()  # Adjust this if you have multiple company profiles
     company_email = company_profile.company_email if company_profile else None
-    current_date= datetime.datetime.now().strftime("%Y/%m/%d-%H:%M")
+    current_date= datetime.datetime.now().strftime("%d/%m/%Y-%H:%M")
     low_stock_list = lowstock_list()
     daily_sales, daily_sales_return = daily_salesReport()
     daily_purchase = daily_purchaseReport()

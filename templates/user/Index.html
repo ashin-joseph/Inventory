@@ -41,8 +41,8 @@
                 <li id="salesBtn" class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarSalesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sale</a>
                         <div class="dropdown-menu" aria-labelledby="navbarSalesDropdown">
-<!--                            <a class="dropdownItem" href="{% url 'sales_order' %}">Sales Order</a>-->
-<!--                            <a class="dropdownItem" href="{% url 'salesreturn' %}">Sales Return</a>-->
+                            <a class="dropdownItem" href="{% url 'sales_order' %}">Sales Order</a>
+                            <a class="dropdownItem" href="{% url 'salesreturn' %}">Sales Return</a>
                             <a class="dropdownItem" href="{% url 'sales_bill' %}">Sales Bills</a>
                         </div>
                 </li>
@@ -76,7 +76,7 @@
                          <div class="col-12">
                              <br>
                              <p>Welcome, {{ user.username }}</P>
-                             <H3>Here is your report as of  {{date}} </h2>
+                             <h3>Here is your report as of  {{date}} </h3>
                         </div>
 
                         <div class="top-fig col flex-row  p-4">
