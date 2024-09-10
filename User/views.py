@@ -63,12 +63,12 @@ def register_admin(request):
         email.send()
 
         messages.success(request, "An OTP has been sent to your email. Please enter it to complete your registration.")
-        return redirect(sample)  # Redirect to the OTP validation page
+        return redirect(activate_otp)  # Redirect to the OTP validation page
 
     return render(request, 'user/register_admin.html')
 
 
-def sample(request):
+def activate_otp(request):
     if request.method == "POST":
         otp = request.POST.get('otp')
         if otp != request.session.get('otp'):
@@ -93,7 +93,7 @@ def sample(request):
         messages.success(request, "Your account has been successfully created. Please log in to continue.")
         return redirect(login_user_inv)  # Redirect to the login page
 
-    return render(request, "user/sample.html")
+    return render(request, "user/active_page.html")
 
 
 
@@ -207,7 +207,8 @@ def trial_failed(request):
     base_template = 'user/Index.html' if request.user.role == "Admin" else 'user/staff_index.html'
     return render(request,"user/trial_failed.html", {'base_template':base_template})
 
-
+def sample(request):
+    return render(request, "user/sample.html")
 
 
 

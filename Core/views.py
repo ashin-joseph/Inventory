@@ -36,8 +36,6 @@ def company_pg(request):
         company_mobile = request.POST.get('company_mobile')
         company_address = request.POST.get('company_address')
         company_gst = request.POST.get('company_gst')
-        company_Purchase_note = request.POST.get('company_Purchase_note')
-        company_Sales_note = request.POST.get('company_Sales_note')
         company_threshold_Stock = request.POST.get('company_threshold_Stock')
 
         # Update the existing company record
@@ -47,10 +45,13 @@ def company_pg(request):
         company.company_mobile = company_mobile
         company.company_address = company_address
         company.company_gst = company_gst
-        company.company_Purchase_note = company_Purchase_note
-        company.company_Sales_note = company_Sales_note
         company.company_threshold_Stock = company_threshold_Stock
         company.save()
+        companyprofileTable.objects.all().update(company_name=company_name,company_person=company_person,
+                                                 company_email=company_email,company_mobile=company_mobile,
+                                                 company_address=company_address, company_gst=company_gst,
+                                                 company_threshold_Stock=company_threshold_Stock)
+        # company.save()
 
         messages.success(request, "Company Details Updated Successfully")
         return redirect(company_pg)

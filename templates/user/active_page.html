@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'images/SSmartlogo.svg' %}" type="image/x-icon">
+    <title>Register Administrator</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+     <link href="{% static 'assets/style.css' %}" rel="stylesheet">
+</head>
+<body class="login-body">
+<div class="navheight"></div>
+<br>
+<br>
+
+<div class="container  p-2 col-4 mt-5 p-5 login-card" >
+    <h2>Activate Account</h2>
+    <form action="/activate_otp/" method="POST">
+        {% csrf_token %}
+        <label class="mt-2">Please enter OTP to active your account.</label>
+        <input class="form-control" type="text" name="otp" required><br>
+        <button style="width:100%;" class="btn btn-success px-5 "type="submit" >Activate</button>
+
+
+
+        <div class=" my-4 d-flex row justify-content-around">
+            <div class="col-12 ">
+<!--            <a class="mt-2 mx-2" href=""><img src="{% static 'images/google.png' %}" alt="google" height="100px;" width="100px;"></a>-->
+<!--            <a class="mt-2 " href=""><img src="{% static 'images/Linkedin.png' %}" alt="google" height="50px;" width="100px;"></a>-->
+<!--            <a class="mt-2" href=""><img src="{% static 'images/Outlook.png' %}" alt="google" height="65px;" width="100px;"></a>-->
+<!--            <a class="mt-2" href=""><img src="{% static 'images/Yahoo.png' %}" alt="google" height="90px;" width="100px;"></a>-->
+        </div>
+        </div>
+    </form>
+     <a href="{% url 'login' %}" class=" d-flex justify-content-center my-3">Back</a>
+
+</div>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+{% if messages %}
+{% for i in messages %}
+{% if i.tags == 'warning' %}
+            <script>
+              swal('{{i}}', '', 'warning');
+            </script>
+        {% elif i.tags == 'error' %}
+            <script>
+              swal('{{i}}', '', 'error');
+            </script>
+        {% elif i.tags == 'info' %}
+            <script>
+              swal('{{i}}', '', 'info');
+            </script>
+        {% else %}
+            <script>
+              swal('{{i}}', '', 'success');
+            </script>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+</body>
+</html>

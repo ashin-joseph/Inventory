@@ -34,6 +34,7 @@
 
                                 <div class="form-group">
                                     <label>Name</label>
+                                    <input name="organization" value="{{company_data.company_name}}" id="organization" type="hidden" class="form-control" readonly>
                                     <input name="username" id="username" type="text" class="form-control" required>
                                 </div>
                                 <div class="form-group">
@@ -85,6 +86,7 @@
 
                                 <div class="form-group">
                                     <label>Name</label>
+                                    <input name="organization" value="{{company_data.company_name}}" id="organization2" type="hidden" class="form-control" readonly>
                                     <input name="username" id="username2" type="text" class="form-control" required>
                                 </div>
                                 <div class="form-group">
@@ -126,17 +128,17 @@
             <h2>Staff</h2>
 
             <div class="col-12" style="text-align: right;">
-                <button type="button" class="btn btn-success px-5" data-toggle="modal" data-target="#myModalnew" style="margin-bottom: 20px;">
-                    Add a New Staff
-                </button>
+<!--                <button type="button" class="btn btn-success px-5" data-toggle="modal" data-target="#myModalnew" style="margin-bottom: 20px;">-->
+<!--                    Add a New Staff-->
+<!--                </button>-->
             </div>
             <table class="table table-hover ">
                 <thead class="">
                     <tr>
                         <th class="headerx col-4" scope="col">Name</th>
-                        <th class="headerx col-2" scope="col">Role</th>
+                        <th class="headerx col-4" scope="col">Role</th>
                         <th class="headerx col-4" scope="col">Email</th>
-                        <th class="headerx col-3" scope="col">Action</th>
+<!--                        <th class="headerx col-3" scope="col">Action</th>-->
                     </tr>
                 </thead>
 
@@ -144,22 +146,23 @@
 
                 <div class="" style="height: 60vh; overflow: auto;">
                 <table  class="table table-hover table-striped" >
+                <table  class="table table-hover table-striped" >
                     <tbody id="staffTable">
                 {% for i in staff_data %}
                 <tr>
                     <td class="col-4" style="padding-left: 25px;">{{ i.username }}</td>
-                    <td class="col-2" style="padding-left: 25px;">{{ i.role }}</td>
+                    <td class="col-4" style="padding-left: 25px;">{{ i.role }}</td>
                     <td class="col-4" style="padding-left: 25px;">{{ i.email }}</td>
-                    <td class="col-3" style="padding-left: 25px;">
-                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal22" onclick="editStaff('{{ i.id }}', '{{ i.username }}', '{{ i.role }}', '{{ i.password }}', '{{ i.email }}')">
-                            Edit
-                        </button>
-                        <a href="{% url 'deletestaff' Did=i.id %}">
-                            <button type="button" class="btn btn-danger">
-                                X
-                            </button>
-                        </a>
-                    </td>
+<!--                    <td class="col-3" style="padding-left: 25px;">-->
+<!--                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal22" onclick="editStaff('{{ i.id }}', '{{i.organization}}', '{{ i.username }}', '{{ i.role }}', '{{ i.password }}', '{{ i.email }}')">-->
+<!--                            Edit-->
+<!--                        </button>-->
+<!--                        <a href="{% url 'deletestaff' Did=i.id %}">-->
+<!--                            <button type="button" class="btn btn-danger">-->
+<!--                                X-->
+<!--                            </button>-->
+<!--                        </a>-->
+<!--                    </td>-->
                 </tr>
                 {% endfor %}
                     </tbody>
@@ -175,8 +178,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 
 <script>
-    function editStaff(id, username, role, password, email) {
+    function editStaff(id, organization, username, role, password, email) {
     document.getElementById('userid2').value = id;
+    document.getElementById('organization2').value = organization;
     document.getElementById('username2').value = username;
     document.getElementById('role2').value = role;
     document.getElementById('password2').value = password;
